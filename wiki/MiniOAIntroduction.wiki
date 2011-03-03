@@ -11,14 +11,6 @@ MiniOA安装部署
 2、安装MySQL
 3、下载MiniOA项目源代码（含Tomcat）
 
-http://files.cnblogs.com/liuzhengdao/apache-tomcat-6.0.18.part1.rar
-
-http://files.cnblogs.com/liuzhengdao/apache-tomcat-6.0.18.part2.rar
-
-http://files.cnblogs.com/liuzhengdao/apache-tomcat-6.0.18.part3.rar
-
-http://files.cnblogs.com/liuzhengdao/apache-tomcat-6.0.18.part4.rar
-
 4、修改tomcat\bin\startup.bat，在最前面加上环境变量
 set JAVA_HOME=C:\Java\jdk1.6.0_03\
 set JAVA_OPTS=-Xms128M -Xmx256M
