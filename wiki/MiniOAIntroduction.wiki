@@ -5,8 +5,11 @@ MiniOA，又称迷你办公自动化系统，主要解决公司日常网上办�
 目前，我已初步完成MiniOA的框架开发，便迫不及待的与大家分享。为了更好的发展MiniOA项目，自始至终我将MiniOA项目的源代码全部免费开放，供大家学习、研究、使用用。
 
 MiniOA效果图
+
 http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_minioaMain.png
+
 MiniOA安装部署
+
 1、安装JDK 1.6以上
 
 2、安装MySQL
