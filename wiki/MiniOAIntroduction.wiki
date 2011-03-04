@@ -8,19 +8,33 @@ MiniOA效果图
 http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_minioaMain.png
 MiniOA安装部署
 1、安装JDK 1.6以上
+
 2、安装MySQL
+
 3、下载MiniOA项目源代码（含Tomcat）
 
+http://code.google.com/p/minioa/downloads/list
+
 4、修改tomcat\bin\startup.bat，在最前面加上环境变量
+
 set JAVA_HOME=C:\Java\jdk1.6.0_03\
+
 set JAVA_OPTS=-Xms128M -Xmx256M
+
 set CATALINA_BASE=F:\apache-tomcat-6.0.18
+
 set CATALINA_HOME=F:\apache-tomcat-6.0.18
+
 set CATALINA_TMPDIR=F:\apache-tomcat-6.0.18\temp
+
 set CATALINA_OPTS=-Xms128M -Xmx256M
+
 5、根据MiniOA文件下的minioa.sql创建数据库minioa
+
 6、配置hibernate.cfg.xml中数据库连接信息
+
 7、通过startup.bat启动tomcat
+
 8、使用帐号Jack，密码123456登录系统
 
 http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_minioaLogin.jpg
