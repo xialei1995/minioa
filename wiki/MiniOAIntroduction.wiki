@@ -60,17 +60,18 @@ set CATALINA_OPTS=-Xms128M -Xmx256M
 
  
 
-在浏览器中输入网址http://localhost:8080/MiniOA，出现登录界面，用户名admin，密码123456。
+在浏览器中输入网址http://localhost:8080/MiniOA，
+出现登录界面，用户名admin，密码123456。
 
- 
+ http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_image2011032301.png
 
 系统主要界面
 
- 
+ http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_image2011032302.png
 
 与Spark集成
 
- 
+ http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_Spark.png
 
  
 
