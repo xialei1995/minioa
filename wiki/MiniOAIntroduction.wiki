@@ -1,24 +1,48 @@
-最近在写一本书，目标是教零基础的学生或IT管理员如何进行Web Application开发。选取Java作为主要开发语言，使用Richfaces控件开发页面，同时讲解JavaScript、VbScript、 Asp、PHP、VB.Net、C#.Net、C等语言的入门案例，以便扩展思路。在求职、工作、人生等方面，也将结合自身经历与读者分享。如果单纯讲 Java或某种开发语言，难免落入俗套，经典的书一两本就足以，况且理论并不一定是我们眼前最需要的。所以，我打算创建MiniOA项目，以便配合教学。 MiniOA虽然是教学案例，但完全可用于实际项目。
+我创建MiniOA这个开源项目，旨在与大家分享Java、JSF、Richfaces、Javascript等Web Application 开发技术，分享协同办公系统设计思想。向优秀的开源软件学习，分享开源精神，传递开源力量。MiniOA即可当作学习案例，也可当作开发框架，也适合企业搭建协同办公系统。
 
-MiniOA，又称迷你办公自动化系统，主要解决公司日常网上办公、信息发布、信息流转、文档共享等信息化应用。技术层面上，1、提供应用程序开发框架，便于进行二次开发，开发者不必关心组织结构、权限控制、菜单管理、日志、图表等公共模块的开发，仅需要关注业务；2、重点开发电子表单模块，让用户不需要开发一行代码便可建立数据表单，就可完成对业务数据的采集；3、提供简单的工作流支持，配合电子表单模块以满足公司日常审批需求。
+ 
 
-目前，我已初步完成MiniOA的框架开发，便迫不及待的与大家分享。为了更好的发展MiniOA项目，自始至终我将MiniOA项目的源代码全部免费开放，供大家学习、研究、使用用。
+MiniOA计划开发组织结构管理、权限管理、菜单管理、文件管理、信息发布、Web邮件客户端、电子表单管理、工作流管理、Spark即时通讯、数据图表等模块，目前已完成程序基本框架和Openfire的集成。我可能并不擅长编码，对Java并不精通，但是我在协同办公系统的设计方面考虑很多，这些考虑来源于在实际工作。我的某些想法或许不是最优秀，但是一定能帮助你解决实际问题。
 
-MiniOA效果图
+ 
 
-http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_minioaMain.png
+MiniOA项目网址 http://code.google.com/p/minioa/
 
-MiniOA安装部署
+ 
 
-1、安装JDK 1.6以上
+运行环境
 
-2、安装MySQL
+1 安装JDK。MiniOA的开发环境是jdk1.6.0_03。
 
-3、下载MiniOA项目源代码（含Tomcat）
+2 安装Tomcat。MiniOA使用的是apache-tomcat-6.0.18。
 
-http://code.google.com/p/minioa/downloads/list
+3 安装MySQL。MiniOA使用的是MySQL5。
 
-4、修改tomcat\bin\startup.bat，在最前面加上环境变量
+ 
+
+安装
+
+执行MiniOA.sql脚本创建数据库minioa
+
+将下载的minioa.rar解压缩至apache-tomcat-6.0.18\webapps\ MiniOA下，将下载Spark.rar解压缩至apache-tomcat-6.0.18\webapps\MiniOA\WEB-INF\src\Spark下。MiniOA的javabean源文件在MiniOA\WEB-INF\src\code下。
+
+ 
+
+配置数据库连接
+
+修改文件MiniOA\WEB-INF\classes\hibernate.cfg.xml，设置正确的数据库连接信息。
+
+ 
+
+Openfire配置
+
+修改文件MiniOA\WEB-INF\web.xml中enableOpenfire的值，默认是true，表示程序启动后会使用system@minioa帐号登录openfire服务器。当设置成true时，请确保Openfire已经启动。
+
+ 
+
+启动Tomcat
+
+首先确认apache-tomcat-6.0.18\bin\startup.bat已经设置了正确的环境变量，例如
 
 set JAVA_HOME=C:\Java\jdk1.6.0_03\
 
@@ -32,18 +56,22 @@ set CATALINA_TMPDIR=F:\apache-tomcat-6.0.18\temp
 
 set CATALINA_OPTS=-Xms128M -Xmx256M
 
-5、根据MiniOA文件下的minioa.sql创建数据库minioa
+双击startup.bat启动tomcat
 
-6、配置hibernate.cfg.xml中数据库连接信息
+ 
 
-7、通过startup.bat启动tomcat
+在浏览器中输入网址http://localhost:8080/MiniOA，出现登录界面，用户名admin，密码123456。
 
-8、使用帐号Jack，密码123456登录系统
+ 
 
-http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_minioaLogin.jpg
+系统主要界面
 
-10、Eclispe，下载Eclipse IDE for Java EE Developers, 下载地址 http://www.eclipse.org/downloads/
+ 
 
-Spark项目截图
+与Spark集成
 
-http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_Spark.png
+ 
+
+ 
+
+我的QQ：914261631 Email: daiqianjie@163.com
