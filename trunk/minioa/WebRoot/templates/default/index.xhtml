@@ -9,10 +9,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>MiniOA</title>
 		<link rel="stylesheet" type="text/css" href="style.css" />
-		<script type="text/javascript" src="ddaccordion.js"></script>
-		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="ddaccordion.js">
+</script>
+		<script type="text/javascript" src="main.js">
+</script>
 		<script language="javascript" type="text/javascript"
-			src="niceforms.js"></script>
+			src="niceforms.js">
+</script>
 		<link rel="stylesheet" type="text/css" media="all"
 			href="niceforms-default.css" />
 	</head>
@@ -269,7 +272,7 @@
 					<div class="right_content">
 
 						<h2>
-							Hello Wolrd Demo
+							消息提醒机制
 						</h2>
 
 
@@ -279,8 +282,19 @@
 							<br />
 							<br />
 							<a4j:commandLink action="#{HelloWorld.setNewMessage}"
-								reRender="message" style="margin-left:30px;">
-								<h:outputText class="btn" value="Click me!" />
+								reRender="msg" style="margin-left:30px;">
+								<h:outputText class="btn" value="#{Lang.prop['zh-cn.warning']}" />
+								<f:param name="msgType" value="0"/>
+							</a4j:commandLink>
+							<a4j:commandLink action="#{HelloWorld.setNewMessage}"
+								reRender="msg" style="margin-left:30px;">
+								<h:outputText class="btn" value="#{Lang.prop['zh-cn.valid']}" />
+								<f:param name="msgType" value="1"/>
+							</a4j:commandLink>
+							<a4j:commandLink action="#{HelloWorld.setNewMessage}"
+								reRender="msg" style="margin-left:30px;">
+								<h:outputText class="btn" value="#{Lang.prop['zh-cn.error']}" />
+								<f:param name="msgType" value="2"/>
 							</a4j:commandLink>
 						</a4j:form>
 					</div>
@@ -304,5 +318,23 @@
 				</div>
 			</div>
 		</div>
+		<!-- Message Box -->
+		<a4j:outputPanel id="msg">
+		<rich:modalPanel id="mpForMsg" width="300"  height="80" zindex="3000" 
+		style="clear:both;background:url(images/warning.png) no-repeat left #fcfae9;
+border:1px #e9e6c7 solid;background-position:15px 10px;padding:20px 20px 15px 60px;margin:0 0 -10px 0;background-image:url(images/warning.png)">
+			
+				<div style="width:250px;margin-top:-10px;height:80px;" onclick="#{rich:component('mpForMsg')}.hide()" >
+					<h:outputText escape="false" value="#{MySession.msg}"/>
+					<br/><br/>
+					<h:outputText escape="false" value="#{Lang.prop['zh-cn.messageBox']}"
+					style="color:#296DC1;font-size:8pt;margin-top:8px;" />
+				</div>
+			
+		</rich:modalPanel>
+		<h:outputText id="msgScript" escape="false"
+			value="#{MySession.msgScript}" />
+			</a4j:outputPanel>
+		<!-- End of Message Box -->
 	</body>
 </html>

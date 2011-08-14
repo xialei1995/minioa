@@ -6,6 +6,10 @@
 	<description>www.minioa.net</description>
 	<display-name>MiniOA</display-name>
 	<context-param>
+		<param-name>baseDir</param-name>
+		<param-value>F:\minioa\minioa\WebRoot</param-value>
+	</context-param>
+	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
 	</context-param>
@@ -108,4 +112,7 @@
 		<error-code>404</error-code>
 		<location>/error.html</location>
 	</error-page>
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
