@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <sql-query name="core.processdefinition.task.insert.record">
+    <![CDATA[
+        insert into core_processdefinition_task(CID_,CDATE_,processDefId,taskCode,taskName,taskType,taskApproveType,taskApprover,taskDuation,taskNextStep,taskNextSql) values(:cId,:cDate,:processDefId,:taskCode,:taskName,:taskType,:taskApproveType,:taskApprover,:taskDuation,:taskNextStep,:taskNextSql)
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.select.records">
+    <![CDATA[
+        select task.ID_,task.CID_,task.CDATE_,task.processDefId,task.taskCode,task.taskName,task.taskType,task.taskApproveType,task.taskApprover,task.taskDuation,task.taskNextStep,task.taskNextSql
+        from core_processdefinition_task task
+        where task.processDefId = :processDefId
+        order by task.processDefId,task.taskCode
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.select.record.where.id">
+    <![CDATA[
+        select task.ID_,task.CID_,task.CDATE_,task.processDefId,task.taskCode,task.taskName,task.taskType,task.taskApproveType,task.taskApprover,task.taskDuation,task.taskNextStep,task.taskNextSql
+        from core_processdefinition_task task
+        where task.ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.select.record.where.processDefId.taskCode">
+    <![CDATA[
+        select task.ID_,task.CID_,task.CDATE_,task.processDefId,task.taskCode,task.taskName,task.taskType,task.taskApproveType,task.taskApprover,task.taskDuation,task.taskNextStep,task.taskNextSql
+        from core_processdefinition_task task
+        where task.processDefId = :processDefId and task.taskCode = :taskCode
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.select.first">
+    <![CDATA[
+        select min(task.taskCode)
+        from core_processdefinition_task task
+        where task.processDefId = :processDefId
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.update.record.where.id">
+    <![CDATA[
+        update core_processdefinition_task set MID_ = :mId, MDATE_ = :mDate, taskCode = :taskCode, taskName=:taskName, 
+        	taskType=:taskType, taskApproveType=:taskApproveType, taskApprover=:taskApprover, taskDuation=:taskDuation, taskNextStep = :taskNextStep, taskNextSql = :taskNextSql
+        where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.delete.record.where.id">
+    <![CDATA[
+        delete from core_processdefinition_task where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.processdefinition.task.delete.record.where.processDefId">
+    <![CDATA[
+        delete from core_processdefinition_task where processDefId = :processDefId
+    ]]>
+    </sql-query>
+</hibernate-mapping>

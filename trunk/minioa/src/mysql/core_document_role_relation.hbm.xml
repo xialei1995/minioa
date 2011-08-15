@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <sql-query name="core.document.role.relation.insert.record">
+    <![CDATA[
+        insert into core_document_role_relation(docId,roleId) values(:docId,:roleId)
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.role.relation.select.record">
+    <![CDATA[
+        select ta.roleId,tb.roleName from core_document_role_relation ta 
+        left join core_role tb on tb.ID_ = ta.roleId
+        where ta.docId = :docId
+        order by tb.roleName
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.role.relation.delete.records.where">
+    <![CDATA[
+        delete from core_document_role_relation where docId = :docId
+    ]]>
+    </sql-query>
+</hibernate-mapping>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <class name="MailAccount" table="core_mail_account">
+      <id name="ID_" column="ID_" type="java.lang.Integer">
+      	<generator class="increment" />
+      </id>
+      <property name="CID_" column="CID_" type="java.lang.Integer"/>
+			<property name="CDATE_" column="CDATE_" type="java.util.Date"/>
+			<property name="MID_" column="MID_" type="java.lang.Integer"/>
+			<property name="MDATE_" column="MDATE_" type="java.util.Date"/>
+			<property name="server" column="server" type="java.lang.String"/>
+			<property name="port" column="port" type="java.lang.String"/>
+			<property name="userName" column="userName" type="java.lang.String"/>
+			<property name="password_" column="password_" type="java.lang.String"/>
+			<property name="ssl_" column="ssl_" type="java.lang.String"/>
+    </class>
+    <sql-query name="core.MailAccount.select.records">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	server,port,userName,password_,ssl_
+        from core_mail_account
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailAccount.select.records.selectItem">
+    <![CDATA[
+        select ID_,concat(userName,'@',server)
+        from core_mail_account where CID_ = :cId
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailAccount.select.records.count">
+    <![CDATA[
+        select count(*) as result from core_mail_account
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailAccount.select.records.where.id">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	server,port,userName,password_,ssl_
+        from core_mail_account where ID_ = :id and CID_ = :cId
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailAccount.update.record.where.id">
+    <![CDATA[
+        update core_mail_account set MID_ = :mId, MDATE_ = :mDate,
+        	server = :server,port = :port,userName = :userName,password_ = :password_,ssl_ = :ssl_
+        where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailAccount.delete.record.where.id">
+    <![CDATA[
+        delete from core_mail_account where ID_ = :id
+    ]]>
+    </sql-query>
+</hibernate-mapping>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <sql-query name="core.document.attachment.insert.record">
+    <![CDATA[
+        insert into core_document_attachment(CID_,CDATE_,uuid,fileName,fileType,fileSize,oldName) values(:cId,:cDate,:uuid,:fileName,:fileType,:fileSize,:oldName)
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.attachment.select.records">
+    <![CDATA[
+        select ID_,CID_,CDATE_,uuid,fileName,fileType,fileSize,oldName
+        from core_document_attachment where uuid = :uuid
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.attachment.select.record.where.id">
+    <![CDATA[
+        select ID_,CID_,CDATE_,uuid,fileName,fileType,fileSize,oldName
+        from core_document_attachment where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.attachment.delete.record.where.id">
+    <![CDATA[
+        delete from core_document_attachment where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.attachment.delete.record.where.uuid">
+    <![CDATA[
+        delete from core_document_attachment where uuid = :uuid
+    ]]>
+    </sql-query>
+</hibernate-mapping>

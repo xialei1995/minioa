@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <sql-query name="core.document.user.relation.insert.record">
+    <![CDATA[
+        insert into core_document_user_relation(docId,userId) values(:docId,:userId)
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.user.relation.select.record">
+    <![CDATA[
+        select ta.userId,tb.userName from core_document_user_relation ta 
+        left join core_user tb on tb.ID_ = ta.userId
+        where ta.docId = :docId
+        order by tb.userName
+    ]]>
+    </sql-query>
+    <sql-query name="core.document.user.relation.delete.records.where">
+    <![CDATA[
+        delete from core_document_user_relation where docId = :docId
+    ]]>
+    </sql-query>
+</hibernate-mapping>

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
+ 
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <class name="ShortcutMenu" table="core_shortcut_menu">
+      <id name="ID_" column="ID_" type="java.lang.Integer">
+      	<generator class="increment" />
+      </id>
+      <property name="CID_" column="CID_" type="java.lang.Integer"/>
+			<property name="CDATE_" column="CDATE_" type="java.util.Date"/>
+			<property name="MID_" column="MID_" type="java.lang.Integer"/>
+			<property name="MDATE_" column="MDATE_" type="java.util.Date"/>
+			<property name="shortcutMenuCode" column="shortcutMenuCode" type="java.lang.String"/>
+			<property name="shortcutMenuName" column="shortcutMenuName" type="java.lang.String"/>
+			<property name="shortcutMenuUrl" column="shortcutMenuUrl" type="java.lang.String"/>
+			<property name="shortcutMenuTarget" column="shortcutMenuTarget" type="java.lang.String"/>
+    </class>
+    <sql-query name="core.shortcut.menu.select.records">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	shortcutMenuCode,shortcutMenuName,shortcutMenuUrl,shortcutMenuTarget
+        from core_shortcut_menu 
+        where CID_ = :userId
+        order by shortcutMenuCode limit :limit offset :offset
+    ]]>
+    </sql-query>
+    <sql-query name="core.shortcut.menu.select.records.count">
+    <![CDATA[
+        select count(*) as ds from core_shortcut_menu
+    ]]>
+    </sql-query>
+		<sql-query name="core.shortcut.menu.select.records.where.id">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	shortcutMenuCode,shortcutMenuName,shortcutMenuUrl,shortcutMenuTarget
+        from core_shortcut_menu
+        where ID_ = :id
+    ]]>
+    </sql-query>
+
+    <sql-query name="core.shortcut.menu.update.record.where.id">
+    <![CDATA[
+        update core_shortcut_menu set MID_ = :mId, MDATE_ = :mDate, 
+        	shortcutMenuCode = :shortcutMenuCode, shortcutMenuName = :shortcutMenuName, shortcutMenuTarget = :shortcutMenuTarget, shortcutMenuUrl = :shortcutMenuUrl
+        where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.shortcut.menu.delete.record.where.id">
+    <![CDATA[
+        delete from core_shortcut_menu where ID_ = :id
+    ]]>
+    </sql-query>
+</hibernate-mapping>

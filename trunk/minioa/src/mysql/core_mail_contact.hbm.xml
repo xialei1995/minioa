@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+    <class name="MailContact" table="core_mail_contact">
+      <id name="ID_" column="ID_" type="java.lang.Integer">
+      	<generator class="increment" />
+      </id>
+      <property name="CID_" column="CID_" type="java.lang.Integer"/>
+			<property name="CDATE_" column="CDATE_" type="java.util.Date"/>
+			<property name="MID_" column="MID_" type="java.lang.Integer"/>
+			<property name="MDATE_" column="MDATE_" type="java.util.Date"/>
+			<property name="name" column="name" type="java.lang.String"/>
+			<property name="pinyin" column="pinyin" type="java.lang.String"/>
+			<property name="email" column="email" type="java.lang.String"/>
+			<property name="ctype" column="ctype" type="java.lang.String"/>
+    </class>
+    <sql-query name="core.MailContact.select.records">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	name,pinyin,email,ctype
+        from core_mail_contact 
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailContact.select.records.name">
+    <![CDATA[
+        select ID_,name
+        from core_mail_contact
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailContact.select.records.count">
+    <![CDATA[
+        select count(*) as result from core_mail_contact
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailContact.select.records.where.id">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,
+        	name,pinyin,email,ctype
+        from core_mail_contact where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailContact.update.record.where.id">
+    <![CDATA[
+        update core_mail_contact set MID_ = :mId, MDATE_ = :mDate,
+        	name = :name, pinyin = :pinyin, email = :email, ctype = :ctype
+        where ID_ = :id
+    ]]>
+    </sql-query>
+    <sql-query name="core.MailContact.delete.record.where.id">
+    <![CDATA[
+        delete from core_mail_contact where ID_ = :id
+    ]]>
+    </sql-query>
+</hibernate-mapping>
