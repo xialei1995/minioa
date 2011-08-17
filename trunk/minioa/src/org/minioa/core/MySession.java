@@ -1,5 +1,8 @@
 package org.minioa.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MySession {
 	// ÏûÏ¢
 	public String msg;
@@ -42,15 +45,37 @@ public class MySession {
 	public String getTemplateName() {
 		return templateName;
 	}
-	
-	private String language;
+	/**
+	 * User Language
+	 */
+	private String l;
 
-	public void setLanguage(String data) {
-		language = data;
+	public void setL(String data) {
+		l = data;
 	}
 
-	public String getLanguage() {
-		language = "zh-cn";
-		return language;
+	public String getL() {
+		l = "zh-cn";
+		return l;
+	}
+	
+
+    private Map<String, String> tempStr;
+	public void setTempStr(Map<String, String> data){
+		tempStr = data;
+	}
+	public Map<String, String> getTempStr(){
+		if(tempStr==null)
+			tempStr = new HashMap<String, String>();
+		return tempStr;
+	}
+    private Map<String, Integer> tempInt;
+	public void setTempInt(Map<String, Integer> data){
+		tempInt = data;
+	}
+	public Map<String, Integer> getTempInt(){
+		if(tempInt==null)
+			tempInt = new HashMap<String, Integer>();
+		return tempInt;
 	}
 }

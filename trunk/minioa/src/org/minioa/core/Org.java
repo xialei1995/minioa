@@ -154,6 +154,10 @@ public class Org {
 	public Org() {
 	}
 
+	public Org(int i) {
+		setID_(i);
+	}
+	
 	/**
 	 * 构造函数，用于创建recordsList
 	 * 
@@ -195,12 +199,22 @@ public class Org {
 		try {
 			getMySession();
 			recordsList = new ArrayList<Org>();
+			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			if("false".equals((String)params.get("reload"))){
+				if(null!=mySession.getTempInt() && mySession.getTempInt().containsKey("Org.rowcount")){
+					for(int i = 0; i < mySession.getTempInt().get("Org.rowcount"); i++)
+						recordsList.add(new Org(i));
+					return ;
+				}
+			}
+
 			Query query = getSession().getNamedQuery("core.org.records");
 			Iterator it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
 			String name, desc;
+			int rowcount = 0;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = cId = mId = 0;
@@ -233,8 +247,14 @@ public class Org {
 
 				recordsList.add(new Org(id, cId, cDate, mId, mDate, uuid, name,
 						desc));
+				System.out.print(id + ",");
+				rowcount ++;
 			}
 			it = null;
+			
+			mySession.getTempInt().put("Org.rowcount", rowcount);
+			
+			System.out.println("");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -295,15 +315,12 @@ public class Org {
 			bean.setCDATE_(new java.util.Date());
 			getSession().save(bean);
 			bean = null;
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".success")
-							.toString(), Integer.valueOf(1));
+			
+			String msg = getLang().getProp().get(getMySession().getL()).get("sucess");
+			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".faield")
-							.toString(), Integer.valueOf(2));
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
 	}
@@ -324,15 +341,12 @@ public class Org {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".success")
-							.toString(), Integer.valueOf(1));
+
+			String msg = getLang().getProp().get(getMySession().getL()).get("success");
+			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".faield")
-							.toString(), Integer.valueOf(2));
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
 	}
@@ -350,15 +364,11 @@ public class Org {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".success")
-							.toString(), Integer.valueOf(1));
+			String msg = getLang().getProp().get(getMySession().getL()).get("success");
+			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
-			getMySession().setMsg(
-					getLang().getProp().getProperty(
-							getMySession().getLanguage() + ".faield")
-							.toString(), Integer.valueOf(2));
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
 	}
