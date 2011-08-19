@@ -19,3 +19,13 @@ ddaccordion.init({
 		//do nothing
 	}
 })
+
+
+function hideObject(elementId){
+	if(document.getElementById(elementId))
+		document.getElementById(elementId).style.display = 'none';
+}
+function showObject(elementId){
+	if(document.getElementById(elementId))
+		document.getElementById(elementId).style.display = 'block';
+}

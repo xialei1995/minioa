@@ -60,10 +60,7 @@ public class HelloWorld {
 		Map params = FacesContext.getCurrentInstance().getExternalContext()
 				.getRequestParameterMap();
 		String msgType = (String) params.get("msgType");
-
-		getMySession().setMsg(
-				getLang().getProp().getProperty(
-						getMySession().getLanguage() + ".success").toString(),
-				Integer.valueOf(msgType));
+		String msg = getLang().getProp().get(getMySession().getL()).get("success");
+		getMySession().setMsg(msg, Integer.valueOf(msgType));
 	}
 }

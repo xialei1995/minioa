@@ -185,7 +185,7 @@ public class Org {
 	/**
 	 * 初始化变量
 	 */
-	public void mReset() {
+	public void reset() {
 		ID_ = CID_ = MID_ = 0;
 		CDATE = MDATE = UUID_ = "";
 		CDATE_ = MDATE_ = null;
@@ -247,14 +247,11 @@ public class Org {
 
 				recordsList.add(new Org(id, cId, cDate, mId, mDate, uuid, name,
 						desc));
-				System.out.print(id + ",");
 				rowcount ++;
 			}
 			it = null;
 			
 			mySession.getTempInt().put("Org.rowcount", rowcount);
-			
-			System.out.println("");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -272,7 +269,7 @@ public class Org {
 			query.setParameter("id", id);
 			Iterator it = query.list().iterator();
 			while (it.hasNext()) {
-				this.mReset();
+				this.reset();
 				Object obj[] = (Object[]) it.next();
 				if (obj[0] != null)
 					ID_ = Integer.valueOf(String.valueOf(obj[0]));
@@ -306,7 +303,7 @@ public class Org {
 	/**
 	 * 新增一条记录，注意这里没有使用到insert语句，这是hibernate的特点
 	 */
-	public void mNewRecord() {
+	public void newRecord() {
 		try {
 			Org bean = new Org();
 			bean.setOrgName(orgName);
@@ -328,7 +325,7 @@ public class Org {
 	/**
 	 * 更新一条记录
 	 */
-	public void mUpdateRecord() {
+	public void updateRecord() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext()
 					.getRequestParameterMap();
@@ -354,11 +351,11 @@ public class Org {
 	/**
 	 * 删除一条记录
 	 */
-	public void mDeleteRecordById() {
+	public void deleteRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext()
-					.getRequestParameterMap();
-			String id = (String) params.get("id");
+			//Map params = FacesContext.getCurrentInstance().getExternalContext()
+					//.getRequestParameterMap();
+			String id = getMySession().getTempStr().get("Org.id");
 			Query query = getSession().getNamedQuery(
 					"core.org.deleterecordbyid");
 			query.setParameter("id", id);
@@ -371,5 +368,19 @@ public class Org {
 			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
+	}
+	public void showDialog() {
+		try
+		{
+			
+			Map params = FacesContext.getCurrentInstance().getExternalContext()
+			.getRequestParameterMap();
+			getMySession().getTempStr().put("Org.id", (String) params.get("id"));
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+		
 	}
 }
