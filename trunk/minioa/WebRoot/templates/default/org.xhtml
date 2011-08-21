@@ -14,13 +14,14 @@
 			<rich:tab id="tab1" name="tab1"
 				label="#{Lang.prop[MySession.l]['list']}">
 				<a4j:form id="searchForm" style="margin-top:3px;">
+				<fieldset class="fieldset" style="width:267px;"><legend> #{Lang.prop[MySession.l]['search']} </legend> 
+				
 					<a4j:commandLink action="#{Org.buildRecordsList}"
 						reRender="dataForm">
-						<h:graphicImage id="reload"
-							title="#{Lang.prop[MySession.l]['reload']}"
-							style="border:0px;width:18px;" url="images/reload.png">
-						</h:graphicImage>
+						<h:outputText value="#{Lang.prop[MySession.l]['search']}"
+							class="btn" />
 					</a4j:commandLink>
+					</fieldset>
 				</a4j:form>
 				<a4j:form id="dataForm" style="margin-top:3px;">
 
@@ -40,6 +41,9 @@
 								</rich:column>
 								<rich:column>
 									<h:outputText value="#{Lang.prop[MySession.l]['description']}" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{Lang.prop[MySession.l]['sequence']}" />
 								</rich:column>
 								<rich:column
 									style="background: #60c8f2 url('images/right.jpg') right top no-repeat;">
@@ -67,6 +71,9 @@
 						<rich:column style="width:*;">
 							<h:outputText value="#{item.orgDesc}" />
 						</rich:column>
+						<rich:column style="width:36px;">
+							<h:outputText value="#{item.sequence}" />
+						</rich:column>
 						<rich:column style="text-align:center;width:20px;">
 							<a4j:commandLink action="#{Org.showDialog}"
 								onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
@@ -91,17 +98,24 @@
 						<h:panelGrid columns="3" columnClasses="co1,co2,co3">
 							<h:outputText value="#{Lang.prop[MySession.l]['name']}:" />
 							<h:inputText value="#{Org.orgName}" id="orgName"
-								style="border:1px solid #E2E2E2;width:100px;font-size:9pt;">
+								style="width:100px;">
 								<rich:ajaxValidator event="onblur" />
 							</h:inputText>
 							<rich:message for="orgName" />
 
 							<h:outputText value="#{Lang.prop[MySession.l]['description']}:" />
 							<h:inputText value="#{Org.orgDesc}" id="orgDesc"
-								style="border:1px solid #E2E2E2;width:300px;font-size:9pt;">
+								style="width:300px;">
 								<rich:ajaxValidator event="onblur" />
 							</h:inputText>
 							<rich:message for="orgDesc" />
+							
+							<h:outputText value="#{Lang.prop[MySession.l]['sequence']}:" />
+							<h:inputText value="#{Org.sequence}" id="sequence"
+								style="width:30px;">
+								<rich:ajaxValidator event="onblur" />
+							</h:inputText>
+							<rich:message for="sequence" />
 
 							<h:outputText value="" />
 							<h:panelGrid columns="2">
@@ -111,7 +125,7 @@
 									<f:param name="redirect" value="false" />
 									<f:param name="reload" value="false" />
 								</a4j:commandLink>
-								<a4j:commandLink action="#{Org.updateRecord}" reRender="msg">
+								<a4j:commandLink action="#{Org.updateRecordById}" reRender="msg">
 									<h:outputText class="btn"
 										value="#{Lang.prop[MySession.l]['save']}" />
 									<f:param name="redirect" value="false" />

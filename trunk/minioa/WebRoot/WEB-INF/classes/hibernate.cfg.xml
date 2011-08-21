@@ -14,5 +14,6 @@
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
 		<mapping resource="mysql/core_org.hbm.xml" />
+		<mapping resource="mysql/core_department.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

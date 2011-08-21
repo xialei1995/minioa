@@ -9,8 +9,12 @@ import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.Max;
+import org.hibernate.validator.Min;
 import org.hibernate.validator.NotEmpty;
+import org.hibernate.validator.NotNull;
 import org.jboss.seam.ui.*;
+
 
 public class Org {
 	/**
@@ -21,8 +25,7 @@ public class Org {
 	private String CDATE, MDATE;
 	private java.util.Date CDATE_, MDATE_;
 	private String UUID_, init;
-	public static SimpleDateFormat dtf = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
+	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public void setID_(int data) {
 		ID_ = data;
@@ -93,16 +96,26 @@ public class Org {
 		return init;
 	}
 
-	@NotEmpty(message = "单位名称必须填写")
-	@Length(min = 2, max = 12, message = "最少2个字符，最大12个字符")
+	@NotEmpty
+	@Length(min = 2, max = 12)
 	private String orgName;
-	@NotEmpty(message = "单位描述也必须填写")
+	@NotEmpty
 	private String orgDesc;
 
 	public void setOrgName(String data) {
 		orgName = data;
 	}
+	
+	@Min(value=0) 
+	@Max(value=100) 
+	private int sequence;
+	public void setSequence(int data) {
+		sequence = data;
+	}
 
+	public int getSequence() {
+		return sequence;
+	}
 	public String getOrgName() {
 		return orgName;
 	}
@@ -127,8 +140,7 @@ public class Org {
 
 	public Lang getLang() {
 		if (lang == null)
-			lang = (Lang) FacesContext.getCurrentInstance()
-					.getExternalContext().getApplicationMap().get("Lang");
+			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
 		return lang;
 	}
 
@@ -136,8 +148,7 @@ public class Org {
 
 	public MySession getMySession() {
 		if (mySession == null)
-			mySession = (MySession) FacesContext.getCurrentInstance()
-					.getExternalContext().getSessionMap().get("MySession");
+			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
 		return mySession;
 	}
 
@@ -157,7 +168,12 @@ public class Org {
 	public Org(int i) {
 		setID_(i);
 	}
-	
+
+	public Org(String name, String desc) {
+		setOrgName(name);
+		setOrgDesc(desc);
+	}
+
 	/**
 	 * 构造函数，用于创建recordsList
 	 * 
@@ -170,8 +186,7 @@ public class Org {
 	 * @param name
 	 * @param desc
 	 */
-	public Org(int id, int cId, String cDate, int mId, String mDate,
-			String uuid, String name, String desc) {
+	public Org(int id, int cId, String cDate, int mId, String mDate, String uuid, String name, String desc, int sequence) {
 		setID_(id);
 		setCID_(cId);
 		setCDATE(cDate);
@@ -180,6 +195,7 @@ public class Org {
 		setUUID_(uuid);
 		setOrgName(name);
 		setOrgDesc(desc);
+		setSequence(sequence);
 	}
 
 	/**
@@ -200,24 +216,24 @@ public class Org {
 			getMySession();
 			recordsList = new ArrayList<Org>();
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			if("false".equals((String)params.get("reload"))){
-				if(null!=mySession.getTempInt() && mySession.getTempInt().containsKey("Org.rowcount")){
-					for(int i = 0; i < mySession.getTempInt().get("Org.rowcount"); i++)
+			if ("false".equals((String) params.get("reload"))) {
+				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Org.rowcount")) {
+					for (int i = 0; i < mySession.getTempInt().get("Org.rowcount"); i++)
 						recordsList.add(new Org(i));
-					return ;
+					return;
 				}
 			}
 
 			Query query = getSession().getNamedQuery("core.org.records");
 			Iterator it = query.list().iterator();
-			int id, cId, mId;
+			int id, cId, mId,sq;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
 			String name, desc;
 			int rowcount = 0;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
-				id = cId = mId = 0;
+				id = cId = mId = sq = 0;
 				cDate = mDate = uuid = "";
 				cDate_ = mDate_ = null;
 				name = desc = "";
@@ -244,13 +260,13 @@ public class Org {
 					name = String.valueOf(obj[6]);
 				if (obj[7] != null)
 					desc = String.valueOf(obj[7]);
-
-				recordsList.add(new Org(id, cId, cDate, mId, mDate, uuid, name,
-						desc));
-				rowcount ++;
+				if (obj[8] != null)
+					sq = Integer.valueOf(String.valueOf(obj[8]));
+				recordsList.add(new Org(id, cId, cDate, mId, mDate, uuid, name, desc,sq));
+				rowcount++;
 			}
 			it = null;
-			
+
 			mySession.getTempInt().put("Org.rowcount", rowcount);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -262,8 +278,7 @@ public class Org {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext()
-					.getRequestParameterMap();
+			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			Query query = getSession().getNamedQuery("core.org.getrecordbyid");
 			query.setParameter("id", id);
@@ -293,6 +308,8 @@ public class Org {
 					orgName = String.valueOf(obj[6]);
 				if (obj[7] != null)
 					orgDesc = String.valueOf(obj[7]);
+				if (obj[8] != null)
+					sequence = Integer.valueOf(String.valueOf(obj[8]));
 			}
 			it = null;
 		} catch (Exception ex) {
@@ -308,11 +325,12 @@ public class Org {
 			Org bean = new Org();
 			bean.setOrgName(orgName);
 			bean.setOrgDesc(orgDesc);
+			bean.setSequence(sequence);
 			bean.setCID_(0);
 			bean.setCDATE_(new java.util.Date());
 			getSession().save(bean);
 			bean = null;
-			
+
 			String msg = getLang().getProp().get(getMySession().getL()).get("sucess");
 			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
@@ -325,16 +343,15 @@ public class Org {
 	/**
 	 * 更新一条记录
 	 */
-	public void updateRecord() {
+	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext()
-					.getRequestParameterMap();
+			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			Query query = getSession().getNamedQuery(
-					"core.org.updaterecordbyid");
+			Query query = getSession().getNamedQuery("core.org.updaterecordbyid");
 			query.setParameter("mId", 0);
 			query.setParameter("orgName", orgName);
 			query.setParameter("orgDesc", orgDesc);
+			query.setParameter("sequence", sequence);
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -353,11 +370,11 @@ public class Org {
 	 */
 	public void deleteRecordById() {
 		try {
-			//Map params = FacesContext.getCurrentInstance().getExternalContext()
-					//.getRequestParameterMap();
+			// Map params =
+			// FacesContext.getCurrentInstance().getExternalContext()
+			// .getRequestParameterMap();
 			String id = getMySession().getTempStr().get("Org.id");
-			Query query = getSession().getNamedQuery(
-					"core.org.deleterecordbyid");
+			Query query = getSession().getNamedQuery("core.org.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -369,18 +386,16 @@ public class Org {
 			ex.printStackTrace();
 		}
 	}
+
 	public void showDialog() {
-		try
-		{
-			
-			Map params = FacesContext.getCurrentInstance().getExternalContext()
-			.getRequestParameterMap();
+		try {
+			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Org.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
-		
 	}
+
 }

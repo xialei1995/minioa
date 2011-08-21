@@ -11,13 +11,27 @@
 	color: red;
 }
 
+.tdNormal {
+	
+}
+
+.tdTop {
+	vertical-align: top;
+}
+
 .btn {
 	padding: 5px;
 	padding-right: 3px;
-	background-image: url(images/menu_bg.jpg);
+	background-image: url(images/menu_bg.gif);
 	font-weight: bold;
 	color: white;
 	letter-spacing: 3px;
+}
+
+.rich-tab-header{
+	background-image: url(images/menu_bg.gif);
+	border:1px solid #5FC7F1;
+	color: white;
 }
 
 .note {
@@ -28,6 +42,15 @@
 
 input[type=text] {
 	border: 1px dotted #D5D8DC;
+	font-size:9pt;
+}
+
+.fieldset {
+	border: 1px solid #D5D8DC;
+}
+
+.fieldset legend {
+	font-weight: bold;
 }
 
 body {
@@ -908,5 +931,6 @@ div.pagination span.disabled {
 
 .rich-tabpanel-content {
 	border-width: 0px;
+	border-top: 1px solid #60c8f2;
 	border-bottom: 1px solid #60c8f2;
 }

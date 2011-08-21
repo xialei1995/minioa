@@ -1,2 +1,2 @@
 cd C:\Java\jdk1.6.0_03\bin
-native2ascii -encoding UTF-8 F:\minioa\minioa\WebRoot\lang.properties F:\minioa\minioa\WebRoot\zh-cn.properties
+native2ascii -encoding UTF-8 F:\minioa\src\minioa\WebRoot\lang.properties F:\minioa\src\minioa\WebRoot\zh-cn.properties
