@@ -331,7 +331,7 @@ public class Org {
 			getSession().save(bean);
 			bean = null;
 
-			String msg = getLang().getProp().get(getMySession().getL()).get("sucess");
+			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");

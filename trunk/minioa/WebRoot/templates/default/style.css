@@ -44,6 +44,10 @@ input[type=text] {
 	border: 1px dotted #D5D8DC;
 	font-size:9pt;
 }
+input[type=password] {
+	border: 1px dotted #D5D8DC;
+	font-size:9pt;
+}
 
 .fieldset {
 	border: 1px solid #D5D8DC;

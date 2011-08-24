@@ -1,11 +1,17 @@
 package org.minioa.core;
 
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletResponse;
 import javax.faces.context.FacesContext;
 
+import org.hibernate.Query;
+
 public class FunctionLib {
+
+	public static String dbType = "mysql";
+
 	public static String baseDir, separator;
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -145,25 +151,63 @@ public class FunctionLib {
 		}
 		return sb.toString();
 	}
-	public static void redirect(String page)
-	{
-		try
-		{
-			FacesContext context = FacesContext.getCurrentInstance();   
-	        HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse(); 
-	        //System.out.println(context.getExternalContext().getRequestHeaderMap());
-	        response.sendRedirect("http://" + context.getExternalContext().getRequestHeaderMap().get("host") + "/" + page);
+
+	public static void redirect(String page) {
+		try {
+			FacesContext context = FacesContext.getCurrentInstance();
+			HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+			// System.out.println(context.getExternalContext().getRequestHeaderMap());
+			response.sendRedirect("http://" + context.getExternalContext().getRequestHeaderMap().get("host") + "/" + page);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		catch(Exception ex){ex.printStackTrace();}
 	}
-	public static void refresh()
-	{
-		try
-		{
-			FacesContext context = FacesContext.getCurrentInstance();   
-	        HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse(); 
-	        response.sendRedirect(context.getExternalContext().getRequestHeaderMap().get("referer"));
+
+	public static void refresh() {
+		try {
+			FacesContext context = FacesContext.getCurrentInstance();
+			HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+			response.sendRedirect(context.getExternalContext().getRequestHeaderMap().get("referer"));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		catch(Exception ex){ex.printStackTrace();}
+	}
+
+	public static String exeSql(org.hibernate.Session s, String sql, String paramName, String paramValue, String type) {
+		String str = "";
+		if (type.equals("float"))
+			str = "0";
+		try {
+			Query query = s.getNamedQuery(sql);
+			query.setParameter(paramName, paramValue);
+			Iterator it = query.list().iterator();
+			while (it.hasNext()) {
+				Object obj = (Object) it.next();
+				if (obj != null)
+					str = String.valueOf(obj);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return str;
+	}
+	public static String exeSql(org.hibernate.Session s, String sql, String paramName, String paramValue,String paramName2, String paramValue2, String type) {
+		String str = "";
+		if (type.equals("float"))
+			str = "0";
+		try {
+			Query query = s.getNamedQuery(sql);
+			query.setParameter(paramName, paramValue);
+			query.setParameter(paramName2, paramValue2);
+			Iterator it = query.list().iterator();
+			while (it.hasNext()) {
+				Object obj = (Object) it.next();
+				if (obj != null)
+					str = String.valueOf(obj);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return str;
 	}
 }

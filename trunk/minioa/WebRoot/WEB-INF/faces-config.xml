@@ -17,6 +17,10 @@
 		<managed-bean-name>MySession</managed-bean-name>
 		<managed-bean-class>org.minioa.core.MySession</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>pageSize</property-name>
+			<value>15</value>
+		</managed-property>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>Org</managed-bean-name>
@@ -32,6 +36,11 @@
 		<managed-bean-name>DepartmentTree</managed-bean-name>
 		<managed-bean-class>org.minioa.core.DepartmentTree</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>User</managed-bean-name>
+		<managed-bean-class>org.minioa.core.User</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<application>
 		<navigation-handler>org.richfaces.ui.application.StateNavigationHandler</navigation-handler>

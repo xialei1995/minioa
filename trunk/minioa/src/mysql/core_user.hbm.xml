@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+      "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" package="org.minioa.core">
+	<sql-query name="core.user.newrecord">
+    <![CDATA[
+        insert into core_user(CID_,CDATE_,depaId,superiorId,managerId,userName,email,phone,mobilePhone,gender,displayName,isLock,password) values(:cId,sysdate(),:depaId,:superiorId,:managerId,:userName,:email,:phone,:mobilePhone,:gender,:displayName,:isLock,md5(:password))
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.records">
+    <![CDATA[
+        select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
+        	ta.depaId,ta.superiorId,ta.managerId,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock
+        from core_user ta
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.records.count">
+    <![CDATA[
+        select count(*) as ds from core_user
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.getrecordbyid">
+    <![CDATA[
+        select ID_,CID_,CDATE_,MID_,MDATE_,UUID_,
+        	depaId,superiorId,managerId,userName,email,phone,mobilePhone,gender,displayName,isLock
+        from core_user where ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.isuserexistbyname">
+    <![CDATA[
+        select count(*) as tmp
+        from core_user where userName = :userName
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.isuserexistbyname.byid">
+    <![CDATA[
+        select count(*) as tmp
+        from core_user where userName = :userName and ID_ != :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.updaterecordbyid">
+    <![CDATA[
+        update core_user set MID_ = :mId, MDATE_ = sysdate(), 
+        	depaId = :depaId,superiorId = :superiorId,managerId = :managerId,userName = :userName,email = :email,
+        	phone = :phone,mobilePhone = :mobilePhone,
+        	gender = :gender,displayName = :displayName,
+        	isLock = :isLock
+        where ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.updatepasswordbyid">
+    <![CDATA[
+        update core_user set MID_ = :mId, MDATE_ = sysdate(), password = md5(:password)
+        where ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.deleterecordbyid">
+    <![CDATA[
+        delete from core_user where ID_ = :id
+    ]]>
+	</sql-query>
+</hibernate-mapping>
