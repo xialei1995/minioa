@@ -150,15 +150,14 @@ public class User {
 				p = new HashMap<String, String>();
 				p.put("id", FunctionLib.getString(obj[0]));
 				p.put("depaId", FunctionLib.getString(obj[6]));
-				p.put("superiorId", FunctionLib.getDateString(obj[7]));
-				p.put("managerId", FunctionLib.getString(obj[8]));
-				p.put("userName", FunctionLib.getString(obj[9]));
-				p.put("email", FunctionLib.getString(obj[10]));
-				p.put("phone", FunctionLib.getString(obj[11]));
-				p.put("mobilePhone", FunctionLib.getString(obj[12]));
-				p.put("gender", FunctionLib.getString(obj[13]));
-				p.put("displayName", FunctionLib.getString(obj[14]));
-				p.put("isLock", FunctionLib.getString(obj[15]));
+				p.put("jobId", FunctionLib.getDateString(obj[7]));
+				p.put("userName", FunctionLib.getString(obj[8]));
+				p.put("email", FunctionLib.getString(obj[9]));
+				p.put("phone", FunctionLib.getString(obj[10]));
+				p.put("mobilePhone", FunctionLib.getString(obj[11]));
+				p.put("gender", FunctionLib.getString(obj[12]));
+				p.put("displayName", FunctionLib.getString(obj[13]));
+				p.put("isLock", FunctionLib.getString(obj[14]));
 				recordsList.add(new User(p));
 			}
 			it = null;
@@ -184,15 +183,14 @@ public class User {
 				prop = new HashMap<String, String>();
 				prop.put("id", FunctionLib.getString(obj[0]));
 				prop.put("depaId", FunctionLib.getString(obj[6]));
-				prop.put("superiorId", FunctionLib.getDateString(obj[7]));
-				prop.put("managerId", FunctionLib.getString(obj[8]));
-				prop.put("userName", FunctionLib.getString(obj[9]));
-				prop.put("email", FunctionLib.getString(obj[10]));
-				prop.put("phone", FunctionLib.getString(obj[11]));
-				prop.put("mobilePhone", FunctionLib.getString(obj[12]));
-				prop.put("gender", FunctionLib.getString(obj[13]));
-				prop.put("displayName", FunctionLib.getString(obj[14]));
-				prop.put("isLock", FunctionLib.getString(obj[15]));
+				prop.put("jobId", FunctionLib.getDateString(obj[7]));
+				prop.put("userName", FunctionLib.getString(obj[8]));
+				prop.put("email", FunctionLib.getString(obj[9]));
+				prop.put("phone", FunctionLib.getString(obj[10]));
+				prop.put("mobilePhone", FunctionLib.getString(obj[11]));
+				prop.put("gender", FunctionLib.getString(obj[12]));
+				prop.put("displayName", FunctionLib.getString(obj[13]));
+				prop.put("isLock", FunctionLib.getString(obj[14]));
 			}
 			it = null;
 			
@@ -223,8 +221,7 @@ public class User {
 			Query query = getSession().getNamedQuery("core.user.newrecord");
 			query.setParameter("cId",0);
 			query.setParameter("depaId", prop.get("depaId"));
-			query.setParameter("superiorId", prop.get("superiorId"));
-			query.setParameter("managerId", prop.get("managerId"));
+			query.setParameter("jobId", prop.get("jobId"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
@@ -288,8 +285,7 @@ public class User {
 			Query query = getSession().getNamedQuery("core.user.updaterecordbyid");
 			query.setParameter("mId", 0);
 			query.setParameter("depaId", prop.get("depaId"));
-			query.setParameter("superiorId", prop.get("superiorId"));
-			query.setParameter("managerId", prop.get("managerId"));
+			query.setParameter("jobId", prop.get("jobId"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
