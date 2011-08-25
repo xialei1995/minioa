@@ -38,6 +38,16 @@
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>Job</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Job</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>JobTree</managed-bean-name>
+		<managed-bean-class>org.minioa.core.JobTree</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>User</managed-bean-name>
 		<managed-bean-class>org.minioa.core.User</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>

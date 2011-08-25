@@ -1,44 +1,32 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>MiniOA</title>
-		<link rel="stylesheet" type="text/css" href="style.css" />
-		<script type="text/javascript" src="ddaccordion.js">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MiniOA</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<script type="text/javascript" src="ddaccordion.js">
+	
 </script>
-		<script type="text/javascript" src="main.js">
+<script type="text/javascript" src="main.js">
+	
 </script>
-		<script language="javascript" type="text/javascript"
-			src="niceforms.js">
+<script language="javascript" type="text/javascript" src="niceforms.js">
+	
 </script>
-		<link rel="stylesheet" type="text/css" media="all"
-			href="niceforms-default.css" />
-	</head>
-	<body>
-		<h:outputText value="#{MySession.l}" style="display:none;"/>
-		<div id="main_container">
-			<ui:include src="header.xhtml" />
-			<div class="main_content">
-				<ui:include src="topmenu.xhtml" />
-				<div class="center_content">
-					<ui:include src="leftcontent.xhtml" />
-					<div class="right_content">
-						<h2>
-							<ui:insert name="title">Title</ui:insert>
-						</h2>
-						<ui:insert name="body">Body</ui:insert>
-					</div>
-				</div>
-			<!--end of center content -->
-			<div class="clear"></div>
-		</div>
-		<!--end of main content-->
-		<ui:include src="footer.xhtml" />
-	</div>
-	</body>
+<link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
+</head>
+<body>
+<h:outputText value="#{MySession.l}" style="display:none;" />
+<div id="main_container"><ui:include src="header.xhtml" />
+<div class="main_content"><ui:include src="topmenu.xhtml" />
+<div class="center_content"><ui:include src="leftcontent.xhtml" />
+<div class="right_content">
+<h2><ui:insert name="title">Title</ui:insert></h2>
+<ui:insert name="body">Body</ui:insert></div>
+</div>
+<!--end of center content -->
+<div class="clear"></div>
+</div>
+<!--end of main content--> <ui:include src="footer.xhtml" /></div>
+</body>
 </html>

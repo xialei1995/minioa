@@ -15,5 +15,7 @@
 
 		<mapping resource="mysql/core_org.hbm.xml" />
 		<mapping resource="mysql/core_department.hbm.xml" />
+		<mapping resource="mysql/core_user.hbm.xml" />
+		<mapping resource="mysql/core_job.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

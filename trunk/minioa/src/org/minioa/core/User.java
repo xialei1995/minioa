@@ -191,10 +191,14 @@ public class User {
 				prop.put("gender", FunctionLib.getString(obj[12]));
 				prop.put("displayName", FunctionLib.getString(obj[13]));
 				prop.put("isLock", FunctionLib.getString(obj[14]));
+				//
+				getMySession().getTempInt().put("Department.id", FunctionLib.getInt(obj[6]));
+				getMySession().getTempStr().put("Department.depaName", "");
+				getMySession().getTempInt().put("Job.id", FunctionLib.getInt(obj[7]));
+				getMySession().getTempStr().put("Job.depaName", "");
 			}
 			it = null;
-			
-			
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -202,26 +206,30 @@ public class User {
 
 	public void newRecord() {
 		try {
-			if(!FunctionLib.isEmail(prop.get("email"))){
+			getMySession();
+			if (!FunctionLib.isEmail(prop.get("email"))) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("emailcheckerror");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
-			if("".equals(prop.get("userName"))){
+			if ("".equals(prop.get("userName"))) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
-			if(isUserExists(prop.get("userName"))){
+			if (isUserExists(prop.get("userName"))) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("usernamehasbeanexists");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
-			
+			if(null == mySession.getTempInt().get("Department.id")
+					|| null == mySession.getTempInt().get("Job.id")){
+				return ;
+			}
 			Query query = getSession().getNamedQuery("core.user.newrecord");
-			query.setParameter("cId",0);
-			query.setParameter("depaId", prop.get("depaId"));
-			query.setParameter("jobId", prop.get("jobId"));
+			query.setParameter("cId", 0);
+			query.setParameter("depaId", mySession.getTempStr().get("Department.id"));
+			query.setParameter("jobId", mySession.getTempStr().get("Job.id"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
@@ -241,51 +249,59 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
-	
-	public boolean isUserExists(String userName){
-		try
-		{	
-			if(Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname", "userName", userName, "float")) == 0)
+
+	public boolean isUserExists(String userName) {
+		try {
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname", "userName", userName, "float")) == 0)
 				return false;
-		}catch(Exception ex){ex.printStackTrace();}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return true;
 	}
-	public boolean isUserExists(String userName,String id){
-		try
-		{	
-			if(Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname.byid", "userName", userName,"id",id, "float")) == 0)
+
+	public boolean isUserExists(String userName, String id) {
+		try {
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname.byid", "userName", userName, "id", id, "float")) == 0)
 				return false;
-		}catch(Exception ex){ex.printStackTrace();}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return true;
 	}
-	
+
 	public void updateRecordById() {
 		try {
+			getMySession();
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if(!FunctionLib.isNum(id))
-				return ;
+			if (!FunctionLib.isNum(id))
+				return;
 
-			if(!FunctionLib.isEmail(prop.get("email"))){
+			if (!FunctionLib.isEmail(prop.get("email"))) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("emailcheckerror");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
-			if("".equals(prop.get("userName"))){
+			if ("".equals(prop.get("userName"))) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
-			if(isUserExists(prop.get("userName"),id)){
+			if (isUserExists(prop.get("userName"), id)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("usernamehasbeanexists");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
+			if(null == mySession.getTempInt().get("Department.id")
+					|| null == mySession.getTempInt().get("Job.id")){
+				return ;
+			}
 
 			Query query = getSession().getNamedQuery("core.user.updaterecordbyid");
 			query.setParameter("mId", 0);
-			query.setParameter("depaId", prop.get("depaId"));
-			query.setParameter("jobId", prop.get("jobId"));
+			query.setParameter("depaId", mySession.getTempStr().get("Department.id"));
+			query.setParameter("jobId", mySession.getTempStr().get("Job.id"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));

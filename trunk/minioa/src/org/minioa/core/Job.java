@@ -19,9 +19,9 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
-public class Department {
+public class Job {
 	/**
-	 * orgId单位id,parentId上级部门id,depaName 部门名称 depaDesc 部门描述
+	 * orgId单位id,parentId上级部门id,jobName 岗位名称 jobDesc 岗位描述
 	 */
 	private int key, level;
 	private StringBuffer bf;
@@ -100,23 +100,32 @@ public class Department {
 		return init;
 	}
 
-	private int orgId, parentId,sequence;
-	private String orgName, parentName, depaName, depaDesc;
+	private int orgId, parentId, sequence;
+	private String orgName, parentName, jobName, jobDesc;
+	private boolean isManager;
 
-	public void setDepaName(String data) {
-		depaName = data;
+	public void setIsManager(boolean data) {
+		isManager = data;
 	}
 
-	public String getDepaName() {
-		return depaName;
+	public boolean getIsManager() {
+		return isManager;
 	}
 
-	public void setDepaDesc(String data) {
-		depaDesc = data;
+	public void setJobName(String data) {
+		jobName = data;
 	}
 
-	public String getDepaDesc() {
-		return depaDesc;
+	public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobDesc(String data) {
+		jobDesc = data;
+	}
+
+	public String getJobDesc() {
+		return jobDesc;
 	}
 
 	public void setOrgName(String data) {
@@ -150,6 +159,7 @@ public class Department {
 	public int getParentId() {
 		return parentId;
 	}
+
 	public void setSequence(int data) {
 		sequence = data;
 	}
@@ -157,10 +167,10 @@ public class Department {
 	public int getSequence() {
 		return sequence;
 	}
-	
-	private List<Department> recordsList;
 
-	public List<Department> getRecordsList() {
+	private List<Job> recordsList;
+
+	public List<Job> getRecordsList() {
 		if (recordsList == null)
 			buildRecordsList();
 		return recordsList;
@@ -193,6 +203,7 @@ public class Department {
 	}
 
 	private String type;
+
 	public void setType(String data) {
 		type = data;
 	}
@@ -200,27 +211,28 @@ public class Department {
 	public String getType() {
 		return type;
 	}
-	
-	
-	public Department() {
+
+	public Job() {
 	}
 
-	public Department(int i) {
+	public Job(int i) {
 		setID_(i);
 	}
-	public Department(String type,int i,String name) {
+
+	public Job(String type, int i, String name) {
 		setType(type);
 		setID_(i);
-		setDepaName(name);
+		setJobName(name);
 	}
-	public Department(int org, int parent, int id, String oName, String pName, String name, String desc) {
+
+	public Job(int org, int parent, int id, String oName, String pName, String name, String desc) {
 		setOrgId(org);
 		setParentId(parent);
 		setID_(id);
 		setOrgName(oName);
 		setParentName(pName);
-		setDepaName(name);
-		setDepaDesc(desc);
+		setJobName(name);
+		setJobDesc(desc);
 	}
 
 	/**
@@ -235,7 +247,7 @@ public class Department {
 	 * @param name
 	 * @param desc
 	 */
-	public Department(int id, int cId, String cDate, int mId, String mDate, String uuid, int org, int parent, String name, String desc,int seq) {
+	public Job(int id, int cId, String cDate, int mId, String mDate, String uuid, int org, int parent, String name, String desc, int seq, boolean manager) {
 		setID_(id);
 		setCID_(cId);
 		setCDATE(cDate);
@@ -244,9 +256,10 @@ public class Department {
 		setUUID_(uuid);
 		setOrgId(org);
 		setParentId(parent);
-		setDepaName(name);
-		setDepaDesc(desc);
+		setJobName(name);
+		setJobDesc(desc);
 		setSequence(seq);
+		setIsManager(manager);
 	}
 
 	/**
@@ -257,7 +270,8 @@ public class Department {
 		CDATE = MDATE = UUID_ = "";
 		CDATE_ = MDATE_ = null;
 		orgId = parentId = 0;
-		orgName = parentName = depaName = depaDesc = "";
+		orgName = parentName = jobName = jobDesc = "";
+		isManager = false;
 	}
 
 	/**
@@ -266,23 +280,24 @@ public class Department {
 	public void buildRecordsList() {
 		try {
 			getMySession();
-			recordsList = new ArrayList<Department>();
+			recordsList = new ArrayList<Job>();
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
-				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Department.rowcount")) {
-					for (int i = 0; i < mySession.getTempInt().get("Department.rowcount"); i++)
-						recordsList.add(new Department(i));
+				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Job.rowcount")) {
+					for (int i = 0; i < mySession.getTempInt().get("Job.rowcount"); i++)
+						recordsList.add(new Job(i));
 					return;
 				}
 			}
 
-			Query query = getSession().getNamedQuery("core.department.records");
+			Query query = getSession().getNamedQuery("core.job.records");
 			Iterator it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
-			int org, parent,seq;
+			int org, parent, seq;
 			String name, desc;
+			boolean manager;
 			int rowcount = 0;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
@@ -291,6 +306,7 @@ public class Department {
 				cDate_ = mDate_ = null;
 				org = parent = seq = 0;
 				name = desc = "";
+				manager = false;
 				// 读取obj数据时，一定要确保obj不能为null
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
@@ -320,12 +336,14 @@ public class Department {
 					desc = String.valueOf(obj[9]);
 				if (obj[10] != null)
 					seq = Integer.valueOf(String.valueOf(obj[10]));
-				recordsList.add(new Department(id, cId, cDate, mId, mDate, uuid, org, parent, name, desc,seq));
+				if (obj[11] != null)
+					manager = FunctionLib.getBoolean(obj[11]);
+				recordsList.add(new Job(id, cId, cDate, mId, mDate, uuid, org, parent, name, desc, seq, manager));
 				rowcount++;
 			}
 			it = null;
 
-			mySession.getTempInt().put("Department.rowcount", rowcount);
+			mySession.getTempInt().put("Job.rowcount", rowcount);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -343,9 +361,10 @@ public class Department {
 			ex.printStackTrace();
 		}
 	}
+
 	public void selectRecordById(String id) {
 		try {
-			Query query = getSession().getNamedQuery("core.department.getrecordbyid");
+			Query query = getSession().getNamedQuery("core.job.getrecordbyid");
 			query.setParameter("id", id);
 			Iterator it = query.list().iterator();
 			while (it.hasNext()) {
@@ -374,17 +393,20 @@ public class Department {
 				if (obj[7] != null)
 					parentId = Integer.valueOf(String.valueOf(obj[7]));
 				if (obj[8] != null)
-					depaName = String.valueOf(obj[8]);
+					jobName = String.valueOf(obj[8]);
 				if (obj[9] != null)
-					depaDesc = String.valueOf(obj[9]);
+					jobDesc = String.valueOf(obj[9]);
 				if (obj[10] != null)
 					sequence = Integer.valueOf(String.valueOf(obj[10]));
+				if (obj[11] != null)
+					isManager = FunctionLib.getBoolean(obj[11]);
 			}
 			it = null;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
+
 	/**
 	 * 新增一条记录，注意这里没有使用到insert语句，这是hibernate的特点
 	 */
@@ -395,17 +417,18 @@ public class Department {
 			String parentId = (String) params.get("parentId");
 			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId))
 				return;
-			if ("".equals(depaName)) {
+			if ("".equals(jobName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
 				getMySession().setMsg(msg, Integer.valueOf(2));
 				return;
 			}
-			Department bean = new Department();
+			Job bean = new Job();
 			bean.setOrgId(Integer.valueOf(orgId));
 			bean.setParentId(Integer.valueOf(parentId));
-			bean.setDepaName(depaName);
-			bean.setDepaDesc(depaDesc);
+			bean.setJobName(jobName);
+			bean.setJobDesc(jobDesc);
 			bean.setSequence(sequence);
+			bean.setIsManager(isManager);
 			bean.setCID_(0);
 			bean.setCDATE_(new java.util.Date());
 			getSession().save(bean);
@@ -432,16 +455,17 @@ public class Department {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
 				return;
-			if ("".equals(depaName)) {
+			if ("".equals(jobName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
 				getMySession().setMsg(msg, Integer.valueOf(2));
 				return;
 			}
-			Query query = getSession().getNamedQuery("core.department.updaterecordbyid");
+			Query query = getSession().getNamedQuery("core.job.updaterecordbyid");
 			query.setParameter("mId", 0);
-			query.setParameter("depaName", depaName);
-			query.setParameter("depaDesc", depaDesc);
+			query.setParameter("jobName", jobName);
+			query.setParameter("jobDesc", jobDesc);
 			query.setParameter("sequence", sequence);
+			query.setParameter("isManager", isManager);
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -465,7 +489,7 @@ public class Department {
 			System.out.println("id:" + id);
 			if (!FunctionLib.isNum(id))
 				return;
-			Query query = getSession().getNamedQuery("core.department.deleterecordbyid");
+			Query query = getSession().getNamedQuery("core.job.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -486,16 +510,16 @@ public class Department {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
 				return;
-			getMySession().getTempStr().put("Department.move.id", id);
+			getMySession().getTempStr().put("Job.move.id", id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void showDialog() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			getMySession().getTempStr().put("Department.id", (String) params.get("id"));
+			getMySession().getTempStr().put("Job.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -523,7 +547,7 @@ public class Department {
 	@SuppressWarnings("unchecked")
 	public void addNodes(TreeNode node, int orgId, int parentId, String oName, String pName) {
 		try {
-			Query query = getSession().getNamedQuery("core.department.getchildren");
+			Query query = getSession().getNamedQuery("core.job.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
 			Iterator it = query.list().iterator();
@@ -541,7 +565,7 @@ public class Department {
 					desc = String.valueOf(obj[2]);
 				@SuppressWarnings("rawtypes")
 				TreeNodeImpl nodeImpl = new TreeNodeImpl();
-				nodeImpl.setData(new Department(orgId, id, id, oName, pName, name, desc));
+				nodeImpl.setData(new Job(orgId, id, id, oName, pName, name, desc));
 				node.addChild(key, nodeImpl);
 				key++;
 				if (hasChild(orgId, id))
@@ -559,12 +583,12 @@ public class Department {
 
 			Query query = getSession().getNamedQuery("core.org.records");
 			Iterator it = query.list().iterator();
-			int id;
+			int id, seq;
 			String name, desc;
 			key = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
-				id = 0;
+				id = seq = 0;
 				name = desc = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
@@ -573,7 +597,7 @@ public class Department {
 				if (obj[7] != null)
 					desc = String.valueOf(obj[7]);
 				TreeNodeImpl nodeImpl = new TreeNodeImpl();
-				nodeImpl.setData(new Department(id, 0, 0, name, name, name, desc));
+				nodeImpl.setData(new Job(id, 0, 0, name, name, name, desc));
 				rootNode.addChild(key, nodeImpl);
 				key++;
 				addNodes(nodeImpl, id, 0, name, name);
@@ -588,7 +612,7 @@ public class Department {
 
 	public boolean hasChild(int orgId, int parentId) {
 		try {
-			Query query = getSession().getNamedQuery("core.department.haschildren");
+			Query query = getSession().getNamedQuery("core.job.haschildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
 			if ("0".equals(String.valueOf(query.list().get(0))))
@@ -604,22 +628,22 @@ public class Department {
 	public void processSelection(NodeSelectedEvent event) {
 		try {
 			HtmlTree tree = (HtmlTree) event.getComponent();
-			Department bean = (Department) tree.getRowData();
+			Job bean = (Job) tree.getRowData();
 			ID_ = bean.getID_();
 			selectRecordById(String.valueOf(ID_));
 			orgId = bean.getOrgId();
 			parentId = bean.getParentId();
 			orgName = bean.getOrgName();
 			parentName = bean.getParentName();
-			if(FunctionLib.isNum(getMySession().getTempStr().get("Department.move.id"))){
-				Query query = getSession().getNamedQuery("core.department.moverecordbyid");
+			if (FunctionLib.isNum(getMySession().getTempStr().get("Job.move.id"))) {
+				Query query = getSession().getNamedQuery("core.job.moverecordbyid");
 				query.setParameter("mId", 0);
 				query.setParameter("orgId", orgId);
 				query.setParameter("parentId", ID_);
-				query.setParameter("id", getMySession().getTempStr().get("Department.move.id"));
+				query.setParameter("id", getMySession().getTempStr().get("Job.move.id"));
 				query.executeUpdate();
 				query = null;
-				getMySession().getTempStr().put("Department.move.id", "");
+				getMySession().getTempStr().put("Job.move.id", "");
 				FunctionLib.refresh();
 			}
 		} catch (Exception ex) {
@@ -654,7 +678,7 @@ public class Department {
 			}
 			it = null;
 
-			String filename = FunctionLib.getBaseDir() + "department.properties";
+			String filename = FunctionLib.getBaseDir() + "job.properties";
 			File f = new File(filename);
 			if (f.exists())
 				f.delete();
@@ -674,7 +698,7 @@ public class Department {
 	public void addChildren(String parentKey, int orgId, int parentId, String oName, String pName) {
 		try {
 			level++;
-			Query query = getSession().getNamedQuery("core.department.getchildren");
+			Query query = getSession().getNamedQuery("core.job.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
 			Iterator it = query.list().iterator();
@@ -691,8 +715,8 @@ public class Department {
 					name = String.valueOf(obj[1]);
 				if (obj[2] != null)
 					desc = String.valueOf(obj[2]);
-				bf.append(parentKey + "." + i + "=depa," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
-				
+				bf.append(parentKey + "." + i + "=job," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
+
 				if (hasChild(orgId, id))
 					addChildren(parentKey + "." + i, orgId, id, oName, name);
 				i++;
