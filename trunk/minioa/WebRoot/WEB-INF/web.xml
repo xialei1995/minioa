@@ -6,6 +6,10 @@
 	<description>www.minioa.net</description>
 	<display-name>MiniOA</display-name>
 	<context-param>
+		<param-name>webAppName</param-name>
+		<param-value>WebRoot</param-value>
+	</context-param>
+	<context-param>
 		<param-name>baseDir</param-name>
 		<param-value>F:\minioa\src\minioa\WebRoot</param-value>
 	</context-param>

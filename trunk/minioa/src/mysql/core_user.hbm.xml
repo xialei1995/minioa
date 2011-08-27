@@ -12,8 +12,9 @@
 	<sql-query name="core.user.records">
     <![CDATA[
         select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
-        	ta.depaId,ta.jobId,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock
+        	ta.depaId,ta.jobId,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock,tb.depaName
         from core_user ta
+        left join core_department tb on tb.ID_ = ta.depaId
     ]]>
 	</sql-query>
 	<sql-query name="core.user.records.count">
@@ -23,9 +24,22 @@
 	</sql-query>
 	<sql-query name="core.user.getrecordbyid">
     <![CDATA[
-        select ID_,CID_,CDATE_,MID_,MDATE_,UUID_,
-        	depaId,jobId,userName,email,phone,mobilePhone,gender,displayName,isLock
-        from core_user where ID_ = :id
+        select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
+        	ta.depaId,ta.jobId,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock,tb.depaName,tc.jobName
+        from core_user ta
+        left join core_department tb on tb.ID_ = ta.depaId
+        left join core_job tc on tc.ID_ = ta.jobId
+        where ta.ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.getrecordbyusername">
+    <![CDATA[
+        select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
+        	ta.depaId,ta.jobId,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock,tb.depaName,tc.jobName
+        from core_user ta
+        left join core_department tb on tb.ID_ = ta.depaId
+        left join core_job tc on tc.ID_ = ta.jobId
+        where ta.userName = :userName and ta.password = md5(:password)
     ]]>
 	</sql-query>
 	<sql-query name="core.user.isuserexistbyname">
@@ -59,6 +73,12 @@
 	<sql-query name="core.user.deleterecordbyid">
     <![CDATA[
         delete from core_user where ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.login">
+    <![CDATA[
+        select count(*) as tmp
+        from core_user where userName = :userName and password = md5(:password)
     ]]>
 	</sql-query>
 </hibernate-mapping>

@@ -6,6 +6,15 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 public class MySession {
+	
+	public Lang lang;
+
+	public Lang getLang() {
+		if (lang == null)
+			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		return lang;
+	}
+	
 	// ÏûÏ¢
 	public String msg;
 	public int msgType;
@@ -45,7 +54,23 @@ public class MySession {
 	}
 
 	public String getTemplateName() {
+		if (null == templateName || "".equals(templateName))
+			templateName = "default";
 		return templateName;
+	}
+
+	private String searchKeyWords;
+
+	public void setSearchKeyWords(String data) {
+		searchKeyWords = data;
+	}
+
+	public String getSearchKeyWords() {
+		if (null == searchKeyWords || "".equals(searchKeyWords)){
+			if(null!=getLang())
+				searchKeyWords = getLang().getProp().get(this.getL()).get("searchkeywords");
+		}
+		return searchKeyWords;
 	}
 
 	/**
@@ -111,13 +136,8 @@ public class MySession {
 	}
 
 	public String getIsLogin() {
-		if (isLogin == null || !isLogin.equals("true")) {
-			try {
-				isLogin = "<script language=\"javascript\">window.parent.location.href = '../../templates/" + getTemplateName() + "/Login.jsf';</script>";
-			} catch (Exception ex) {
-				;
-			}
-		}
+		if (isLogin == null || !isLogin.equals("true"))
+			isLogin = "<script language=\"javascript\">window.location.href = 'login.jsf';</script>";
 		return isLogin;
 	}
 
@@ -181,14 +201,14 @@ public class MySession {
 		return superior;
 	}
 
-	public String manager;
+	public String depaName;
 
-	public void setManager(String data) {
-		manager = data;
+	public void setDepaName(String data) {
+		depaName = data;
 	}
 
-	public String getManager() {
-		return manager;
+	public String getDepaName() {
+		return depaName;
 	}
 
 	public String ip;

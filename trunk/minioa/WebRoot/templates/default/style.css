@@ -1,14 +1,22 @@
+a:link {
+	text-decoration: none;
+}
+
 .co1 {
 	text-align: right;
+	verticle-align: top;
+	white-space:nowrap;
 }
 
 .co2 {
 	text-align: left;
+	verticle-align: top;
 }
 
 .co3 {
 	text-align: left;
 	color: red;
+	verticle-align: top;
 }
 
 .tdNormal {
@@ -20,18 +28,26 @@
 }
 
 .btn {
-	padding: 5px;
-	padding-right: 3px;
+	padding: 4px 0 4px 4px;
 	background-image: url(images/menu_bg.gif);
 	font-weight: bold;
 	color: white;
 	letter-spacing: 3px;
 }
 
-.rich-tab-header{
+.rich-tab-header {
 	background-image: url(images/menu_bg.gif);
-	border:1px solid #5FC7F1;
+	border: 1px solid #5FC7F1;
 	color: white;
+}
+
+.rich-stglpanel-header {
+	background-image: url(images/menu_bg.gif);
+	color: white;
+}
+
+.rich-stglpnl-marker {
+	display: none;
 }
 
 .note {
@@ -42,11 +58,16 @@
 
 input[type=text] {
 	border: 1px dotted #D5D8DC;
-	font-size:9pt;
+	font-size: 9pt;
+	height:18px;
+	margin:0 3px 0 3px;
 }
+
 input[type=password] {
 	border: 1px dotted #D5D8DC;
-	font-size:9pt;
+	font-size: 9pt;
+	height:18px;
+	margin:0 3px 0 3px;
 }
 
 .fieldset {
@@ -55,6 +76,11 @@ input[type=password] {
 
 .fieldset legend {
 	font-weight: bold;
+}
+
+#searchForm {
+	padding:8px 0 8px 0;
+	verticle-align:bottom;
 }
 
 body {
@@ -139,6 +165,14 @@ a.forgot_pass {
 
 .right_header {
 	width: 350px;
+	float: right;
+	text-align: right;
+	color: #FFFFFF;
+	padding: 18px 0 0 0;
+}
+
+.right_header_logout {
+	width: 40px;
 	float: right;
 	text-align: right;
 	color: #FFFFFF;
@@ -536,7 +570,7 @@ a.forgot_pass {
 input.search_input {
 	width: 155px;
 	height: 16px;
-	margin: 5px 0 0 5px;
+	margin: 2px 0 0 5px;
 	border: 1px #bdebfd solid;
 	background: #92dbf8;
 	padding: 4px 0 0 2px;

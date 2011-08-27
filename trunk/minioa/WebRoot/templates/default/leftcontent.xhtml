@@ -8,11 +8,15 @@
 	<ui:composition>
 		<div class="left_content">
 			<div class="sidebar_search">
-				<form>
-					<input type="text" name="" class="search_input"
-						value="search keyword" onclick="this.value=''" />
-					<input type="image" class="search_submit" src="images/search.png" />
-				</form>
+				<a4j:form>
+					<h:panelGrid columns="2" columnClasses="co1,co2">
+						<h:inputText value="#{MySession.searchKeyWords}" onclick="this.value=''" class="search_input"/>
+						<a4j:commandLink styleClass="search_submit">
+							<h:graphicImage title="#{Lang.prop[MySession.l]['search']}" style="border:0px;width:16px;margin-right:6px;" url="images/search.png">
+							</h:graphicImage>
+						</a4j:commandLink>
+					</h:panelGrid>
+				</a4j:form>
 			</div>
 			<div class="sidebarmenu">
 				<a class="menuitem submenuheader" href="">我的桌面</a>

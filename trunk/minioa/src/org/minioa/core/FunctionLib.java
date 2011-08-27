@@ -12,7 +12,7 @@ public class FunctionLib {
 
 	public static String dbType = "mysql";
 
-	public static String baseDir, separator;
+	public static String baseDir, separator,webAppName;
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -34,7 +34,11 @@ public class FunctionLib {
 			baseDir = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("baseDir") + getSeparator();
 		return baseDir;
 	}
-
+	public static String getWebAppName() {
+		if (webAppName == null)
+			webAppName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("webAppName");
+		return webAppName;
+	}
 	public static boolean isNum(String str) {
 		if (str == null)
 			return false;
@@ -158,6 +162,16 @@ public class FunctionLib {
 			HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 			// System.out.println(context.getExternalContext().getRequestHeaderMap());
 			response.sendRedirect("http://" + context.getExternalContext().getRequestHeaderMap().get("host") + "/" + page);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	public static void redirect(String templateName,String page) {
+		try {
+			if("".equals(getWebAppName()))
+				redirect("templates/" + templateName + "/" + page);
+			else
+				redirect(getWebAppName() + "/templates/" + templateName + "/" + page);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

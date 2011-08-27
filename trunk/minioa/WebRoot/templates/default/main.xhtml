@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
 </head>
 <body>
+<h:outputText value="#{MySession.templateName}" style="display:none;" />
+<h:outputText escape="false" value="#{MySession.isLogin}" style="display:none;" />
 <h:outputText value="#{MySession.l}" style="display:none;" />
 <div id="main_container"><ui:include src="header.xhtml" />
 <div class="main_content"><ui:include src="topmenu.xhtml" />

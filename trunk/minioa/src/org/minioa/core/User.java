@@ -82,20 +82,26 @@ public class User {
 			getMySession();
 			dsList = new ArrayList<Integer>();
 
-			String key = "";
+			String key = "",key2 = "";
 			if (mySession.getTempStr() != null) {
 				if (mySession.getTempStr().get("User.key") != null)
 					key = mySession.getTempStr().get("User.key").toString();
+				if (mySession.getTempStr().get("User.key2") != null)
+					key2 = mySession.getTempStr().get("User.key2").toString();
 			}
 
 			String sql = getSession().getNamedQuery("core.user.records.count").getQueryString();
 			String where = " where 1=1";
 			if (!key.equals(""))
-				where += " and (ta.username like :key)";
+				where += " and ta.username like :key";
+			if (!key2.equals(""))
+				where += " and ta.displayName like :key2";
 			Query query = getSession().createSQLQuery(sql + where);
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
-
+			if (!key2.equals(""))
+				query.setParameter("key2", "%" + key2+ "%");
+			
 			int i = 0;
 			int dc = Integer.valueOf(String.valueOf(query.list().get(0)));
 			while (i < dc) {
@@ -124,10 +130,12 @@ public class User {
 			if ("true".equals((String) params.get("resetPageNo")))
 				mySession.setScrollerPage(1);
 
-			String key = "";
+			String key = "",key2 = "";
 			if (mySession.getTempStr() != null) {
 				if (mySession.getTempStr().get("User.key") != null)
 					key = mySession.getTempStr().get("User.key").toString();
+				if (mySession.getTempStr().get("User.key2") != null)
+					key2 = mySession.getTempStr().get("User.key2").toString();
 			}
 
 			String sql = getSession().getNamedQuery("core.user.records").getQueryString();
@@ -135,13 +143,17 @@ public class User {
 			String other = " order by ta.userName desc limit :limit offset :offset";
 
 			if (!key.equals(""))
-				where += " and (n.title like :key or n.content like :key)";
+				where += " and ta.userName like :key";
+			if (!key2.equals(""))
+				where += " and ta.displayName like :key2";
 			Query query = getSession().createSQLQuery(sql + where + other);
 			query.setParameter("limit", mySession.getPageSize());
 			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
 
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
+			if (!key2.equals(""))
+				query.setParameter("key2", "%" + key2+ "%");
 
 			Iterator it = query.list().iterator();
 			Map<String, String> p;
@@ -150,7 +162,7 @@ public class User {
 				p = new HashMap<String, String>();
 				p.put("id", FunctionLib.getString(obj[0]));
 				p.put("depaId", FunctionLib.getString(obj[6]));
-				p.put("jobId", FunctionLib.getDateString(obj[7]));
+				p.put("jobId", FunctionLib.getString(obj[7]));
 				p.put("userName", FunctionLib.getString(obj[8]));
 				p.put("email", FunctionLib.getString(obj[9]));
 				p.put("phone", FunctionLib.getString(obj[10]));
@@ -158,6 +170,7 @@ public class User {
 				p.put("gender", FunctionLib.getString(obj[12]));
 				p.put("displayName", FunctionLib.getString(obj[13]));
 				p.put("isLock", FunctionLib.getString(obj[14]));
+				p.put("depaName", FunctionLib.getString(obj[15]));
 				recordsList.add(new User(p));
 			}
 			it = null;
@@ -183,7 +196,7 @@ public class User {
 				prop = new HashMap<String, String>();
 				prop.put("id", FunctionLib.getString(obj[0]));
 				prop.put("depaId", FunctionLib.getString(obj[6]));
-				prop.put("jobId", FunctionLib.getDateString(obj[7]));
+				prop.put("jobId", FunctionLib.getString(obj[7]));
 				prop.put("userName", FunctionLib.getString(obj[8]));
 				prop.put("email", FunctionLib.getString(obj[9]));
 				prop.put("phone", FunctionLib.getString(obj[10]));
@@ -193,9 +206,9 @@ public class User {
 				prop.put("isLock", FunctionLib.getString(obj[14]));
 				//
 				getMySession().getTempInt().put("Department.id", FunctionLib.getInt(obj[6]));
-				getMySession().getTempStr().put("Department.depaName", "");
+				getMySession().getTempStr().put("Department.depaName", FunctionLib.getString(obj[15]));
 				getMySession().getTempInt().put("Job.id", FunctionLib.getInt(obj[7]));
-				getMySession().getTempStr().put("Job.depaName", "");
+				getMySession().getTempStr().put("Job.jobName", FunctionLib.getString(obj[16]));
 			}
 			it = null;
 
@@ -228,8 +241,8 @@ public class User {
 			}
 			Query query = getSession().getNamedQuery("core.user.newrecord");
 			query.setParameter("cId", 0);
-			query.setParameter("depaId", mySession.getTempStr().get("Department.id"));
-			query.setParameter("jobId", mySession.getTempStr().get("Job.id"));
+			query.setParameter("depaId", mySession.getTempInt().get("Department.id"));
+			query.setParameter("jobId", mySession.getTempInt().get("Job.id"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
@@ -297,11 +310,10 @@ public class User {
 					|| null == mySession.getTempInt().get("Job.id")){
 				return ;
 			}
-
 			Query query = getSession().getNamedQuery("core.user.updaterecordbyid");
 			query.setParameter("mId", 0);
-			query.setParameter("depaId", mySession.getTempStr().get("Department.id"));
-			query.setParameter("jobId", mySession.getTempStr().get("Job.id"));
+			query.setParameter("depaId", mySession.getTempInt().get("Department.id"));
+			query.setParameter("jobId", mySession.getTempInt().get("Job.id"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
@@ -351,5 +363,59 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
-
+	
+	public void login(){
+		try {
+			String name = prop.get("userName");
+			String pwd = prop.get("password");
+			
+			if("".equals(name) || "".equals(pwd)){
+				String msg = getLang().getProp().get(getMySession().getL()).get("usernameorpasswordnoempty");
+				getMySession().setMsg(msg, Integer.valueOf(2));
+				return;
+			}
+			Query query = getSession().getNamedQuery("core.user.login");
+			query.setParameter("userName", name);
+			query.setParameter("password", pwd);
+			if("1".equals(String.valueOf(query.list().get(0)))){
+				query = getSession().getNamedQuery("core.user.getrecordbyusername");
+				query.setParameter("userName", name);
+				query.setParameter("password", pwd);
+				Iterator it = query.list().iterator();
+				while (it.hasNext()) {
+					Object obj[] = (Object[]) it.next();
+					if("1".equals(FunctionLib.getString(obj[14]))){
+						String msg = getLang().getProp().get(getMySession().getL()).get("userhasbeenlocked");
+						getMySession().setMsg(msg, Integer.valueOf(2));
+						return;
+					}
+					
+					getMySession().setDepaName(FunctionLib.getString(obj[15]));
+					getMySession().setEmail(FunctionLib.getString(obj[9]));
+					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+				}
+				it = null;
+				getMySession().setUserName(name);
+				getMySession().setIsLogin("true");
+				FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
+			}else{
+				String msg = getLang().getProp().get(getMySession().getL()).get("usernameorpasswordincorrect");
+				getMySession().setMsg(msg, Integer.valueOf(2));
+			}
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
+	public void logout(){
+		try {
+			FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("MySession");
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
 }

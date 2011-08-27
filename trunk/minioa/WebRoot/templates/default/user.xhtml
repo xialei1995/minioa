@@ -7,21 +7,31 @@
 	<ui:define name="body">
 		<rich:tabPanel id="tab" switchType="client" headerAlignment="left">
 			<rich:tab id="tab1" name="tab1" label="#{Lang.prop[MySession.l]['list']}">
-				<a4j:form id="searchForm" style="margin-top:3px;">
-					<fieldset class="fieldset" style="width: 267px;"><legend> #{Lang.prop[MySession.l]['search']} </legend> <a4j:commandLink action="#{User.buildRecordsList}" reRender="dataForm">
+				<a4j:form id="searchForm">
+					<h:outputText value="#{Lang.prop[MySession.l]['username']}:" />
+					<h:inputText id="key" value="#{MySession.tempStr['User.key']}" style="width:80px;" />
+					<h:outputText value="#{Lang.prop[MySession.l]['displayname']}:" />
+					<h:inputText id="key2" value="#{MySession.tempStr['User.key2']}" style="width:80px;" />
+					<a4j:commandLink action="#{User.buildRecordsList}" reRender="dataForm">
 						<h:outputText value="#{Lang.prop[MySession.l]['search']}" class="btn" />
-					</a4j:commandLink></fieldset>
+					</a4j:commandLink>
+					<a4j:commandLink style="margin-left:6px;" onclick="$('searchForm:key').value='';$('searchForm:key2').value='';return false;">
+						<h:outputText value="#{Lang.prop[MySession.l]['reset']}" class="btn" />
+					</a4j:commandLink>
 				</a4j:form>
 				<a4j:form id="dataForm" style="margin-top:3px;">
 
-					<rich:dataTable id="dataTable" rows="10" value="#{User.recordsList}" var="item" style="width:100%;" rowKeyVar="rowNum">
+					<rich:dataTable id="dataTable" rows="10" value="#{User.recordsList}" var="item" rowKeyVar="rowNum">
 						<f:facet name="header">
 							<rich:columnGroup>
 								<rich:column style="background: #60c8f2 url('images/left.jpg') left top no-repeat;">
 									<h:outputText value="" />
 								</rich:column>
 								<rich:column>
-									<h:outputText value="" />
+									<h:outputText value="#{Lang.prop[MySession.l]['operation']}" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{Lang.prop[MySession.l]['department']}" />
 								</rich:column>
 								<rich:column>
 									<h:outputText value="#{Lang.prop[MySession.l]['username']}" />
@@ -38,52 +48,50 @@
 								<rich:column>
 									<h:outputText value="#{Lang.prop[MySession.l]['mobilephone']}" />
 								</rich:column>
-								<rich:column>
-									<h:outputText value="#{Lang.prop[MySession.l]['islock']}" />
-								</rich:column>
 								<rich:column style="background: #60c8f2 url('images/right.jpg') right top no-repeat;">
-									<h:outputText value="Del" />
+									<h:outputText value="#{Lang.prop[MySession.l]['islock']}" />
 								</rich:column>
 							</rich:columnGroup>
 						</f:facet>
 						<rich:column style="text-align:center;width:21px;">
 							<h:outputText value="#{rowNum + 1}" />
 						</rich:column>
-						<rich:column style="text-align:center;width:21px;">
+						<rich:column style="text-align:center;white-space:nowrap;width:42px;">
 							<a4j:commandLink reRender="editPanel">
-								<h:graphicImage id="edit" onclick="RichFaces.switchTab('tab','tab2','tab2');" title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;" url="images/edit.png">
+								<h:graphicImage id="edit" onclick="RichFaces.switchTab('tab','tab2','tab2');" title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								</h:graphicImage>
+								<f:param name="id" value="#{item.prop['id']}" />
+								<f:param name="reload" value="false" />
+							</a4j:commandLink>
+							<a4j:commandLink action="#{User.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
+								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" style="border:0px;width:16px;" url="images/delete.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
 						</rich:column>
+						<rich:column style="width:136px;text-align:left;">
+							<h:outputText value="#{item.prop['depaName']}" />
+						</rich:column>
 						<rich:column style="width:100px;text-align:center;">
 							<h:outputText value="#{item.prop['userName']}" />
 						</rich:column>
-						<rich:column style="width:100px;text-align:center;">
+						<rich:column style="width:120px;text-align:center;">
 							<h:outputText value="#{item.prop['displayName']}" />
 						</rich:column>
-						<rich:column style="width:50px;text-align:center;">
+						<rich:column style="width:60px;text-align:center;">
 							<h:outputText value="#{Lang.prop[MySession.l]['male']}" rendered="#{item.prop['gender']=='1'}" />
 							<h:outputText value="#{Lang.prop[MySession.l]['female']}" rendered="#{item.prop['gender']=='0'}" />
 						</rich:column>
-						<rich:column style="width:200px;text-align:center;">
+						<rich:column style="width:160px;text-align:center;">
 							<h:outputText value="#{item.prop['email']}" />
 						</rich:column>
 						<rich:column style="width:100px;text-align:center;">
 							<h:outputText value="#{item.prop['mobilePhone']}" />
 						</rich:column>
-						<rich:column style="width:50px;text-align:center;">
+						<rich:column style="width:60px;text-align:center;">
 							<h:outputText value="#{Lang.prop[MySession.l]['yes']}" rendered="#{item.prop['isLock']=='1'}" />
 							<h:outputText value="#{Lang.prop[MySession.l]['no']}" rendered="#{item.prop['isLock']=='0'}" />
-						</rich:column>
-						<rich:column style="text-align:center;width:20px;">
-							<a4j:commandLink action="#{User.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
-								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}}" style="border:0px;width:16px;margin-right:6px;" url="images/delete.png">
-								</h:graphicImage>
-								<f:param name="id" value="#{item.prop['id']}" />
-								<f:param name="reload" value="false" />
-							</a4j:commandLink>
 						</rich:column>
 					</rich:dataTable>
 
@@ -107,18 +115,18 @@
 							<h:outputText value="*" />
 
 							<h:outputText value="#{Lang.prop[MySession.l]['department']}:" />
-							<h:panelGrid columns="1">
+							<h:panelGrid columns="2">
 								<h:outputText id="departmentName" value="#{MySession.tempStr['Department.depaName']}" />
-								<rich:simpleTogglePanel id="departmenttree" switchType="client" label="#{Lang.prop[MySession.l]['select']}...">
+								<rich:simpleTogglePanel opened="false" id="departmenttree" switchType="client" label="...">
 									<ui:include src="departmenttree.xhtml" />
 								</rich:simpleTogglePanel>
 							</h:panelGrid>
 							<h:outputText value="*" />
 
 							<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
-							<h:panelGrid columns="1">
+							<h:panelGrid columns="2">
 								<h:outputText id="jobName" value="#{MySession.tempStr['Job.jobName']}" />
-								<rich:simpleTogglePanel id="jobtree" switchType="client" label="#{Lang.prop[MySession.l]['select']}...">
+								<rich:simpleTogglePanel opened="false" id="jobtree" switchType="client" label="...">
 									<ui:include src="jobtree.xhtml" />
 								</rich:simpleTogglePanel>
 							</h:panelGrid>
@@ -166,10 +174,6 @@
 							<h:outputText value="" />
 						</h:panelGrid>
 					</a4j:form>
-					<script language="javascript">
-						SimpleTogglePanelManager.toggleOnClient('onclick','editForm:departmenttree');
-						SimpleTogglePanelManager.toggleOnClient('onclick','editForm:jobtree');
-					</script>
 				</a4j:outputPanel>
 			</rich:tab>
 		</rich:tabPanel>
