@@ -76,7 +76,18 @@ public class JobTree {
 			getMySession().getTempStr().put("Job.jobName", "");
 		}
 	}
-
+	public void processSelection2(NodeSelectedEvent event) {
+		HtmlTree tree = (HtmlTree) event.getComponent();
+		Job bean = (Job) tree.getRowData();
+		if(bean.getType().equals("job")){
+			getMySession().getTempInt().put("Job.id2", bean.getID_());
+			getMySession().getTempStr().put("Job.jobName2", bean.getJobName());
+		}else{
+			getMySession().getTempInt().put("Job.id2", 0);
+			getMySession().getTempStr().put("Job.jobName2", "");
+		}
+		System.out.println(getMySession().getTempInt().get("Job.id2"));
+	}
 	public TreeNode getTreeNode() {
 		if (rootNode == null) {
 			loadTree();

@@ -52,6 +52,21 @@
 		<managed-bean-class>org.minioa.core.User</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>Role</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Role</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>Op</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Op</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>TopMenu</managed-bean-name>
+		<managed-bean-class>org.minioa.core.TopMenu</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<application>
 		<navigation-handler>org.richfaces.ui.application.StateNavigationHandler</navigation-handler>
 		<el-resolver>org.richfaces.el.StateELResolver</el-resolver>

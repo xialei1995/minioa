@@ -131,6 +131,15 @@
 								</rich:simpleTogglePanel>
 							</h:panelGrid>
 							<h:outputText value="*" />
+							
+							<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
+							<h:panelGrid columns="2">
+								<h:outputText id="jobName2" value="#{MySession.tempStr['Job.jobName2']}" />
+								<rich:simpleTogglePanel opened="false" id="jobtree2" switchType="client" label="...">
+									<ui:include src="jobtree2.xhtml" />
+								</rich:simpleTogglePanel>
+							</h:panelGrid>
+							<h:outputText value="" />
 
 							<h:outputText value="#{Lang.prop[MySession.l]['phone']}:" />
 							<h:inputText value="#{User.prop['phone']}" style="width:80px;" />

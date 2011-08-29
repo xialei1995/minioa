@@ -163,14 +163,15 @@ public class User {
 				p.put("id", FunctionLib.getString(obj[0]));
 				p.put("depaId", FunctionLib.getString(obj[6]));
 				p.put("jobId", FunctionLib.getString(obj[7]));
-				p.put("userName", FunctionLib.getString(obj[8]));
-				p.put("email", FunctionLib.getString(obj[9]));
-				p.put("phone", FunctionLib.getString(obj[10]));
-				p.put("mobilePhone", FunctionLib.getString(obj[11]));
-				p.put("gender", FunctionLib.getString(obj[12]));
-				p.put("displayName", FunctionLib.getString(obj[13]));
-				p.put("isLock", FunctionLib.getString(obj[14]));
-				p.put("depaName", FunctionLib.getString(obj[15]));
+				p.put("jobId2", FunctionLib.getString(obj[8]));
+				p.put("userName", FunctionLib.getString(obj[9]));
+				p.put("email", FunctionLib.getString(obj[10]));
+				p.put("phone", FunctionLib.getString(obj[11]));
+				p.put("mobilePhone", FunctionLib.getString(obj[12]));
+				p.put("gender", FunctionLib.getString(obj[13]));
+				p.put("displayName", FunctionLib.getString(obj[14]));
+				p.put("isLock", FunctionLib.getString(obj[15]));
+				p.put("depaName", FunctionLib.getString(obj[16]));
 				recordsList.add(new User(p));
 			}
 			it = null;
@@ -197,18 +198,21 @@ public class User {
 				prop.put("id", FunctionLib.getString(obj[0]));
 				prop.put("depaId", FunctionLib.getString(obj[6]));
 				prop.put("jobId", FunctionLib.getString(obj[7]));
-				prop.put("userName", FunctionLib.getString(obj[8]));
-				prop.put("email", FunctionLib.getString(obj[9]));
-				prop.put("phone", FunctionLib.getString(obj[10]));
-				prop.put("mobilePhone", FunctionLib.getString(obj[11]));
-				prop.put("gender", FunctionLib.getString(obj[12]));
-				prop.put("displayName", FunctionLib.getString(obj[13]));
-				prop.put("isLock", FunctionLib.getString(obj[14]));
-				//
+				prop.put("jobId2", FunctionLib.getString(obj[8]));
+				prop.put("userName", FunctionLib.getString(obj[9]));
+				prop.put("email", FunctionLib.getString(obj[10]));
+				prop.put("phone", FunctionLib.getString(obj[11]));
+				prop.put("mobilePhone", FunctionLib.getString(obj[12]));
+				prop.put("gender", FunctionLib.getString(obj[13]));
+				prop.put("displayName", FunctionLib.getString(obj[14]));
+				prop.put("isLock", FunctionLib.getString(obj[15]));
+				
 				getMySession().getTempInt().put("Department.id", FunctionLib.getInt(obj[6]));
-				getMySession().getTempStr().put("Department.depaName", FunctionLib.getString(obj[15]));
+				getMySession().getTempStr().put("Department.depaName", FunctionLib.getString(obj[16]));
 				getMySession().getTempInt().put("Job.id", FunctionLib.getInt(obj[7]));
-				getMySession().getTempStr().put("Job.jobName", FunctionLib.getString(obj[16]));
+				getMySession().getTempStr().put("Job.jobName", FunctionLib.getString(obj[17]));
+				getMySession().getTempInt().put("Job.id2", FunctionLib.getInt(obj[8]));
+				getMySession().getTempStr().put("Job.jobName2", FunctionLib.getString(obj[18]));
 			}
 			it = null;
 
@@ -243,6 +247,7 @@ public class User {
 			query.setParameter("cId", 0);
 			query.setParameter("depaId", mySession.getTempInt().get("Department.id"));
 			query.setParameter("jobId", mySession.getTempInt().get("Job.id"));
+			query.setParameter("jobId2", mySession.getTempInt().get("Job.id2"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));
@@ -265,7 +270,7 @@ public class User {
 
 	public boolean isUserExists(String userName) {
 		try {
-			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname", "userName", userName, "float")) == 0)
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isrecordexistbyname", "userName", userName, "float")) == 0)
 				return false;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -275,7 +280,7 @@ public class User {
 
 	public boolean isUserExists(String userName, String id) {
 		try {
-			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isuserexistbyname.byid", "userName", userName, "id", id, "float")) == 0)
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.user.isrecordexistbyname.byid", "userName", userName, "id", id, "float")) == 0)
 				return false;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -314,6 +319,7 @@ public class User {
 			query.setParameter("mId", 0);
 			query.setParameter("depaId", mySession.getTempInt().get("Department.id"));
 			query.setParameter("jobId", mySession.getTempInt().get("Job.id"));
+			query.setParameter("jobId2", mySession.getTempInt().get("Job.id2"));
 			query.setParameter("userName", prop.get("userName"));
 			query.setParameter("email", prop.get("email"));
 			query.setParameter("phone", prop.get("phone"));

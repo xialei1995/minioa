@@ -1,9 +1,16 @@
 package org.minioa.core;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.jboss.seam.ui.HibernateEntityLoader;
+import org.richfaces.model.TreeNode;
+import org.richfaces.model.TreeNodeImpl;
 
 public class MySession {
 	
@@ -268,5 +275,107 @@ public class MySession {
 		if (scrollerPage != 1)
 			scrollerPage = 1;
 		return null;
+	}
+	
+	private Session session;
+
+	private Session getSession() {
+		if (session == null)
+			session = new HibernateEntityLoader().getSession();
+		if (!session.isOpen())
+			session = session.getSessionFactory().openSession();
+		return session;
+	}
+	
+	private int i,level;
+	private StringBuffer sb;
+	private String menuText;
+	public String getMenuText() {
+		if(menuText==null){
+			try
+			{
+				i = 0;
+				level = 0;
+				sb = new StringBuffer();
+				sb.append("<div class=\"menu\">\r\n");
+				sb.append("<ul>\r\n");
+				addNodes(0);
+				sb.append("</ul>\r\n");
+				sb.append("</div>\r\n");
+				menuText = sb.toString();
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		return menuText;
+	}
+	public void addNodes(int parentId) {
+		try {
+			level ++;
+			System.out.println("level2:" + level);
+			boolean hasChildren = false;
+			String className ="";
+			Query query = getSession().getNamedQuery("core.topmenu.getchildren");
+			query.setParameter("parentId", parentId);
+			Iterator it = query.list().iterator();
+			int id;
+			String name, url, target;
+			while (it.hasNext()) {
+				Object obj[] = (Object[]) it.next();
+				id = 0;
+				name = url = target = "";
+				if (obj[0] != null)
+					id = Integer.valueOf(String.valueOf(obj[0]));
+				if (obj[1] != null)
+					name = String.valueOf(obj[1]);
+				if (obj[2] != null)
+					url = String.valueOf(obj[2]);
+				if (obj[3] != null)
+					target = String.valueOf(obj[3]);
+				hasChildren = hasChild(id);
+				if(i==0){
+					className ="class=\"current\"";
+					i++;
+				}
+				else
+					className = "";
+				
+				if(!hasChildren){
+					sb.append("<li><a "+ className +" href=\""+url+"\" target=\""+ target +"\">"+ name +"</a></li>\r\n");
+				}
+				else{
+					System.out.println("level:" + level);
+					System.out.println("name:" + name);
+					if(level == 2)
+						className = "class=\"sub1\"";
+					if(level == 3)
+						className = "class=\"sub2\"";
+					sb.append("<li><a "+ className +" href=\""+url+"\" target=\""+ target +"\">"+ name +"<!--[if IE 7]><!--></a><!--<![endif]-->\r\n");
+					sb.append("<!--[if lte IE 6]><table><tr><td><![endif]-->\r\n");
+					sb.append("<ul>\r\n");
+					className = "";
+					addNodes(id);
+					sb.append("</ul>\r\n");
+					sb.append("<!--[if lte IE 6]></td></tr></table></a><![endif]-->\r\n");
+					sb.append("</li>\r\n");
+				}
+			}
+			level --;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	public boolean hasChild(int parentId) {
+		try {
+			Query query = getSession().getNamedQuery("core.topmenu.haschildren");
+			query.setParameter("parentId", parentId);
+			if ("0".equals(String.valueOf(query.list().get(0))))
+				return false;
+			else
+				return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
 	}
 }
