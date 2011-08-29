@@ -344,8 +344,6 @@ public class MySession {
 					sb.append("<li><a "+ className +" href=\""+url+"\" target=\""+ target +"\">"+ name +"</a></li>\r\n");
 				}
 				else{
-					System.out.println("level:" + level);
-					System.out.println("name:" + name);
 					if(level == 2)
 						className = "class=\"sub1\"";
 					if(level == 3)
