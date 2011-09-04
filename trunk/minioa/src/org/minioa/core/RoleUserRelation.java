@@ -162,7 +162,6 @@ public class RoleUserRelation {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String type = (String) params.get("type");
 			String relationId = (String) params.get("relationId");
-			
 			if (null == type || null == relationId || "".equals(type) || "".equals(relationId)){
 				if("".equals(getMySession().getTempStr().get("RoleUserRelation.relationId")))
 					return;

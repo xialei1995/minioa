@@ -48,6 +48,22 @@
 								<f:param name="type" value="role" />
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
+							<h:outputLink value="oprolerelation.jsf">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								</h:graphicImage>
+								<f:param name="id" value="#{item.prop['id']}" />
+								<f:param name="relationId" value="#{item.prop['id']}" />
+								<f:param name="type" value="role" />
+								<f:param name="reload" value="false" />
+							</h:outputLink>
+							<h:outputLink value="topmenurolerelation.jsf">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								</h:graphicImage>
+								<f:param name="id" value="#{item.prop['id']}" />
+								<f:param name="relationId" value="#{item.prop['id']}" />
+								<f:param name="type" value="role" />
+								<f:param name="reload" value="false" />
+							</h:outputLink>
 							<a4j:commandLink action="#{Role.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
 								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" style="border:0px;width:16px;" url="images/delete.png">
 								</h:graphicImage>

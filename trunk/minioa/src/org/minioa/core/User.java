@@ -395,10 +395,11 @@ public class User {
 						getMySession().setMsg(msg, Integer.valueOf(2));
 						return;
 					}
-					
+					getMySession().setUserId(FunctionLib.getInt(obj[0]));
 					getMySession().setDepaName(FunctionLib.getString(obj[15]));
 					getMySession().setEmail(FunctionLib.getString(obj[9]));
 					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+					getMySession().buildOpList(getSession());
 				}
 				it = null;
 				getMySession().setUserName(name);

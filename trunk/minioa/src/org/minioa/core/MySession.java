@@ -13,7 +13,7 @@ import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
 public class MySession {
-	
+
 	public Lang lang;
 
 	public Lang getLang() {
@@ -21,7 +21,7 @@ public class MySession {
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
 		return lang;
 	}
-	
+
 	// ÏûÏ¢
 	public String msg;
 	public int msgType;
@@ -73,8 +73,8 @@ public class MySession {
 	}
 
 	public String getSearchKeyWords() {
-		if (null == searchKeyWords || "".equals(searchKeyWords)){
-			if(null!=getLang())
+		if (null == searchKeyWords || "".equals(searchKeyWords)) {
+			if (null != getLang())
 				searchKeyWords = getLang().getProp().get(this.getL()).get("searchkeywords");
 		}
 		return searchKeyWords;
@@ -117,7 +117,7 @@ public class MySession {
 			tempInt = new HashMap<String, Integer>();
 		return tempInt;
 	}
-	
+
 	private Map<String, Map<Integer, Boolean>> tempMap;
 
 	public void setTempMap(Map<String, Map<Integer, Boolean>> data) {
@@ -126,7 +126,7 @@ public class MySession {
 
 	public Map<String, Map<Integer, Boolean>> getTempMap() {
 		if (tempMap == null)
-			tempMap = new HashMap<String,  Map<Integer, Boolean>>();
+			tempMap = new HashMap<String, Map<Integer, Boolean>>();
 		return tempMap;
 	}
 
@@ -288,7 +288,7 @@ public class MySession {
 			scrollerPage = 1;
 		return null;
 	}
-	
+
 	private Session session;
 
 	private Session getSession() {
@@ -298,14 +298,14 @@ public class MySession {
 			session = session.getSessionFactory().openSession();
 		return session;
 	}
-	
-	private int i,level;
-	private StringBuffer sb;
-	private String menuText;
-	public String getMenuText() {
-		if(menuText==null){
-			try
-			{
+
+	private int i, level;
+	private StringBuffer sb, sb2;
+	private String topMenu, leftMenu;
+
+	public String getTopMenu() {
+		if (topMenu == null) {
+			try {
 				i = 0;
 				level = 0;
 				sb = new StringBuffer();
@@ -314,18 +314,34 @@ public class MySession {
 				addNodes(0);
 				sb.append("</ul>\r\n");
 				sb.append("</div>\r\n");
-				menuText = sb.toString();
-			}catch(Exception ex){
+				topMenu = sb.toString();
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		return menuText;
+		return topMenu;
 	}
+
+	public String getLeftMenu() {
+		if (leftMenu == null) {
+			try {
+				sb2 = new StringBuffer();
+				sb2.append("<div class=\"sidebarmenu\">\r\n");
+				addNodes2(0, false);
+				sb2.append("</div>\r\n");
+				leftMenu = sb2.toString();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return leftMenu;
+	}
+
 	public void addNodes(int parentId) {
 		try {
-			level ++;
+			level++;
 			boolean hasChildren = false;
-			String className ="";
+			String className = "";
 			Query query = getSession().getNamedQuery("core.topmenu.getchildren");
 			query.setParameter("parentId", parentId);
 			Iterator it = query.list().iterator();
@@ -343,23 +359,21 @@ public class MySession {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
-				hasChildren = hasChild(id);
-				if(i==0){
-					className ="class=\"current\"";
+				hasChildren = hasChild(id, "topmenu");
+				if (i == 0) {
+					className = "class=\"current\"";
 					i++;
-				}
-				else
+				} else
 					className = "";
-				
-				if(!hasChildren){
-					sb.append("<li><a "+ className +" href=\""+url+"\" target=\""+ target +"\">"+ name +"</a></li>\r\n");
-				}
-				else{
-					if(level == 2)
+
+				if (!hasChildren) {
+					sb.append("<li><a " + className + " href=\"" + url + "\" target=\"" + target + "\">" + name + "</a></li>\r\n");
+				} else {
+					if (level == 2)
 						className = "class=\"sub1\"";
-					if(level == 3)
+					if (level == 3)
 						className = "class=\"sub2\"";
-					sb.append("<li><a "+ className +" href=\""+url+"\" target=\""+ target +"\">"+ name +"<!--[if IE 7]><!--></a><!--<![endif]-->\r\n");
+					sb.append("<li><a " + className + " href=\"" + url + "\" target=\"" + target + "\">" + name + "<!--[if IE 7]><!--></a><!--<![endif]-->\r\n");
 					sb.append("<!--[if lte IE 6]><table><tr><td><![endif]-->\r\n");
 					sb.append("<ul>\r\n");
 					className = "";
@@ -369,14 +383,58 @@ public class MySession {
 					sb.append("</li>\r\n");
 				}
 			}
-			level --;
+			level--;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	public boolean hasChild(int parentId) {
+
+	public void addNodes2(int parentId, boolean isSubmenu) {
 		try {
-			Query query = getSession().getNamedQuery("core.topmenu.haschildren");
+			boolean hasChildren = false;
+			Query query = getSession().getNamedQuery("core.leftmenu.getchildren");
+			query.setParameter("parentId", parentId);
+			Iterator it = query.list().iterator();
+			int id;
+			String name, url, target;
+			while (it.hasNext()) {
+				Object obj[] = (Object[]) it.next();
+				id = 0;
+				name = url = target = "";
+				if (obj[0] != null)
+					id = Integer.valueOf(String.valueOf(obj[0]));
+				if (obj[1] != null)
+					name = String.valueOf(obj[1]);
+				if (obj[2] != null)
+					url = String.valueOf(obj[2]);
+				if (obj[3] != null)
+					target = String.valueOf(obj[3]);
+				hasChildren = hasChild(id, "leftmenu");
+				if (!hasChildren) {
+					if (isSubmenu)
+						sb2.append("<li><a href=\"" + url + "\" target=\"" + target + "\">" + name + "</a></li>\r\n");
+					else
+						sb2.append("<a class=\"menuitem_red\" href=\"" + url + "\" target=\"" + target + "\">" + name + "</a>\r\n");
+				} else {
+					if (isSubmenu)
+						sb2.append("<li><a href=\"" + url + "\" target=\"" + target + "\">" + name + "</a></li>\r\n");
+					else
+						sb2.append("<a class=\"menuitem submenuheader\" href=\"" + url + "\" target=\"" + target + "\">" + name + "</a>\r\n");
+					sb2.append("<div class=\"submenu\">\r\n");
+					sb2.append("<ul>\r\n");
+					addNodes2(id, true);
+					sb2.append("</ul>\r\n");
+					sb2.append("</div>\r\n");
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public boolean hasChild(int parentId, String menuName) {
+		try {
+			Query query = getSession().getNamedQuery("core." + menuName + ".haschildren");
 			query.setParameter("parentId", parentId);
 			if ("0".equals(String.valueOf(query.list().get(0))))
 				return false;
@@ -386,5 +444,34 @@ public class MySession {
 			ex.printStackTrace();
 		}
 		return false;
+	}
+
+	private Map<String, Boolean> hasOp;
+
+	public Map<String, Boolean> getHasOp() {
+		return hasOp;
+	}
+
+	public void buildOpList(Session s) {
+		if (userId == 0)
+			return;
+		if (hasOp == null) {
+			try {
+				hasOp = new HashMap<String, Boolean>();
+				Query query = s.getNamedQuery("core.oprolerelation.hasop");
+				query.setParameter("userId", userId);
+				Iterator it = query.list().iterator();
+				while (it.hasNext()) {
+					Object obj[] = (Object[]) it.next();
+					if (obj[1] == null)
+						hasOp.put(String.valueOf(obj[0]), false);
+					else
+						hasOp.put(String.valueOf(obj[0]), true);
+				}
+				it = null;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 }

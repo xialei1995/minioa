@@ -1,8 +1,5 @@
 package org.minioa.core;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,12 +16,11 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
-public class Job {
+public class LeftMenu {
 	/**
-	 * orgId单位id,parentId上级部门id,jobName 岗位名称 jobDesc 岗位描述
+	 * parentId上级菜单id,menuName 菜单名称, menuUrl菜单网址,menuTarget 菜单目标
 	 */
-	private int key, level;
-	private StringBuffer bf;
+	private int key;
 	private int ID_, CID_, MID_;
 	private String CDATE, MDATE;
 	private java.util.Date CDATE_, MDATE_;
@@ -100,40 +96,35 @@ public class Job {
 		return init;
 	}
 
-	private int orgId, parentId, sequence;
-	private String orgName, parentName, jobName, jobDesc;
-	private boolean isManager;
+	private int parentId, sequence;
+	private String parentName, menuUrl, menuTarget;
 
-	public void setIsManager(boolean data) {
-		isManager = data;
+	@NotEmpty
+	@Length(min = 2, max = 24)
+	private String menuName;
+
+	public void setMenuName(String data) {
+		menuName = data;
 	}
 
-	public boolean getIsManager() {
-		return isManager;
+	public String getMenuName() {
+		return menuName;
 	}
 
-	public void setJobName(String data) {
-		jobName = data;
+	public void setMenuUrl(String data) {
+		menuUrl = data;
 	}
 
-	public String getJobName() {
-		return jobName;
+	public String getMenuUrl() {
+		return menuUrl;
 	}
 
-	public void setJobDesc(String data) {
-		jobDesc = data;
+	public void setMenuTarget(String data) {
+		menuTarget = data;
 	}
 
-	public String getJobDesc() {
-		return jobDesc;
-	}
-
-	public void setOrgName(String data) {
-		orgName = data;
-	}
-
-	public String getOrgName() {
-		return orgName;
+	public String getMenuTarget() {
+		return menuTarget;
 	}
 
 	public void setParentName(String data) {
@@ -142,14 +133,6 @@ public class Job {
 
 	public String getParentName() {
 		return parentName;
-	}
-
-	public void setOrgId(int data) {
-		orgId = data;
-	}
-
-	public int getOrgId() {
-		return orgId;
 	}
 
 	public void setParentId(int data) {
@@ -168,9 +151,9 @@ public class Job {
 		return sequence;
 	}
 
-	private List<Job> recordsList;
+	private List<LeftMenu> recordsList;
 
-	public List<Job> getRecordsList() {
+	public List<LeftMenu> getRecordsList() {
 		if (recordsList == null)
 			buildRecordsList();
 		return recordsList;
@@ -212,54 +195,41 @@ public class Job {
 		return type;
 	}
 
-	public Job() {
+	public LeftMenu() {
+		
 	}
 
-	public Job(int i) {
+	public LeftMenu(int i) {
 		setID_(i);
 	}
 
-	public Job(String type, int i, String name) {
+	public LeftMenu(String type, int i, String name) {
 		setType(type);
 		setID_(i);
-		setJobName(name);
+		setMenuName(name);
 	}
 
-	public Job(int org, int parent, int id, String oName, String pName, String name, String desc) {
-		setOrgId(org);
+	public LeftMenu(int parent, int id, String pName, String name, String url, String target) {
 		setParentId(parent);
 		setID_(id);
-		setOrgName(oName);
 		setParentName(pName);
-		setJobName(name);
-		setJobDesc(desc);
+		setMenuName(name);
+		setMenuUrl(url);
+		setMenuTarget(target);
 	}
 
-	/**
-	 * 构造函数，用于创建recordsList
-	 * 
-	 * @param id
-	 * @param cId
-	 * @param cDate
-	 * @param mId
-	 * @param mDate
-	 * @param uuid
-	 * @param name
-	 * @param desc
-	 */
-	public Job(int id, int cId, String cDate, int mId, String mDate, String uuid, int org, int parent, String name, String desc, int seq, boolean manager) {
+	public LeftMenu(int id, int cId, String cDate, int mId, String mDate, String uuid, int parent, String name, String url, String target, int seq) {
 		setID_(id);
 		setCID_(cId);
 		setCDATE(cDate);
 		setMID_(mId);
 		setMDATE(mDate);
 		setUUID_(uuid);
-		setOrgId(org);
 		setParentId(parent);
-		setJobName(name);
-		setJobDesc(desc);
+		setMenuName(name);
+		setMenuUrl(url);
+		setMenuTarget(target);
 		setSequence(seq);
-		setIsManager(manager);
 	}
 
 	/**
@@ -269,9 +239,8 @@ public class Job {
 		ID_ = CID_ = MID_ = 0;
 		CDATE = MDATE = UUID_ = "";
 		CDATE_ = MDATE_ = null;
-		orgId = parentId = 0;
-		orgName = parentName = jobName = jobDesc = "";
-		isManager = false;
+		parentId = 0;
+		parentName = menuName = menuUrl = menuTarget = "";
 	}
 
 	/**
@@ -280,33 +249,31 @@ public class Job {
 	public void buildRecordsList() {
 		try {
 			getMySession();
-			recordsList = new ArrayList<Job>();
+			recordsList = new ArrayList<LeftMenu>();
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
-				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Job.rowcount")) {
-					for (int i = 0; i < mySession.getTempInt().get("Job.rowcount"); i++)
-						recordsList.add(new Job(i));
+				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("LeftMenu.rowcount")) {
+					for (int i = 0; i < mySession.getTempInt().get("LeftMenu.rowcount"); i++)
+						recordsList.add(new LeftMenu(i));
 					return;
 				}
 			}
 
-			Query query = getSession().getNamedQuery("core.job.records");
+			Query query = getSession().getNamedQuery("core.leftmenu.records");
 			Iterator it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
-			int org, parent, seq;
-			String name, desc;
-			boolean manager;
+			int parent, seq;
+			String name, url, target;
 			int rowcount = 0;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = cId = mId = 0;
 				cDate = mDate = uuid = "";
 				cDate_ = mDate_ = null;
-				org = parent = seq = 0;
-				name = desc = "";
-				manager = false;
+				parent = seq = 0;
+				name = url = target = "";
 				// 读取obj数据时，一定要确保obj不能为null
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
@@ -327,23 +294,21 @@ public class Job {
 				if (obj[5] != null)
 					uuid = String.valueOf(obj[5]);
 				if (obj[6] != null)
-					org = Integer.valueOf(String.valueOf(obj[6]));
+					parent = Integer.valueOf(String.valueOf(obj[6]));
 				if (obj[7] != null)
-					parent = Integer.valueOf(String.valueOf(obj[7]));
+					name = String.valueOf(obj[7]);
 				if (obj[8] != null)
-					name = String.valueOf(obj[8]);
+					url = String.valueOf(obj[8]);
 				if (obj[9] != null)
-					desc = String.valueOf(obj[9]);
+					target = String.valueOf(obj[9]);
 				if (obj[10] != null)
 					seq = Integer.valueOf(String.valueOf(obj[10]));
-				if (obj[11] != null)
-					manager = FunctionLib.getBoolean(obj[11]);
-				recordsList.add(new Job(id, cId, cDate, mId, mDate, uuid, org, parent, name, desc, seq, manager));
+				recordsList.add(new LeftMenu(id, cId, cDate, mId, mDate, uuid, parent, name, url, target, seq));
 				rowcount++;
 			}
 			it = null;
 
-			mySession.getTempInt().put("Job.rowcount", rowcount);
+			mySession.getTempInt().put("LeftMenu.rowcount", rowcount);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -364,7 +329,7 @@ public class Job {
 
 	public void selectRecordById(String id) {
 		try {
-			Query query = getSession().getNamedQuery("core.job.getrecordbyid");
+			Query query = getSession().getNamedQuery("core.leftmenu.getrecordbyid");
 			query.setParameter("id", id);
 			Iterator it = query.list().iterator();
 			while (it.hasNext()) {
@@ -389,17 +354,15 @@ public class Job {
 				if (obj[5] != null)
 					UUID_ = String.valueOf(obj[5]);
 				if (obj[6] != null)
-					orgId = Integer.valueOf(String.valueOf(obj[6]));
+					parentId = Integer.valueOf(String.valueOf(obj[6]));
 				if (obj[7] != null)
-					parentId = Integer.valueOf(String.valueOf(obj[7]));
+					menuName = String.valueOf(obj[7]);
 				if (obj[8] != null)
-					jobName = String.valueOf(obj[8]);
+					menuUrl = String.valueOf(obj[8]);
 				if (obj[9] != null)
-					jobDesc = String.valueOf(obj[9]);
+					menuTarget = String.valueOf(obj[9]);
 				if (obj[10] != null)
 					sequence = Integer.valueOf(String.valueOf(obj[10]));
-				if (obj[11] != null)
-					isManager = FunctionLib.getBoolean(obj[11]);
 			}
 			it = null;
 		} catch (Exception ex) {
@@ -413,22 +376,20 @@ public class Job {
 	public void newRecord() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
-			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId))
+			if (!FunctionLib.isNum(parentId))
 				return;
-			if ("".equals(jobName)) {
+			if ("".equals(menuName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
 				getMySession().setMsg(msg, Integer.valueOf(2));
 				return;
 			}
-			Job bean = new Job();
-			bean.setOrgId(Integer.valueOf(orgId));
+			LeftMenu bean = new LeftMenu();
 			bean.setParentId(Integer.valueOf(parentId));
-			bean.setJobName(jobName);
-			bean.setJobDesc(jobDesc);
+			bean.setMenuName(menuName);
+			bean.setMenuUrl(menuUrl);
+			bean.setMenuTarget(menuTarget);
 			bean.setSequence(sequence);
-			bean.setIsManager(isManager);
 			bean.setCID_(0);
 			bean.setCDATE_(new java.util.Date());
 			getSession().save(bean);
@@ -450,22 +411,21 @@ public class Job {
 	public void updateRecordById() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
-			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
+			if (!FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
 				return;
-			if ("".equals(jobName)) {
+			if ("".equals(menuName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
 				getMySession().setMsg(msg, Integer.valueOf(2));
 				return;
 			}
-			Query query = getSession().getNamedQuery("core.job.updaterecordbyid");
+			Query query = getSession().getNamedQuery("core.leftmenu.updaterecordbyid");
 			query.setParameter("mId", 0);
-			query.setParameter("jobName", jobName);
-			query.setParameter("jobDesc", jobDesc);
+			query.setParameter("menuName", menuName);
+			query.setParameter("menuUrl", menuUrl);
+			query.setParameter("menuTarget", menuTarget);
 			query.setParameter("sequence", sequence);
-			query.setParameter("isManager", isManager);
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -488,7 +448,7 @@ public class Job {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
-			Query query = getSession().getNamedQuery("core.job.deleterecordbyid");
+			Query query = getSession().getNamedQuery("core.leftmenu.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -504,12 +464,11 @@ public class Job {
 	public void moveRecordById() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
-			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
+			if (!FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
 				return;
-			getMySession().getTempStr().put("Job.move.id", id);
+			getMySession().getTempStr().put("LeftMenu.move.id", id);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -518,7 +477,7 @@ public class Job {
 	public void showDialog() {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			getMySession().getTempStr().put("Job.id", (String) params.get("id"));
+			getMySession().getTempStr().put("LeftMenu.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -544,31 +503,32 @@ public class Job {
 	 * @param node
 	 */
 	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, int orgId, int parentId, String oName, String pName) {
+	public void addNodes(TreeNode node, int parentId, String pName) {
 		try {
-			Query query = getSession().getNamedQuery("core.job.getchildren");
-			query.setParameter("orgId", orgId);
+			Query query = getSession().getNamedQuery("core.leftmenu.getchildren");
 			query.setParameter("parentId", parentId);
 			Iterator it = query.list().iterator();
 			int id;
-			String name, desc;
+			String name, url, target;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name = desc = "";
+				name = url = target = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)
 					name = String.valueOf(obj[1]);
 				if (obj[2] != null)
-					desc = String.valueOf(obj[2]);
+					url = String.valueOf(obj[2]);
+				if (obj[3] != null)
+					target = String.valueOf(obj[3]);
 				@SuppressWarnings("rawtypes")
 				TreeNodeImpl nodeImpl = new TreeNodeImpl();
-				nodeImpl.setData(new Job(orgId, id, id, oName, pName, name, desc));
+				nodeImpl.setData(new LeftMenu(id, id, pName, name, url, target));
 				node.addChild(key, nodeImpl);
 				key++;
-				if (hasChild(orgId, id))
-					addNodes(nodeImpl, orgId, id, oName, name);
+				if (hasChild(id))
+					addNodes(nodeImpl, id, name);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -578,41 +538,23 @@ public class Job {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void loadTree() {
 		try {
+			String msg = getLang().getProp().get(getMySession().getL()).get("leftmenu");
 			rootNode = new TreeNodeImpl();
-
-			Query query = getSession().getNamedQuery("core.org.records");
-			Iterator it = query.list().iterator();
-			int id, seq;
-			String name, desc;
 			key = 1;
-			while (it.hasNext()) {
-				Object obj[] = (Object[]) it.next();
-				id = seq = 0;
-				name = desc = "";
-				if (obj[0] != null)
-					id = Integer.valueOf(String.valueOf(obj[0]));
-				if (obj[6] != null)
-					name = String.valueOf(obj[6]);
-				if (obj[7] != null)
-					desc = String.valueOf(obj[7]);
-				TreeNodeImpl nodeImpl = new TreeNodeImpl();
-				nodeImpl.setData(new Job(id, 0, 0, name, name, name, desc));
-				rootNode.addChild(key, nodeImpl);
-				key++;
-				addNodes(nodeImpl, id, 0, name, name);
-
-			}
-			it = null;
-
+			TreeNodeImpl nodeImpl = new TreeNodeImpl();
+			nodeImpl.setData(new LeftMenu(0, 0, "", msg, "", ""));
+			rootNode.addChild(key, nodeImpl);
+			key++;
+			if (hasChild(0))
+				addNodes(nodeImpl, 0, msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public boolean hasChild(int orgId, int parentId) {
+	public boolean hasChild(int parentId) {
 		try {
-			Query query = getSession().getNamedQuery("core.job.haschildren");
-			query.setParameter("orgId", orgId);
+			Query query = getSession().getNamedQuery("core.leftmenu.haschildren");
 			query.setParameter("parentId", parentId);
 			if ("0".equals(String.valueOf(query.list().get(0))))
 				return false;
@@ -627,98 +569,21 @@ public class Job {
 	public void processSelection(NodeSelectedEvent event) {
 		try {
 			HtmlTree tree = (HtmlTree) event.getComponent();
-			Job bean = (Job) tree.getRowData();
+			LeftMenu bean = (LeftMenu) tree.getRowData();
 			ID_ = bean.getID_();
 			selectRecordById(String.valueOf(ID_));
-			orgId = bean.getOrgId();
 			parentId = bean.getParentId();
-			orgName = bean.getOrgName();
+			menuName = bean.getMenuName();
 			parentName = bean.getParentName();
-			if (FunctionLib.isNum(getMySession().getTempStr().get("Job.move.id"))) {
-				Query query = getSession().getNamedQuery("core.job.moverecordbyid");
+			if (FunctionLib.isNum(getMySession().getTempStr().get("LeftMenu.move.id"))) {
+				Query query = getSession().getNamedQuery("core.leftmenu.moverecordbyid");
 				query.setParameter("mId", 0);
-				query.setParameter("orgId", orgId);
 				query.setParameter("parentId", ID_);
-				query.setParameter("id", getMySession().getTempStr().get("Job.move.id"));
+				query.setParameter("id", getMySession().getTempStr().get("LeftMenu.move.id"));
 				query.executeUpdate();
 				query = null;
-				getMySession().getTempStr().put("Job.move.id", "");
+				getMySession().getTempStr().put("LeftMenu.move.id", "");
 				FunctionLib.refresh();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public void buildTreeFile() {
-		try {
-			bf = new StringBuffer();
-			rootNode = new TreeNodeImpl();
-
-			Query query = getSession().getNamedQuery("core.org.records");
-			Iterator it = query.list().iterator();
-			int id;
-			String name, desc;
-			level = 1;
-			int i = 1;
-			while (it.hasNext()) {
-				Object obj[] = (Object[]) it.next();
-				id = 0;
-				name = desc = "";
-				if (obj[0] != null)
-					id = Integer.valueOf(String.valueOf(obj[0]));
-				if (obj[6] != null)
-					name = String.valueOf(obj[6]);
-				if (obj[7] != null)
-					desc = String.valueOf(obj[7]);
-				bf.append(i + "=org," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
-				addChildren(String.valueOf(i), id, 0, name, name);
-				i++;
-			}
-			it = null;
-
-			String filename = FunctionLib.getBaseDir() + "job.properties";
-			File f = new File(filename);
-			if (f.exists())
-				f.delete();
-			FileWriter fstream = new FileWriter(filename);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(bf.toString());
-			out.close();
-			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
-		} catch (Exception ex) {
-			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
-			ex.printStackTrace();
-		}
-	}
-
-	public void addChildren(String parentKey, int orgId, int parentId, String oName, String pName) {
-		try {
-			level++;
-			Query query = getSession().getNamedQuery("core.job.getchildren");
-			query.setParameter("orgId", orgId);
-			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
-			int id;
-			String name, desc;
-			int i = 1;
-			while (it.hasNext()) {
-				Object obj[] = (Object[]) it.next();
-				id = 0;
-				name = desc = "";
-				if (obj[0] != null)
-					id = Integer.valueOf(String.valueOf(obj[0]));
-				if (obj[1] != null)
-					name = String.valueOf(obj[1]);
-				if (obj[2] != null)
-					desc = String.valueOf(obj[2]);
-				bf.append(parentKey + "." + i + "=job," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
-
-				if (hasChild(orgId, id))
-					addChildren(parentKey + "." + i, orgId, id, oName, name);
-				i++;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -12,7 +12,7 @@
 				<h:panelGrid columns="2" columnClasses="tdTop,tdTop">
 
 					<a4j:form id="treeForm">
-						<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['treemenu']} </legend> <rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="ajax" value="#{Job.treeNode}" var="item" nodeSelectListener="#{Job.processSelection}" ajaxKeys="#{null}">
+						<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['treemenu']} </legend> <rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="client" value="#{Job.treeNode}" var="item" nodeSelectListener="#{Job.processSelection}" ajaxKeys="#{null}">
 							<rich:treeNode style="margin-left:3px;margin-top:3px;">
 								<h:outputText value="#{item.jobName}" />
 							</rich:treeNode>

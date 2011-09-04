@@ -20,6 +20,9 @@
 		<mapping resource="mysql/core_role.hbm.xml" />
 		<mapping resource="mysql/core_role_user_relation.hbm.xml" />
 		<mapping resource="mysql/core_op.hbm.xml" />
+		<mapping resource="mysql/core_op_role_relation.hbm.xml" />
 		<mapping resource="mysql/core_topmenu.hbm.xml" />
+		<mapping resource="mysql/core_topmenu_role_relation.hbm.xml" />
+		<mapping resource="mysql/core_leftmenu.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

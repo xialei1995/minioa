@@ -73,8 +73,23 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>OpRoleRelation</managed-bean-name>
+		<managed-bean-class>org.minioa.core.OpRoleRelation</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>TopMenu</managed-bean-name>
 		<managed-bean-class>org.minioa.core.TopMenu</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>TopMenuRoleRelation</managed-bean-name>
+		<managed-bean-class>org.minioa.core.TopMenuRoleRelation</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>LeftMenu</managed-bean-name>
+		<managed-bean-class>org.minioa.core.LeftMenu</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<application>
