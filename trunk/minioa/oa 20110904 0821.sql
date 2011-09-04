@@ -235,9 +235,34 @@ CREATE TABLE `core_role` (
 /*!40000 ALTER TABLE `core_role` DISABLE KEYS */;
 INSERT INTO `core_role` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`roleName`,`roleDesc`) VALUES 
  (1,0,'2011-08-27 21:03:24',0,'2011-08-27 21:03:33',NULL,'admin','管理员'),
- (2,0,'2011-08-27 21:03:49',NULL,NULL,NULL,'user','普通用户'),
+ (2,0,'2011-08-27 21:03:49',0,'2011-09-02 19:11:43',NULL,'user','普通用户'),
  (3,0,'2011-08-27 21:03:58',NULL,NULL,NULL,'manager','经理');
 /*!40000 ALTER TABLE `core_role` ENABLE KEYS */;
+
+
+--
+-- Definition of table `core_role_user_relation`
+--
+
+DROP TABLE IF EXISTS `core_role_user_relation`;
+CREATE TABLE `core_role_user_relation` (
+  `ID_` int(10) unsigned NOT NULL auto_increment,
+  `CID_` int(10) unsigned default NULL,
+  `CDATE_` datetime default NULL,
+  `roleId` int(10) unsigned default NULL,
+  `userId` int(10) unsigned default NULL,
+  PRIMARY KEY  (`ID_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `core_role_user_relation`
+--
+
+/*!40000 ALTER TABLE `core_role_user_relation` DISABLE KEYS */;
+INSERT INTO `core_role_user_relation` (`ID_`,`CID_`,`CDATE_`,`roleId`,`userId`) VALUES 
+ (1,0,'2011-09-04 07:44:37',2,1),
+ (2,0,'2011-09-04 07:44:41',1,1);
+/*!40000 ALTER TABLE `core_role_user_relation` ENABLE KEYS */;
 
 
 --
@@ -295,7 +320,7 @@ INSERT INTO `core_topmenu` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`paren
  (27,0,'2011-08-28 10:59:55',0,NULL,NULL,6,'申请表单','','_self',3),
  (28,0,'2011-08-29 20:21:40',0,NULL,NULL,7,'单位管理','org.jsf','_self',1),
  (29,0,'2011-08-29 20:22:14',0,NULL,NULL,7,'部门管理','department.jsf','_self',2),
- (30,0,'2011-08-29 20:22:33',0,NULL,NULL,7,'岗位管理','org.jsf','_self',3),
+ (30,0,'2011-08-29 20:22:33',0,'2011-09-03 14:49:59',NULL,7,'岗位管理','job.jsf','_self',3),
  (31,0,'2011-08-29 20:22:52',0,NULL,NULL,7,'帐号管理','user.jsf','_self',4),
  (32,0,'2011-08-29 20:23:12',0,NULL,NULL,7,'角色管理','role.jsf','_self',5),
  (33,0,'2011-08-29 20:23:34',0,NULL,NULL,7,'权限管理','op.jsf','_self',6),
