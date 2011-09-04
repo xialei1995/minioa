@@ -486,7 +486,6 @@ public class Job {
 		try {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			System.out.println("id:" + id);
 			if (!FunctionLib.isNum(id))
 				return;
 			Query query = getSession().getNamedQuery("core.job.deleterecordbyid");

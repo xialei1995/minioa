@@ -174,6 +174,7 @@ public class Role {
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				prop = new HashMap<String, String>();
+				prop.put("id", FunctionLib.getString(obj[0]));
 				prop.put("roleName", FunctionLib.getString(obj[6]));
 				prop.put("roleDesc", FunctionLib.getString(obj[7]));
 			}
@@ -188,7 +189,7 @@ public class Role {
 		try {
 			getMySession();
 			if ("".equals(prop.get("roleName"))) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
+				String msg = getLang().getProp().get(getMySession().getL()).get("role") + getLang().getProp().get(getMySession().getL()).get("noempty");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
@@ -242,7 +243,7 @@ public class Role {
 				return;
 
 			if ("".equals(prop.get("roleName"))) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
+				String msg = getLang().getProp().get(getMySession().getL()).get("role") + getLang().getProp().get(getMySession().getL()).get("noempty");
 				getMySession().setMsg(msg, Integer.valueOf(0));
 				return;
 			}
@@ -296,6 +297,16 @@ public class Role {
 			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
+	}
+	public int getRoleIdByUserName(Session s,String roleName) {
+		try {
+			Query query = s.getNamedQuery("core.role.getid.byrolename");
+			query.setParameter("roleName", roleName);
+			return FunctionLib.getInt(query.list().get(0));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return 0;
 	}
 	
 }

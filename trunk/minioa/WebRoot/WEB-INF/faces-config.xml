@@ -23,6 +23,11 @@
 		</managed-property>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>Application</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Application</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>Org</managed-bean-name>
 		<managed-bean-class>org.minioa.core.Org</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
@@ -55,6 +60,11 @@
 	<managed-bean>
 		<managed-bean-name>Role</managed-bean-name>
 		<managed-bean-class>org.minioa.core.Role</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>RoleUserRelation</managed-bean-name>
+		<managed-bean-class>org.minioa.core.RoleUserRelation</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>

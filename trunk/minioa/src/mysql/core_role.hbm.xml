@@ -29,6 +29,12 @@
         where ta.ID_ = :id
     ]]>
 	</sql-query>
+	<sql-query name="core.role.getrolelist">
+    <![CDATA[
+        select ta.ID_,ta.roleName,ta.roleDesc
+        from core_role ta
+    ]]>
+	</sql-query>
 	<sql-query name="core.role.isrecordexistbyname">
     <![CDATA[
         select count(*) as tmp
@@ -51,6 +57,11 @@
 	<sql-query name="core.role.deleterecordbyid">
     <![CDATA[
         delete from core_role where ID_ = :id
+    ]]>
+	</sql-query>
+	<sql-query name="core.role.getid.byrolename">
+    <![CDATA[
+    	select ifnull((select ta.ID_ from core_role ta  where ta.roleName = :roleName),0) from dual
     ]]>
 	</sql-query>
 </hibernate-mapping>

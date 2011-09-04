@@ -424,4 +424,25 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
+	
+	public int getUserIdByUserName(Session s,String userName) {
+		try {
+			Query query = s.getNamedQuery("core.user.getid.byusername");
+			query.setParameter("userName", userName);
+			return FunctionLib.getInt(query.list().get(0));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+	public String getUserInfoByUserName(Session s,String userName,String fieldName) {
+		try {
+			Query query = s.getNamedQuery("core.user.get"+ fieldName +".byusername");
+			query.setParameter("userName", userName);
+			return FunctionLib.getString(query.list().get(0));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "";
+	}
 }

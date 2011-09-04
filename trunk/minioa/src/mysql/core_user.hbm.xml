@@ -33,6 +33,22 @@
         where ta.ID_ = :id
     ]]>
 	</sql-query>
+	<sql-query name="core.user.getuserlist">
+    <![CDATA[
+        select ta.ID_,ta.userName,ta.displayName
+        from core_user ta
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.getid.byusername">
+    <![CDATA[
+    	select ifnull((select ta.ID_ from core_user ta  where ta.userName = :userName),0) from dual
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.getuser.byusername">
+    <![CDATA[
+    	select ifnull((select ta.ID_ from core_user ta  where ta.userName = :userName),'') from dual
+    ]]>
+	</sql-query>
 	<sql-query name="core.user.getrecordbyusername">
     <![CDATA[
         select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,

@@ -117,6 +117,18 @@ public class MySession {
 			tempInt = new HashMap<String, Integer>();
 		return tempInt;
 	}
+	
+	private Map<String, Map<Integer, Boolean>> tempMap;
+
+	public void setTempMap(Map<String, Map<Integer, Boolean>> data) {
+		tempMap = data;
+	}
+
+	public Map<String, Map<Integer, Boolean>> getTempMap() {
+		if (tempMap == null)
+			tempMap = new HashMap<String,  Map<Integer, Boolean>>();
+		return tempMap;
+	}
 
 	public String tab;
 
@@ -312,7 +324,6 @@ public class MySession {
 	public void addNodes(int parentId) {
 		try {
 			level ++;
-			System.out.println("level2:" + level);
 			boolean hasChildren = false;
 			String className ="";
 			Query query = getSession().getNamedQuery("core.topmenu.getchildren");

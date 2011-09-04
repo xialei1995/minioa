@@ -35,12 +35,6 @@ a:link {
 	letter-spacing: 3px;
 }
 
-.rich-tab-header {
-	background-image: url(images/menu_bg.gif);
-	border: 1px solid #5FC7F1;
-	color: white;
-}
-
 .rich-stglpanel-header {
 	background-image: url(images/menu_bg.gif);
 	color: white;
@@ -944,7 +938,7 @@ div.pagination span.disabled {
 }
 
 .rich-table th {
-	padding: 8px;
+	padding: 3px;
 	font-weight: normal;
 	font-size: 13px;
 	color: #039;
@@ -953,7 +947,7 @@ div.pagination span.disabled {
 }
 
 .rich-table td {
-	padding: 5px;
+	padding: 3px;
 	background: #ecf8fd;
 	border-width: 0px;
 	color: #669
@@ -967,8 +961,26 @@ div.pagination span.disabled {
 	background: #d2e7f0;
 }
 
+
+.rich-tab-header {
+	background-image: url(images/menu_bg.gif);
+	border: 1px solid #5FC7F1;
+	color: white;
+}
+#tab1_shifted td {padding:0;}
+#tab1_shifted table td {padding:3px;}
+#tab2_shifted td {padding:0;}
+#tab2_shifted table td {padding:3px;}
+#tab3_shifted td {padding:0;}
+#tab3_shifted table td {padding:3px;}
+#tab4_shifted td {padding:0;}
+#tab4_shifted table td {padding:3px;}
+.rich-tab-bottom-line{padding:0;border-bottom: 1px solid #60c8f2;}
+.rich-tab-bottom-line td{padding:0;}
+.rich-tab-bottom-line table td table td{padding:3px;}
+.rich-tab-active{padding:0px;}
+.rich-tab-header{padding:0px;}
 .rich-tabpanel-content {
 	border-width: 0px;
-	border-top: 1px solid #60c8f2;
 	border-bottom: 1px solid #60c8f2;
 }

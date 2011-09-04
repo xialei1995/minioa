@@ -18,6 +18,7 @@
 		<mapping resource="mysql/core_user.hbm.xml" />
 		<mapping resource="mysql/core_job.hbm.xml" />
 		<mapping resource="mysql/core_role.hbm.xml" />
+		<mapping resource="mysql/core_role_user_relation.hbm.xml" />
 		<mapping resource="mysql/core_op.hbm.xml" />
 		<mapping resource="mysql/core_topmenu.hbm.xml" />
 	</session-factory>
