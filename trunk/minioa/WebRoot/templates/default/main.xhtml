@@ -15,7 +15,7 @@
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
 </head>
-<body>
+<body onkeydown="if(event.keyCode==13){if(document.getElementById('mpForMsg')){document.getElementById('mpForMsg').component.hide();}if(document.getElementById('mpForSubMsg')){document.getElementById('mpForSubMsg').component.hide();}}">
 <h:outputText value="#{MySession.templateName}" style="display:none;" />
 <h:outputText escape="false" value="#{MySession.isLogin}" style="display:none;" />
 <h:outputText value="#{MySession.l}" style="display:none;" />

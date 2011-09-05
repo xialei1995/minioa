@@ -180,8 +180,6 @@ public class LeftMenu {
 	private Session getSession() {
 		if (session == null)
 			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
 		return session;
 	}
 
@@ -541,12 +539,8 @@ public class LeftMenu {
 			String msg = getLang().getProp().get(getMySession().getL()).get("leftmenu");
 			rootNode = new TreeNodeImpl();
 			key = 1;
-			TreeNodeImpl nodeImpl = new TreeNodeImpl();
-			nodeImpl.setData(new LeftMenu(0, 0, "", msg, "", ""));
-			rootNode.addChild(key, nodeImpl);
-			key++;
 			if (hasChild(0))
-				addNodes(nodeImpl, 0, msg);
+				addNodes(rootNode, 0, msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

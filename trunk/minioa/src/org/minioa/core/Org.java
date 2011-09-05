@@ -157,8 +157,6 @@ public class Org {
 	private Session getSession() {
 		if (session == null)
 			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
 		return session;
 	}
 

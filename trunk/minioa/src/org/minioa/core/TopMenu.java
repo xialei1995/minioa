@@ -180,8 +180,6 @@ public class TopMenu {
 	private Session getSession() {
 		if (session == null)
 			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
 		return session;
 	}
 
@@ -541,12 +539,8 @@ public class TopMenu {
 			String msg = getLang().getProp().get(getMySession().getL()).get("topmenu");
 			rootNode = new TreeNodeImpl();
 			key = 1;
-			TreeNodeImpl nodeImpl = new TreeNodeImpl();
-			nodeImpl.setData(new TopMenu(0, 0, "", msg, "", ""));
-			rootNode.addChild(key, nodeImpl);
-			key++;
 			if (hasChild(0))
-				addNodes(nodeImpl, 0, msg);
+				addNodes(rootNode, 0, msg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

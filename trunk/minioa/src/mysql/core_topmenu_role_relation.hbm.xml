@@ -22,6 +22,15 @@
         order by ta.parentId,ta.sequence
     ]]>
 	</sql-query>
+    <sql-query name="core.topmenu.getchildren.role">
+    <![CDATA[
+    	select ta.ID_,ta.menuName,ta.menuUrl,ta.menuTarget
+        from core_topmenu ta 
+        where ta.parentId = :parentId
+        	and ta.ID_ in (select tb.menuId from core_topmenu_role_relation tb where tb.roleId in (select tc.roleId from core_role_user_relation tc where tc.userId = :userId))
+        order by ta.sequence
+    ]]>
+    </sql-query>
 	<sql-query name="core.topmenurolerelation.deleterecordbyid">
     <![CDATA[
         delete from core_topmenu_role_relation where menuId = :menuId and roleId = :roleId

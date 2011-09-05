@@ -71,11 +71,20 @@
 	</sql-query>
 	<sql-query name="core.leftmenu.getchildren">
     <![CDATA[
-         select ID_,menuName,menuUrl,menuTarget
-         from core_leftmenu where parentId = :parentId
-         order by sequence
+        select ID_,menuName,menuUrl,menuTarget
+        from core_leftmenu where parentId = :parentId
+        order by sequence
     ]]>
 	</sql-query>
+    <sql-query name="core.leftmenu.getchildren.role">
+    <![CDATA[
+    	select ta.ID_,ta.menuName,ta.menuUrl,ta.menuTarget
+        from core_leftmenu ta 
+        where ta.parentId = :parentId
+        	and ta.ID_ in (select tb.menuId from core_leftmenu_role_relation tb where tb.roleId in (select tc.roleId from core_role_user_relation tc where tc.userId = :userId))
+        order by ta.sequence
+    ]]>
+    </sql-query>
 	<sql-query name="core.leftmenu.haschildren">
     <![CDATA[
          select count(*)

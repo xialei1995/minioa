@@ -12,16 +12,6 @@ import org.jboss.seam.ui.HibernateEntityLoader;
 
 public class Application {
 
-	private Session session;
-
-	private Session getSession() {
-		if (session == null)
-			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
-		return session;
-	}
-
 	public List<String> userList;
 	public List<SelectItem> userSelectItem;
 
@@ -42,7 +32,7 @@ public class Application {
 		userList = new ArrayList<String>();
 		userSelectItem = new ArrayList<SelectItem>();
 		try {
-			Query query = getSession().getNamedQuery("core.user.getuserlist");
+			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core.user.getuserlist");
 			Iterator it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
@@ -74,7 +64,7 @@ public class Application {
 		roleList = new ArrayList<String>();
 		roleSelectItem = new ArrayList<SelectItem>();
 		try {
-			Query query = getSession().getNamedQuery("core.role.getrolelist");
+			Query query =new HibernateEntityLoader().getSession().getNamedQuery("core.role.getrolelist");
 			Iterator it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();

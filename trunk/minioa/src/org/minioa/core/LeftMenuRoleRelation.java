@@ -1,20 +1,16 @@
 package org.minioa.core;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
-import org.richfaces.component.html.HtmlTree;
-import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
-public class TopMenuRoleRelation {
+public class LeftMenuRoleRelation {
 
 	public Lang lang;
 
@@ -39,7 +35,7 @@ public class TopMenuRoleRelation {
 			session = new HibernateEntityLoader().getSession();
 		return session;
 	}
-
+	
 	private int ID_, CID_;
 
 	public void setID_(int data) {
@@ -105,10 +101,10 @@ public class TopMenuRoleRelation {
 		return checkIdsMap;
 	}
 
-	public TopMenuRoleRelation() {
+	public LeftMenuRoleRelation() {
 	}
 
-	public TopMenuRoleRelation(int menuId, String mName, int roleId) {
+	public LeftMenuRoleRelation(int menuId, String mName, int roleId) {
 		setMenuId(menuId);
 		setMenuName(mName);
 		setRoleId(roleId);
@@ -126,16 +122,16 @@ public class TopMenuRoleRelation {
 				Query query;
 				for (Map.Entry<Integer, Boolean> entry : checkIdsMap.entrySet()) {
 					if (!entry.getValue()) {
-						query = getSession().getNamedQuery("core.topmenurolerelation.deleterecordbyid");
+						query = getSession().getNamedQuery("core.leftmenurolerelation.deleterecordbyid");
 						query.setParameter("menuId", entry.getKey());
 						query.setParameter("roleId", roleId);
 						query.executeUpdate();
 					} else {
-						query = getSession().getNamedQuery("core.topmenurolerelation.isrecordexistbyid");
+						query = getSession().getNamedQuery("core.leftmenurolerelation.isrecordexistbyid");
 						query.setParameter("menuId", entry.getKey());
 						query.setParameter("roleId", roleId);
 						if (Integer.valueOf(String.valueOf(query.list().get(0))) == 0) {
-							TopMenuRoleRelation bean = new TopMenuRoleRelation();
+							LeftMenuRoleRelation bean = new LeftMenuRoleRelation();
 							bean.setID_(getMySession().getUserId());
 							bean.setCDATE_(new java.util.Date());
 							bean.setMenuId(entry.getKey());
@@ -167,7 +163,7 @@ public class TopMenuRoleRelation {
 	@SuppressWarnings("unchecked")
 	public void addNodes(TreeNode node, String relationId,int parentId, String pName) {
 		try {
-			Query query = getSession().getNamedQuery("core.topmenurolerelation.getchildren");
+			Query query = getSession().getNamedQuery("core.leftmenurolerelation.getchildren");
 			query.setParameter("parentId", parentId);
 			query.setParameter("relationId", relationId);
 			Iterator it = query.list().iterator();
@@ -180,7 +176,7 @@ public class TopMenuRoleRelation {
 				
 				@SuppressWarnings("rawtypes")
 				TreeNodeImpl nodeImpl = new TreeNodeImpl();
-				nodeImpl.setData(new TopMenuRoleRelation(FunctionLib.getInt(obj[0]), FunctionLib.getString(obj[1]), FunctionLib.getInt(obj[2])));
+				nodeImpl.setData(new LeftMenuRoleRelation(FunctionLib.getInt(obj[0]), FunctionLib.getString(obj[1]), FunctionLib.getInt(obj[2])));
 				node.addChild(key, nodeImpl);
 				key++;
 				if (hasChild(FunctionLib.getInt(obj[0])))
@@ -198,7 +194,7 @@ public class TopMenuRoleRelation {
 			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			
-			String msg = getLang().getProp().get(getMySession().getL()).get("topmenu");
+			String msg = getLang().getProp().get(getMySession().getL()).get("leftmenu");
 			rootNode = new TreeNodeImpl();
 			key = 1;
 			if (hasChild(0))
@@ -210,7 +206,7 @@ public class TopMenuRoleRelation {
 
 	public boolean hasChild(int parentId) {
 		try {
-			Query query = getSession().getNamedQuery("core.topmenu.haschildren");
+			Query query = getSession().getNamedQuery("core.leftmenu.haschildren");
 			query.setParameter("parentId", parentId);
 			if ("0".equals(String.valueOf(query.list().get(0))))
 				return false;

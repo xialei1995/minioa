@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -30,19 +31,24 @@ public class MySession {
 		msg = data;
 		switch (type) {
 		case 0:
-			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg').component != undefined) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/warning.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg')) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/warning.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			subMsgScript = "<script language=\"javascript\">if(document.getElementById('mpForSubMsg')) {document.getElementById('mpForSubMsgContentDiv').style.backgroundImage='url(images/warning.png)';document.getElementById('mpForSubMsg').component.show();}</script>";
 			break;
 		case 1:
-			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg').component != undefined) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/valid.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg')) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/valid.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			subMsgScript = "<script language=\"javascript\">if(document.getElementById('mpForSubMsg')) {document.getElementById('mpForSubMsgContentDiv').style.backgroundImage='url(images/valid.png)';document.getElementById('mpForSubMsg').component.show();}</script>";
 			break;
 		default:
-			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg').component != undefined) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/error.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			msgScript = "<script language=\"javascript\">if(document.getElementById('mpForMsg')) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/error.png)';document.getElementById('mpForMsg').component.show();}</script>";
+			subMsgScript = "<script language=\"javascript\">if(document.getElementById('mpForSubMsg')) {document.getElementById('mpForSubMsgContentDiv').style.backgroundImage='url(images/error.png)';document.getElementById('mpForSubMsg').component.show();}</script>";
 		}
 	}
 
 	public String getMsg() {
-		if ("".equals(msg))
+		if ("".equals(msg)){
 			msgScript = "";
+			subMsgScript = "";
+		}
 		return msg;
 	}
 
@@ -53,7 +59,14 @@ public class MySession {
 		msg = "";
 		return msgScript;
 	}
+	// 显示消息的脚本
+	public String subMsgScript;
 
+	public String getSubMsgScript() {
+		msg = "";
+		return subMsgScript;
+	}
+	
 	private String templateName;
 
 	public void setTemplateName(String data) {
@@ -155,9 +168,25 @@ public class MySession {
 	}
 
 	public String getIsLogin() {
-		if (isLogin == null || !isLogin.equals("true"))
+		if (isLogin == null || !isLogin.equals("true")) {
+			if (formUrl == null || formUrl.equals("")) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+				formUrl = context.getExternalContext().getRequestHeaderMap().get("referer");
+			}
 			isLogin = "<script language=\"javascript\">window.location.href = 'login.jsf';</script>";
+		}
 		return isLogin;
+	}
+
+	private String formUrl;
+
+	public void setFormUrl(String data) {
+		formUrl = data;
+	}
+
+	public String getFormUrl() {
+		return formUrl;
 	}
 
 	public int userId;
@@ -289,52 +318,56 @@ public class MySession {
 		return null;
 	}
 
-	private Session session;
-
-	private Session getSession() {
-		if (session == null)
-			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
-		return session;
-	}
-
 	private int i, level;
 	private StringBuffer sb, sb2;
 	private String topMenu, leftMenu;
 
+	public void setTopMenu(String data) {
+		topMenu = data;
+	}
+
 	public String getTopMenu() {
-		if (topMenu == null) {
-			try {
-				i = 0;
-				level = 0;
-				sb = new StringBuffer();
-				sb.append("<div class=\"menu\">\r\n");
-				sb.append("<ul>\r\n");
-				addNodes(0);
-				sb.append("</ul>\r\n");
-				sb.append("</div>\r\n");
-				topMenu = sb.toString();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
+		if (topMenu == null)
+			buildTopMenu();
 		return topMenu;
 	}
 
-	public String getLeftMenu() {
-		if (leftMenu == null) {
-			try {
-				sb2 = new StringBuffer();
-				sb2.append("<div class=\"sidebarmenu\">\r\n");
-				addNodes2(0, false);
-				sb2.append("</div>\r\n");
-				leftMenu = sb2.toString();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+	public void buildTopMenu() {
+		try {
+			i = 0;
+			level = 0;
+			sb = new StringBuffer();
+			sb.append("<div class=\"menu\">\r\n");
+			sb.append("<ul>\r\n");
+			addNodes(0);
+			sb.append("</ul>\r\n");
+			sb.append("</div>\r\n");
+			topMenu = sb.toString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+	}
+
+	public void setLeftMenu(String data) {
+		leftMenu = data;
+	}
+
+	public String getLeftMenu() {
+		if (leftMenu == null)
+			buildLeftMenu();
 		return leftMenu;
+	}
+
+	public void buildLeftMenu() {
+		try {
+			sb2 = new StringBuffer();
+			sb2.append("<div class=\"sidebarmenu\">\r\n");
+			addNodes2(0, false);
+			sb2.append("</div>\r\n");
+			leftMenu = sb2.toString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public void addNodes(int parentId) {
@@ -342,8 +375,9 @@ public class MySession {
 			level++;
 			boolean hasChildren = false;
 			String className = "";
-			Query query = getSession().getNamedQuery("core.topmenu.getchildren");
+			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core.topmenu.getchildren.role");
 			query.setParameter("parentId", parentId);
+			query.setParameter("userId", this.getUserId());
 			Iterator it = query.list().iterator();
 			int id;
 			String name, url, target;
@@ -392,8 +426,9 @@ public class MySession {
 	public void addNodes2(int parentId, boolean isSubmenu) {
 		try {
 			boolean hasChildren = false;
-			Query query = getSession().getNamedQuery("core.leftmenu.getchildren");
+			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core.leftmenu.getchildren.role");
 			query.setParameter("parentId", parentId);
+			query.setParameter("userId", this.getUserId());
 			Iterator it = query.list().iterator();
 			int id;
 			String name, url, target;
@@ -434,7 +469,7 @@ public class MySession {
 
 	public boolean hasChild(int parentId, String menuName) {
 		try {
-			Query query = getSession().getNamedQuery("core." + menuName + ".haschildren");
+			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core." + menuName + ".haschildren");
 			query.setParameter("parentId", parentId);
 			if ("0".equals(String.valueOf(query.list().get(0))))
 				return false;
@@ -447,7 +482,9 @@ public class MySession {
 	}
 
 	private Map<String, Boolean> hasOp;
-
+	public void  setHasOp(Map<String, Boolean> data) {
+		hasOp = data;
+	}
 	public Map<String, Boolean> getHasOp() {
 		return hasOp;
 	}

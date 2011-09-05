@@ -49,7 +49,7 @@
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
 							<h:outputLink value="oprolerelation.jsf">
-								<h:graphicImage title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['operationsetting']}" style="border:0px;width:18px;margin-right:6px;" url="images/op.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="relationId" value="#{item.prop['id']}" />
@@ -57,7 +57,15 @@
 								<f:param name="reload" value="false" />
 							</h:outputLink>
 							<h:outputLink value="topmenurolerelation.jsf">
-								<h:graphicImage title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['topmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/menu.png">
+								</h:graphicImage>
+								<f:param name="id" value="#{item.prop['id']}" />
+								<f:param name="relationId" value="#{item.prop['id']}" />
+								<f:param name="type" value="role" />
+								<f:param name="reload" value="false" />
+							</h:outputLink>
+							<h:outputLink value="leftmenurolerelation.jsf">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['leftmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/menu.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="relationId" value="#{item.prop['id']}" />

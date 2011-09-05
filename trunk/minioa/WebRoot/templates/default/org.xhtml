@@ -10,7 +10,7 @@
 		<h:outputText value="#{Lang.prop[MySession.l]['orgadmin']}" />
 	</ui:define>
 	<ui:define name="body">
-		<rich:tabPanel id="tab" switchType="client" headerAlignment="left">
+		<rich:tabPanel id="tab" switchType="client" headerAlignment="left" rendered="#{MySession.hasOp['100102']==true}">
 			<rich:tab id="tab1" name="tab1"
 				label="#{Lang.prop[MySession.l]['list']}">
 				<a4j:form id="searchForm">

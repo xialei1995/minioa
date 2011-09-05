@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
@@ -33,8 +35,6 @@ public class User {
 	private Session getSession() {
 		if (session == null)
 			session = new HibernateEntityLoader().getSession();
-		if (!session.isOpen())
-			session = session.getSessionFactory().openSession();
 		return session;
 	}
 
@@ -396,15 +396,20 @@ public class User {
 						return;
 					}
 					getMySession().setUserId(FunctionLib.getInt(obj[0]));
-					getMySession().setDepaName(FunctionLib.getString(obj[15]));
+					getMySession().setDepaName(FunctionLib.getString(obj[16]));
 					getMySession().setEmail(FunctionLib.getString(obj[9]));
 					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
 					getMySession().buildOpList(getSession());
+					getMySession().buildTopMenu();
+					getMySession().buildLeftMenu();
 				}
 				it = null;
 				getMySession().setUserName(name);
 				getMySession().setIsLogin("true");
-				FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
+				//FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
+				FacesContext context = FacesContext.getCurrentInstance();
+				HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+				response.sendRedirect(getMySession().getFormUrl());
 			}else{
 				String msg = getLang().getProp().get(getMySession().getL()).get("usernameorpasswordincorrect");
 				getMySession().setMsg(msg, Integer.valueOf(2));
@@ -417,6 +422,9 @@ public class User {
 	}
 	public void logout(){
 		try {
+			getMySession().setHasOp(null);
+			getMySession().setTopMenu(null);
+			getMySession().setLeftMenu(null);
 			FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("MySession");
 		} catch (Exception ex) {
