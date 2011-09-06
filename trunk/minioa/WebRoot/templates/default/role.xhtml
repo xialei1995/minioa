@@ -22,7 +22,7 @@
 					<rich:dataTable id="dataTable" rows="10" value="#{Role.recordsList}" var="item" rowKeyVar="rowNum">
 						<f:facet name="header">
 							<rich:columnGroup>
-								<rich:column style="background: #60c8f2 url('images/left.jpg') left top no-repeat;">
+								<rich:column styleClass="left">
 									<h:outputText value="" />
 								</rich:column>
 								<rich:column>
@@ -31,7 +31,7 @@
 								<rich:column>
 									<h:outputText value="#{Lang.prop[MySession.l]['rolename']}" />
 								</rich:column>
-								<rich:column style="background: #60c8f2 url('images/right.jpg') right top no-repeat;">
+								<rich:column styleClass="right">
 									<h:outputText value="#{Lang.prop[MySession.l]['roledesc']}" />
 								</rich:column>
 							</rich:columnGroup>
@@ -57,7 +57,7 @@
 								<f:param name="reload" value="false" />
 							</h:outputLink>
 							<h:outputLink value="topmenurolerelation.jsf">
-								<h:graphicImage title="#{Lang.prop[MySession.l]['topmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/menu.png">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['topmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/topmenu.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="relationId" value="#{item.prop['id']}" />
@@ -65,7 +65,7 @@
 								<f:param name="reload" value="false" />
 							</h:outputLink>
 							<h:outputLink value="leftmenurolerelation.jsf">
-								<h:graphicImage title="#{Lang.prop[MySession.l]['leftmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/menu.png">
+								<h:graphicImage title="#{Lang.prop[MySession.l]['leftmenu']}" style="border:0px;width:18px;margin-right:6px;" url="images/leftmenu.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="relationId" value="#{item.prop['id']}" />

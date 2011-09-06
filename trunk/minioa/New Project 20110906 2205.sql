@@ -56,7 +56,7 @@ INSERT INTO `core_department` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`or
  (8,0,'2011-08-20 21:34:54',0,'2011-08-21 12:42:09',NULL,1,0,'市场部','市场部',0),
  (10,0,'2011-08-20 22:14:41',0,'2011-08-21 12:58:46',NULL,1,0,'信息中心','信息中心',9),
  (11,0,'2011-08-20 22:14:45',0,'2011-08-21 12:44:27',NULL,1,8,'国内市场部','国内市场部',0),
- (13,0,'2011-08-20 22:14:57',0,'2011-08-21 12:44:52',NULL,1,8,'海外市场部','海外市场部',0),
+ (13,0,'2011-08-20 22:14:57',0,'2011-09-05 22:02:54',NULL,1,8,'海外市场部','海外市场部',0),
  (14,0,'2011-08-20 22:15:05',0,'2011-08-21 12:45:09',NULL,1,0,'技术部','技术部',0),
  (15,0,'2011-08-20 22:15:08',0,'2011-08-21 12:59:27',NULL,1,0,'质控部','质控部',8),
  (16,0,'2011-08-20 22:15:15',0,'2011-08-21 12:46:09',NULL,1,0,'生产部','生产部',0),
@@ -297,7 +297,7 @@ CREATE TABLE `core_org` (
 
 /*!40000 ALTER TABLE `core_org` DISABLE KEYS */;
 INSERT INTO `core_org` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`orgName`,`orgDesc`,`sequence`) VALUES 
- (1,0,'2011-08-15 20:41:22',0,'2011-08-21 21:29:54',NULL,'西柏网络','西柏网络科技有限公司',0),
+ (1,0,'2011-08-15 20:41:22',0,'2011-09-05 22:02:32',NULL,'西柏网络','西柏网络科技有限公司',0),
  (11,0,'2011-08-15 21:50:50',0,'2011-08-21 21:29:51',NULL,'中国石油','中国石油股份有限公司',0),
  (12,0,'2011-08-15 21:50:53',0,'2011-08-21 21:24:29',NULL,'中国石化','中国石化股份有限公司',100),
  (13,0,'2011-08-16 20:47:59',0,'2011-08-21 21:24:13',NULL,'中国移动','中国移动股份有限公司',99);
@@ -328,7 +328,7 @@ CREATE TABLE `core_role` (
 /*!40000 ALTER TABLE `core_role` DISABLE KEYS */;
 INSERT INTO `core_role` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`roleName`,`roleDesc`) VALUES 
  (1,0,'2011-08-27 21:03:24',0,'2011-08-27 21:03:33',NULL,'admin','管理员'),
- (2,0,'2011-08-27 21:03:49',0,'2011-09-02 19:11:43',NULL,'user','普通用户'),
+ (2,0,'2011-08-27 21:03:49',0,'2011-09-06 21:16:41',NULL,'user','普通用户'),
  (3,0,'2011-08-27 21:03:58',NULL,NULL,NULL,'manager','经理');
 /*!40000 ALTER TABLE `core_role` ENABLE KEYS */;
 
@@ -353,7 +353,10 @@ CREATE TABLE `core_role_user_relation` (
 
 /*!40000 ALTER TABLE `core_role_user_relation` DISABLE KEYS */;
 INSERT INTO `core_role_user_relation` (`ID_`,`CID_`,`CDATE_`,`roleId`,`userId`) VALUES 
- (2,0,'2011-09-04 07:44:41',1,1);
+ (2,0,'2011-09-04 07:44:41',1,1),
+ (3,1,'2011-09-05 22:03:28',1,2),
+ (5,1,'2011-09-05 22:03:34',2,2),
+ (7,1,'2011-09-06 21:16:46',2,2);
 /*!40000 ALTER TABLE `core_role_user_relation` ENABLE KEYS */;
 
 
@@ -449,48 +452,6 @@ CREATE TABLE `core_topmenu_role_relation` (
 /*!40000 ALTER TABLE `core_topmenu_role_relation` DISABLE KEYS */;
 INSERT INTO `core_topmenu_role_relation` (`ID_`,`CID_`,`CDATE_`,`menuId`,`roleId`) VALUES 
  (1,0,'2011-09-04 22:02:38',0,2),
- (2,0,'2011-09-04 22:02:38',1,2),
- (3,0,'2011-09-04 22:02:38',2,2),
- (4,0,'2011-09-04 22:02:38',3,2),
- (5,0,'2011-09-04 22:02:38',4,2),
- (6,0,'2011-09-04 22:02:38',5,2),
- (7,0,'2011-09-04 22:02:38',6,2),
- (8,0,'2011-09-04 22:02:38',7,2),
- (9,0,'2011-09-04 22:02:38',8,2),
- (10,0,'2011-09-04 22:02:38',9,2),
- (11,0,'2011-09-04 22:02:38',10,2),
- (12,0,'2011-09-04 22:02:38',11,2),
- (13,0,'2011-09-04 22:02:38',12,2),
- (14,0,'2011-09-04 22:02:38',13,2),
- (15,0,'2011-09-04 22:02:38',14,2),
- (16,0,'2011-09-04 22:02:38',15,2),
- (17,0,'2011-09-04 22:02:38',17,2),
- (18,0,'2011-09-04 22:02:38',16,2),
- (19,0,'2011-09-04 22:02:38',19,2),
- (20,0,'2011-09-04 22:02:38',18,2),
- (21,0,'2011-09-04 22:02:38',21,2),
- (22,0,'2011-09-04 22:02:38',20,2),
- (23,0,'2011-09-04 22:02:38',23,2),
- (24,0,'2011-09-04 22:02:38',22,2),
- (25,0,'2011-09-04 22:02:38',25,2),
- (26,0,'2011-09-04 22:02:38',24,2),
- (27,0,'2011-09-04 22:02:38',27,2),
- (28,0,'2011-09-04 22:02:38',26,2),
- (29,0,'2011-09-04 22:02:38',29,2),
- (30,0,'2011-09-04 22:02:38',28,2),
- (31,0,'2011-09-04 22:02:38',31,2),
- (32,0,'2011-09-04 22:02:38',30,2),
- (33,0,'2011-09-04 22:02:38',34,2),
- (34,0,'2011-09-04 22:02:38',35,2),
- (35,0,'2011-09-04 22:02:38',32,2),
- (36,0,'2011-09-04 22:02:38',33,2),
- (37,0,'2011-09-04 22:02:38',38,2),
- (38,0,'2011-09-04 22:02:38',39,2),
- (39,0,'2011-09-04 22:02:38',36,2),
- (40,0,'2011-09-04 22:02:38',37,2),
- (41,0,'2011-09-04 22:02:38',42,2),
- (42,0,'2011-09-04 22:02:38',40,2),
- (43,0,'2011-09-04 22:02:38',41,2),
  (46,0,'2011-09-04 22:08:49',2,3),
  (47,0,'2011-09-04 22:08:49',3,3),
  (48,0,'2011-09-04 22:08:49',4,3),
@@ -606,9 +567,102 @@ CREATE TABLE `core_user` (
 /*!40000 ALTER TABLE `core_user` DISABLE KEYS */;
 INSERT INTO `core_user` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`userName`,`depaId`,`jobId`,`email`,`password`,`phone`,`mobilePhone`,`gender`,`displayName`,`isLock`,`jobId2`) VALUES 
  (1,0,'2011-08-23 21:43:02',0,'2011-08-27 21:15:42',NULL,'admin',2,3,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','','13589310033',0,'管理员',0,7),
- (2,0,'2011-08-24 21:18:36',0,'2011-09-05 19:52:54',NULL,'admin1',14,5,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','123456','13589310033',1,'管理员',1,3);
+ (2,0,'2011-08-24 21:18:36',0,'2011-09-05 22:03:23',NULL,'admin1',14,6,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','123456','13589310033',1,'管理员',1,3);
 /*!40000 ALTER TABLE `core_user` ENABLE KEYS */;
 
+
+--
+-- Definition of procedure `core_delete_leftmenu_p`
+--
+
+DROP PROCEDURE IF EXISTS `core_delete_leftmenu_p`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `core_delete_leftmenu_p`(in id int)
+BEGIN
+	delete from core_leftmenu_role_relation where menuId = id;
+  delete from core_leftmenu where ID_ = id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `core_delete_op_p`
+--
+
+DROP PROCEDURE IF EXISTS `core_delete_op_p`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `core_delete_op_p`(in id int)
+BEGIN
+	delete from core_op_role_relation where opId = id;
+  delete from core_op where ID_ = id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `core_delete_role_p`
+--
+
+DROP PROCEDURE IF EXISTS `core_delete_role_p`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `core_delete_role_p`(in id int)
+BEGIN
+	delete from core_op_role_relation where roleId = id;
+	delete from core_leftmenu_role_relation where roleId = id;
+	delete from core_topmenu_role_relation where roleId = id;
+	delete from core_role_user_relation where roleId = id;
+  delete from core_role where ID_ = id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `core_delete_topmenu_p`
+--
+
+DROP PROCEDURE IF EXISTS `core_delete_topmenu_p`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `core_delete_topmenu_p`(in id int)
+BEGIN
+	delete from core_topmenu_role_relation where menuId = id;
+  delete from core_topmenu where ID_ = id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `core_delete_user_p`
+--
+
+DROP PROCEDURE IF EXISTS `core_delete_user_p`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `core_delete_user_p`(in id int)
+BEGIN
+	delete from core_role_user_relation where userId = id;
+  delete from core_user where ID_ = id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
 
 
 

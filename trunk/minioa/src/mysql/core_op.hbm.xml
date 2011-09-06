@@ -50,7 +50,7 @@
 	</sql-query>
 	<sql-query name="core.op.deleterecordbyid">
     <![CDATA[
-        delete from core_op where ID_ = :id
+         CALL core_delete_op_p(:id)
     ]]>
 	</sql-query>
 </hibernate-mapping>

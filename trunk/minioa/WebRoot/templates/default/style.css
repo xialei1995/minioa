@@ -450,13 +450,13 @@ a.forgot_pass {
 .left_content {
 	width: 195px;
 	float: left;
-	padding: 30px 0 0 20px;
+	padding: 10px 0 0 3px;
 }
 
 .right_content {
-	width: 625px;
+	width: 685px;
 	float: left;
-	padding: 30px 0 0 30px;
+	padding: 3px 0 0 10px;
 }
 
 .sidebarmenu {
@@ -1024,4 +1024,23 @@ div.pagination span.disabled {
 .rich-tabpanel-content {
 	border-width: 0px;
 	border-bottom: 1px solid #60c8f2;
+}
+
+.rich-table-header th {
+	border-right: 1px solid #81dafc;
+}
+
+.rich-table-header .left {
+	background: #60c8f2 url('images/left.jpg') left top no-repeat;
+}
+
+.rich-table-header .right {
+	background: #60c8f2 url('images/right.jpg') right top no-repeat;
+	border-right-width: 0;
+}
+.rich-tabhdr-side-cell{
+	border-width:0px;
+}
+.rich-tabhdr-side-border img{
+	display:none;
 }

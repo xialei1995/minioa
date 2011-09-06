@@ -90,7 +90,7 @@
 	</sql-query>
 	<sql-query name="core.user.deleterecordbyid">
     <![CDATA[
-        delete from core_user where ID_ = :id
+        CALL core_delete_user_p(:id)
     ]]>
 	</sql-query>
 	<sql-query name="core.user.login">

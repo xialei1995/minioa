@@ -22,7 +22,7 @@
 					<rich:dataTable id="dataTable" rows="10" value="#{Op.recordsList}" var="item" rowKeyVar="rowNum">
 						<f:facet name="header">
 							<rich:columnGroup>
-								<rich:column style="background: #60c8f2 url('images/left.jpg') left top no-repeat;">
+								<rich:column styleClass="left">
 									<h:outputText value="" />
 								</rich:column>
 								<rich:column>
@@ -31,7 +31,7 @@
 								<rich:column>
 									<h:outputText value="#{Lang.prop[MySession.l]['opname']}" />
 								</rich:column>
-								<rich:column style="background: #60c8f2 url('images/right.jpg') right top no-repeat;">
+								<rich:column styleClass="right">
 									<h:outputText value="#{Lang.prop[MySession.l]['opdesc']}" />
 								</rich:column>
 							</rich:columnGroup>

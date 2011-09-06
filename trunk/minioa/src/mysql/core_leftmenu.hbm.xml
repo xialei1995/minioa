@@ -66,7 +66,7 @@
 	<!-- Delete one records by id. -->
 	<sql-query name="core.leftmenu.deleterecordbyid">
     <![CDATA[
-        delete from core_leftmenu where ID_ = :id
+        CALL core_delete_leftmenu_p(:id)
     ]]>
 	</sql-query>
 	<sql-query name="core.leftmenu.getchildren">

@@ -56,7 +56,7 @@
 	</sql-query>
 	<sql-query name="core.role.deleterecordbyid">
     <![CDATA[
-        delete from core_role where ID_ = :id
+        CALL core_delete_role_p(:id)
     ]]>
 	</sql-query>
 	<sql-query name="core.role.getid.byrolename">
