@@ -20,8 +20,7 @@
 					</a4j:commandLink>
 				</a4j:form>
 				<a4j:form id="dataForm" style="margin-top:3px;">
-
-					<rich:dataTable id="dataTable" rows="10" value="#{User.recordsList}" var="item" rowKeyVar="rowNum">
+					<rich:dataTable id="dataTable" rows="#{MySession.pageSize}" value="#{User.recordsList}" var="item" rowKeyVar="rowNum"  style="width:100%;" >
 						<f:facet name="header">
 							<rich:columnGroup>
 								<rich:column styleClass="left">
@@ -96,13 +95,50 @@
 							<h:outputText value="#{Lang.prop[MySession.l]['no']}" rendered="#{item.prop['isLock']=='0'}" />
 						</rich:column>
 					</rich:dataTable>
-
+					<rich:dataTable id="dsTable" rows="#{MySession.pageSize}" value="#{User.dsList}" var="item" style="width:100%;" reRender="ds">
+						<f:facet name="footer">
+							<rich:datascroller maxPages="20" fastControls="hide" page="#{MySession.scrollerPage}" pagesVar="pages" id="ds" reRender="dataTable" for="dsTable">
+								<f:facet name="first">
+									<h:outputText value="&lt;&lt;" />
+								</f:facet>
+								<f:facet name="first_disabled">
+									<h:outputText value="&lt;&lt;" />
+								</f:facet>
+								<f:facet name="last">
+									<h:outputText value="&gt;&gt;" />
+								</f:facet>
+								<f:facet name="last_disabled">
+									<h:outputText value="&gt;&gt;" />
+								</f:facet>
+								<f:facet name="previous">
+									<h:outputText value="&lt;" />
+								</f:facet>
+								<f:facet name="previous_disabled">
+									<h:outputText value="&lt;" />
+								</f:facet>
+								<f:facet name="next">
+									<h:outputText value="&gt;" />
+								</f:facet>
+								<f:facet name="next_disabled">
+									<h:outputText value="&gt;" />
+								</f:facet>
+								<f:facet name="pages">
+									<h:panelGroup>
+										<h:selectOneMenu value="#{MySession.scrollerPage}" onchange="#{rich:component('ds')}.switchToPage(this.value)">
+											<f:selectItems value="#{MySession.pagesToScroll}" />
+										</h:selectOneMenu>
+										<h:outputText value="/ #{pages}" />
+									</h:panelGroup>
+								</f:facet>
+							</rich:datascroller>
+						</f:facet>
+					</rich:dataTable>
 				</a4j:form>
 			</rich:tab>
 			<rich:tab id="tab2" name="tab2" label="#{Lang.prop[MySession.l]['edit']}">
 				<a4j:outputPanel id="editPanel">
-						#{User.init}
-						<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['property']} </legend> <a4j:form id="editForm">
+					<h:outputText value="#{User.init}" style="display:none;" />
+					<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['property']} </legend> <a4j:form id="editForm">
 						<h:panelGrid columns="3" columnClasses="co1,co2,co3">
 							<h:outputText value="#{Lang.prop[MySession.l]['username']}:" />
 							<h:inputText value="#{User.prop['userName']}" style="width:80px;" />
@@ -220,10 +256,8 @@
 				</a4j:outputPanel>
 			</rich:tab>
 		</rich:tabPanel>
-
 		<a4j:form>
-			<rich:modalPanel id="mpForConfirm" width="300" height="80" zindex="3000" style="clear:both;background:url(images/warning.png) no-repeat left #fcfae9;
-border:1px #e9e6c7 solid;background-position:15px 10px;padding:20px 20px 15px 60px;margin:0 0 -10px 0;background-image:url(images/warning.png)">
+			<rich:modalPanel id="mpForConfirm" width="300" height="80" zindex="3000" style="background:url(images/warning.png) no-repeat 8px 12px #fcfae9;background-image:url(images/warning.png)">
 				<a4j:outputPanel style="width:250px;margin-top:-10px;height:80px;">
 					<h:panelGrid columns="3">
 						<h:outputText value="#{Lang.prop[MySession.l]['deletewarning']}" style="font-size:11pt;" />
@@ -239,8 +273,7 @@ border:1px #e9e6c7 solid;background-position:15px 10px;padding:20px 20px 15px 60
 			</rich:modalPanel>
 		</a4j:form>
 		<a4j:form>
-			<rich:modalPanel id="mpForConfirm2" width="300" height="80" zindex="3000" style="clear:both;background:url(images/warning.png) no-repeat left #fcfae9;
-border:1px #e9e6c7 solid;background-position:15px 10px;padding:20px 20px 15px 60px;margin:0 0 -10px 0;background-image:url(images/warning.png)">
+			<rich:modalPanel id="mpForConfirm2" width="300" height="80" zindex="3001" style="clear:both;background:url(images/warning.png) no-repeat 8px 12px #fcfae9;background-image:url(images/warning.png)">
 				<a4j:outputPanel id="confirmDialog" style="width:250px;margin-top:-10px;height:80px;">
 					<h:panelGrid columns="3">
 						<h:outputText value="#{Lang.prop[MySession.l]['deletewarning']}" style="font-size:11pt;" />

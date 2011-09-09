@@ -156,7 +156,8 @@ INSERT INTO `core_leftmenu` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`pare
  (14,0,'2011-09-04 15:04:03',0,NULL,NULL,2,'未完成的审批','','_self',4),
  (15,0,'2011-09-04 15:04:11',0,NULL,NULL,2,'已完成的审批','','_self',5),
  (16,0,'2011-09-04 15:04:32',0,NULL,NULL,3,'ERP系统','','_self',0),
- (17,0,'2011-09-04 15:05:09',0,NULL,NULL,3,'MiniOA下载','http://www.minioa.net/','_self',1);
+ (17,0,'2011-09-04 15:05:09',0,NULL,NULL,3,'MiniOA下载','http://www.minioa.net/','_self',1),
+ (18,0,'2011-09-08 19:24:06',0,NULL,NULL,0,'HelloWorld','helloworld.jsf','_self',3);
 /*!40000 ALTER TABLE `core_leftmenu` ENABLE KEYS */;
 
 
@@ -196,7 +197,8 @@ INSERT INTO `core_leftmenu_role_relation` (`ID_`,`CID_`,`CDATE_`,`menuId`,`roleI
  (16,0,'2011-09-05 19:44:27',17,1),
  (17,0,'2011-09-05 19:44:27',16,1),
  (18,0,'2011-09-05 20:21:52',4,1),
- (19,0,'2011-09-05 21:21:14',5,1);
+ (19,0,'2011-09-05 21:21:14',5,1),
+ (20,0,'2011-09-08 19:24:23',18,1);
 /*!40000 ALTER TABLE `core_leftmenu_role_relation` ENABLE KEYS */;
 
 
@@ -234,7 +236,8 @@ INSERT INTO `core_op` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`opName`,`o
  (9,0,'2011-08-27 21:41:06',NULL,NULL,NULL,'100501','角色管理-增删改'),
  (10,0,'2011-08-27 21:41:14',NULL,NULL,NULL,'100502','角色管理-浏览'),
  (11,0,'2011-08-27 21:41:44',NULL,NULL,NULL,'100601','权限管理-增删改'),
- (12,0,'2011-08-27 21:41:50',NULL,NULL,NULL,'100602','权限管理-浏览');
+ (12,0,'2011-08-27 21:41:50',NULL,NULL,NULL,'100602','权限管理-浏览'),
+ (13,0,'2011-09-08 19:25:01',NULL,NULL,NULL,'helloworld','');
 /*!40000 ALTER TABLE `core_op` ENABLE KEYS */;
 
 
@@ -269,7 +272,8 @@ INSERT INTO `core_op_role_relation` (`ID_`,`CID_`,`CDATE_`,`opId`,`roleId`) VALU
  (11,0,'2011-09-04 18:28:49',11,1),
  (12,0,'2011-09-04 18:28:49',12,1),
  (13,0,'2011-09-05 21:50:39',1,1),
- (14,0,'2011-09-05 21:50:39',2,1);
+ (14,0,'2011-09-05 21:50:39',2,1),
+ (15,0,'2011-09-09 07:47:44',13,1);
 /*!40000 ALTER TABLE `core_op_role_relation` ENABLE KEYS */;
 
 
@@ -354,8 +358,6 @@ CREATE TABLE `core_role_user_relation` (
 /*!40000 ALTER TABLE `core_role_user_relation` DISABLE KEYS */;
 INSERT INTO `core_role_user_relation` (`ID_`,`CID_`,`CDATE_`,`roleId`,`userId`) VALUES 
  (2,0,'2011-09-04 07:44:41',1,1),
- (3,1,'2011-09-05 22:03:28',1,2),
- (5,1,'2011-09-05 22:03:34',2,2),
  (7,1,'2011-09-06 21:16:46',2,2);
 /*!40000 ALTER TABLE `core_role_user_relation` ENABLE KEYS */;
 
@@ -567,7 +569,16 @@ CREATE TABLE `core_user` (
 /*!40000 ALTER TABLE `core_user` DISABLE KEYS */;
 INSERT INTO `core_user` (`ID_`,`CID_`,`CDATE_`,`MID_`,`MDATE_`,`UUID_`,`userName`,`depaId`,`jobId`,`email`,`password`,`phone`,`mobilePhone`,`gender`,`displayName`,`isLock`,`jobId2`) VALUES 
  (1,0,'2011-08-23 21:43:02',0,'2011-08-27 21:15:42',NULL,'admin',2,3,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','','13589310033',0,'管理员',0,7),
- (2,0,'2011-08-24 21:18:36',0,'2011-09-05 22:03:23',NULL,'admin1',14,6,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','123456','13589310033',1,'管理员',1,3);
+ (2,0,'2011-08-24 21:18:36',0,'2011-09-08 19:19:33',NULL,'subadmin',14,6,'914261631@qq.com','e10adc3949ba59abbe56e057f20f883e','123456','13589310033',1,'管理员',1,3),
+ (3,0,'2011-09-09 09:21:13',NULL,NULL,NULL,'Kate',2,0,'kate@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'Kate',NULL,0),
+ (4,0,'2011-09-09 09:21:23',NULL,NULL,NULL,'Tom',2,0,'tom@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'Tom',NULL,0),
+ (5,0,'2011-09-09 09:21:37',NULL,NULL,NULL,'Yahoo',2,0,'yahoo@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'Yahoo',NULL,0),
+ (6,0,'2011-09-09 09:21:49',NULL,NULL,NULL,'Google',2,0,'google@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'Google',NULL,0),
+ (7,0,'2011-09-09 09:22:02',NULL,NULL,NULL,'Baidu',2,0,'baidu@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'Baidu',NULL,0),
+ (8,0,'2011-09-09 09:22:14',NULL,NULL,NULL,'163',2,0,'163@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',0,'163',NULL,0),
+ (9,0,'2011-09-09 09:22:27',NULL,NULL,NULL,'Lucy',2,0,'lucy@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',1,'Lucy',NULL,0),
+ (10,0,'2011-09-09 09:22:51',NULL,NULL,NULL,'Ben',2,0,'ben@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',1,'Ben',NULL,0),
+ (11,0,'2011-09-09 09:22:59',NULL,NULL,NULL,'Li',2,0,'li@gmail.com','e10adc3949ba59abbe56e057f20f883e','','',1,'Li',NULL,0);
 /*!40000 ALTER TABLE `core_user` ENABLE KEYS */;
 
 

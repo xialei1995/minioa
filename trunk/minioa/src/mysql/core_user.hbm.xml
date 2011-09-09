@@ -19,7 +19,7 @@
 	</sql-query>
 	<sql-query name="core.user.records.count">
     <![CDATA[
-        select count(*) as ds from core_user
+        select count(*) as ds from core_user ta
     ]]>
 	</sql-query>
 	<sql-query name="core.user.getrecordbyid">

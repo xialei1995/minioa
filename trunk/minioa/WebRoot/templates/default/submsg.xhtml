@@ -3,8 +3,7 @@
 <ui:composition>
 	<!-- Message Box -->
 	<a4j:outputPanel id="subMsg">
-		<rich:modalPanel id="mpForSubMsg" width="300" height="80" zindex="3001" style="clear:both;background:url(images/warning.png) no-repeat left #fcfae9;
-border:1px #e9e6c7 solid;background-position:15px 10px;padding:20px 20px 15px 60px;margin:0 0 -10px 0;background-image:url(images/warning.png)">
+		<rich:modalPanel id="mpForSubMsg" width="300" height="80" zindex="2001" style="clear:both;background:url(images/warning.png) no-repeat 8px 12px #fcfae9;background-image:url(images/warning.png)">
 			<a4j:outputPanel style="width:250px;margin-top:-10px;height:80px;" onclick="#{rich:component('mpForSubMsg')}.hide()">
 				<h:panelGrid columns="1">
 					<h:outputText escape="false" value="#{MySession.msg}" />

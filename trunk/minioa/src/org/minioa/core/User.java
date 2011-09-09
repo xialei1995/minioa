@@ -93,7 +93,7 @@ public class User {
 			String sql = getSession().getNamedQuery("core.user.records.count").getQueryString();
 			String where = " where 1=1";
 			if (!key.equals(""))
-				where += " and ta.username like :key";
+				where += " and ta.userName like :key";
 			if (!key2.equals(""))
 				where += " and ta.displayName like :key2";
 			Query query = getSession().createSQLQuery(sql + where);

@@ -19,7 +19,7 @@
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>pageSize</property-name>
-			<value>15</value>
+			<value>10</value>
 		</managed-property>
 	</managed-bean>
 	<managed-bean>

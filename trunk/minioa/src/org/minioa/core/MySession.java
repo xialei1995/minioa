@@ -1,10 +1,13 @@
 package org.minioa.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Query;
@@ -45,7 +48,7 @@ public class MySession {
 	}
 
 	public String getMsg() {
-		if ("".equals(msg)){
+		if ("".equals(msg)) {
 			msgScript = "";
 			subMsgScript = "";
 		}
@@ -59,6 +62,7 @@ public class MySession {
 		msg = "";
 		return msgScript;
 	}
+
 	// 显示消息的脚本
 	public String subMsgScript;
 
@@ -66,7 +70,7 @@ public class MySession {
 		msg = "";
 		return subMsgScript;
 	}
-	
+
 	private String templateName;
 
 	public void setTemplateName(String data) {
@@ -318,6 +322,21 @@ public class MySession {
 		return null;
 	}
 
+	public List<SelectItem> getPagesToScroll() {
+		if (rowCount % pageSize == 0)
+			pageCount = (int) (Math.ceil(rowCount / pageSize));
+		else
+			pageCount = (int) (Math.ceil(rowCount / pageSize)) + 1;
+		List<SelectItem> list = new ArrayList<SelectItem>();
+		for (int i = 1; i <= pageCount; i++) {
+			if (Math.abs(i - scrollerPage) < 10) {
+				SelectItem item = new SelectItem(i);
+				list.add(item);
+			}
+		}
+		return list;
+	}
+
 	private int i, level;
 	private StringBuffer sb, sb2;
 	private String topMenu, leftMenu;
@@ -482,9 +501,11 @@ public class MySession {
 	}
 
 	private Map<String, Boolean> hasOp;
-	public void  setHasOp(Map<String, Boolean> data) {
+
+	public void setHasOp(Map<String, Boolean> data) {
 		hasOp = data;
 	}
+
 	public Map<String, Boolean> getHasOp() {
 		return hasOp;
 	}
