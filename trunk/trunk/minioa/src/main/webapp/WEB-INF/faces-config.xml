@@ -97,6 +97,11 @@
 		<managed-bean-class>org.minioa.core.LeftMenuRoleRelation</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>Pinyin</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Pinyin</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<application>
 		<navigation-handler>org.richfaces.ui.application.StateNavigationHandler</navigation-handler>
 		<el-resolver>org.richfaces.el.StateELResolver</el-resolver>
