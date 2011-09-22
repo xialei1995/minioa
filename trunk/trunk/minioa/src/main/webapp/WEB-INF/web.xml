@@ -7,11 +7,15 @@
 	<display-name>MiniOA</display-name>
 	<context-param>
 		<param-name>webAppName</param-name>
-		<param-value></param-value>
+		<param-value>minioa</param-value>
 	</context-param>
 	<context-param>
 		<param-name>baseDir</param-name>
 		<param-value>F:\minioa\src\minioa\src\main\webapp</param-value>
+	</context-param>
+	<context-param>
+		<param-name>passwordKey</param-name>
+		<param-value>ABCDx81_*,</param-value>
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>

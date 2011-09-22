@@ -25,7 +25,7 @@
 	<sql-query name="core.user.getrecordbyid">
     <![CDATA[
         select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
-        	ta.depaId,ta.jobId,ta.jobId2,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock,tb.depaName,tc.jobName,td.jobName as aa
+        	ta.depaId,ta.jobId,ta.jobId2,ta.userName,ta.email,ta.phone,ta.mobilePhone,ta.gender,ta.displayName,ta.isLock,tb.depaName,tc.jobName,td.jobName as deputyJobName, ta.password
         from core_user ta
         left join core_department tb on tb.ID_ = ta.depaId
         left join core_job tc on tc.ID_ = ta.jobId
@@ -57,7 +57,7 @@
         left join core_department tb on tb.ID_ = ta.depaId
         left join core_job tc on tc.ID_ = ta.jobId
         left join core_job td on td.ID_ = ta.jobId2
-        where ta.userName = :userName and ta.password = md5(:password)
+        where ta.userName = :userName
     ]]>
 	</sql-query>
 	<sql-query name="core.user.isrecordexistbyname">
@@ -82,6 +82,15 @@
         where ID_ = :id
     ]]>
 	</sql-query>
+	<sql-query name="core.user.updateprofile">
+    <![CDATA[
+        update core_user set MID_ = :mId, MDATE_ = sysdate(), 
+        	depaId = :depaId,jobId = :jobId,jobId2 = :jobId2,email = :email,
+        	phone = :phone,mobilePhone = :mobilePhone,
+        	gender = :gender,displayName = :displayName
+        where ID_ = :id
+    ]]>
+	</sql-query>
 	<sql-query name="core.user.updatepasswordbyid">
     <![CDATA[
         update core_user set MID_ = :mId, MDATE_ = sysdate(), password = md5(:password)
@@ -97,6 +106,12 @@
     <![CDATA[
         select count(*) as tmp
         from core_user where userName = :userName and password = md5(:password)
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.autologin">
+    <![CDATA[
+        select count(*) as tmp
+        from core_user where userName = :userName and password = :password
     ]]>
 	</sql-query>
 </hibernate-mapping>

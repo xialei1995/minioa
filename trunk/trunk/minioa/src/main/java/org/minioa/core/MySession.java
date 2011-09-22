@@ -410,6 +410,8 @@ public class MySession {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
+				if("".equals(url))
+					url = "#";
 				hasChildren = hasChild(id, "topmenu");
 				if (i == 0) {
 					className = "class=\"current\"";
@@ -461,6 +463,8 @@ public class MySession {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
+				if("".equals(url))
+					url = "#";
 				hasChildren = hasChild(id, "leftmenu");
 				if (!hasChildren) {
 					if (isSubmenu)

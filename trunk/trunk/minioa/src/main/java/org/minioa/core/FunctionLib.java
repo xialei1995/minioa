@@ -12,7 +12,7 @@ public class FunctionLib {
 
 	public static String dbType = "mysql";
 
-	public static String baseDir, separator,webAppName;
+	public static String baseDir, separator, webAppName;
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -34,11 +34,17 @@ public class FunctionLib {
 			baseDir = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("baseDir") + getSeparator();
 		return baseDir;
 	}
+
 	public static String getWebAppName() {
 		if (webAppName == null)
 			webAppName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("webAppName");
 		return webAppName;
 	}
+
+	public static String getWebParameter(String parameter) {
+		return FacesContext.getCurrentInstance().getExternalContext().getInitParameter(parameter);
+	}
+
 	public static boolean isNum(String str) {
 		if (str == null)
 			return false;
@@ -166,9 +172,10 @@ public class FunctionLib {
 			ex.printStackTrace();
 		}
 	}
-	public static void redirect(String templateName,String page) {
+
+	public static void redirect(String templateName, String page) {
 		try {
-			if("".equals(getWebAppName()))
+			if ("".equals(getWebAppName()))
 				redirect("templates/" + templateName + "/" + page);
 			else
 				redirect(getWebAppName() + "/templates/" + templateName + "/" + page);
@@ -185,6 +192,11 @@ public class FunctionLib {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public static String getRequestHeaderMap(String parameter) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		return context.getExternalContext().getRequestHeaderMap().get(parameter);
 	}
 
 	public static String exeSql(org.hibernate.Session s, String sql, String paramName, String paramValue, String type) {
@@ -205,7 +217,8 @@ public class FunctionLib {
 		}
 		return str;
 	}
-	public static String exeSql(org.hibernate.Session s, String sql, String paramName, String paramValue,String paramName2, String paramValue2, String type) {
+
+	public static String exeSql(org.hibernate.Session s, String sql, String paramName, String paramValue, String paramName2, String paramValue2, String type) {
 		String str = "";
 		if (type.equals("float"))
 			str = "0";
