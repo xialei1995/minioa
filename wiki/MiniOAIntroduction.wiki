@@ -1,78 +1,21 @@
-我创建MiniOA这个开源项目，旨在与大家分享Java、JSF、Richfaces、Javascript等Web Application 开发技术，分享协同办公系统设计思想。向优秀的开源软件学习，分享开源精神，传递开源力量。MiniOA即可当作学习案例，也可当作开发框架，也适合企业搭建协同办公系统。
+开源项目MiniOA致力于中小企业协同办公。
+
+创建MiniOA，旨在与大家分享Java、JSF、Richfaces、Javascript等Web Application 开发技术，分享协同办公系统设计思想。向优秀的开源软件学习，分享开源精神，传递开源力量。
+
+MiniOA即可当作学习案例，也可当作开发框架，也适合企业 搭建协同办公系统。
+
+MiniOA，又称迷你办公自动化系统，主要解决公司日常网上办公、信息发布、信息流转、文档共享等信息化应用。技术层面上，1、提供应用程序开发框架，便于进行二次开发，开发者不必关心组织结构、权限控制、菜单管理、日志、图表等公共模块的开发，仅需要关注业务；2、重点开发电子表单模块，让用户不需要开发一行代码便可建立数据表单，就可完成对业务数据的采集；3、提供简单的工作流支持，配合电子表单模块以满足公司日常审批需求。
+
+我可能并不擅长编码，对Java并不精通，但是我在协同办公系统的设计方面考虑很多，这些考虑来源于在实际工作。我的某些想法或许不是最优秀，但是一定能帮助你解决实际问题。
+
+MiniOA项目地址：http://code.google.com/p/minioa/
+
+MiniOA官方网址：http://www.minioa.net/
+
+MiniOA交流群：MiniOA_java开发交流(128161498已满、167971041、168432371、168433074)
+
+MiniOA需求纲要：http://www.minioa.net/viewtopic.php?f=7&t=159
+
+开源项目MiniOA队员招募通知：http://www.minioa.net/viewtopic.php?f=7&t=233
 
  
-
-MiniOA计划开发组织结构管理、权限管理、菜单管理、文件管理、信息发布、Web邮件客户端、电子表单管理、工作流管理、Spark即时通讯、数据图表等模块，目前已完成程序基本框架和Openfire的集成。我可能并不擅长编码，对Java并不精通，但是我在协同办公系统的设计方面考虑很多，这些考虑来源于在实际工作。我的某些想法或许不是最优秀，但是一定能帮助你解决实际问题。
-
- 
-
-MiniOA项目网址 http://code.google.com/p/minioa/
-
- 
-
-运行环境
-
-1 安装JDK。MiniOA的开发环境是jdk1.6.0_03。
-
-2 安装Tomcat。MiniOA使用的是apache-tomcat-6.0.18。
-
-3 安装MySQL。MiniOA使用的是MySQL5。
-
- 
-
-安装
-
-执行MiniOA.sql脚本创建数据库minioa
-
-将下载的minioa.rar解压缩至apache-tomcat-6.0.18\webapps\ MiniOA下，将下载Spark.rar解压缩至apache-tomcat-6.0.18\webapps\MiniOA\WEB-INF\src\Spark下。MiniOA的javabean源文件在MiniOA\WEB-INF\src\code下。
-
- 
-
-配置数据库连接
-
-修改文件MiniOA\WEB-INF\classes\hibernate.cfg.xml，设置正确的数据库连接信息。
-
- 
-
-Openfire配置
-
-修改文件MiniOA\WEB-INF\web.xml中enableOpenfire的值，默认是true，表示程序启动后会使用system@minioa帐号登录openfire服务器。当设置成true时，请确保Openfire已经启动。
-
- 
-
-启动Tomcat
-
-首先确认apache-tomcat-6.0.18\bin\startup.bat已经设置了正确的环境变量，例如
-
-set JAVA_HOME=C:\Java\jdk1.6.0_03\
-
-set JAVA_OPTS=-Xms128M -Xmx256M
-
-set CATALINA_BASE=F:\apache-tomcat-6.0.18
-
-set CATALINA_HOME=F:\apache-tomcat-6.0.18
-
-set CATALINA_TMPDIR=F:\apache-tomcat-6.0.18\temp
-
-set CATALINA_OPTS=-Xms128M -Xmx256M
-
-双击startup.bat启动tomcat
-
- 
-
-在浏览器中输入网址http://localhost:8080/MiniOA，
-出现登录界面，用户名admin，密码123456。
-
- http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_image2011032301.png
-
-系统主要界面
-
- http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_image2011032302.png
-
-与Spark集成
-
- http://images.cnblogs.com/cnblogs_com/liuzhengdao/285735/r_Spark.png
-
- 
-
-QQ交流群：128161498 
