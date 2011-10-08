@@ -34,7 +34,7 @@ public class Lang {
 				is.close();
 
 				Map<String, String> t = new HashMap<String, String>();
-				Iterator it = property.entrySet().iterator();
+				Iterator<?> it = property.entrySet().iterator();
 				while (it.hasNext()) {
 					Entry<String, String> e = (Entry<String, String>) it.next();
 					t.put(e.getKey().toString(), e.getValue().toString());
@@ -44,7 +44,7 @@ public class Lang {
 				System.out.print("The file named " + filename + " not found!");
 			f = null;
 		} catch (Exception ex) {
-			System.out.print(ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 

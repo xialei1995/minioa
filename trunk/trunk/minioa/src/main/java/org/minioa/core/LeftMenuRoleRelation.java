@@ -17,6 +17,8 @@ public class LeftMenuRoleRelation {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -25,6 +27,8 @@ public class LeftMenuRoleRelation {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -115,7 +119,7 @@ public class LeftMenuRoleRelation {
 			// if(!getMySession().getHasOp().get("010502"))
 			// return;
 
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			if (FunctionLib.isNum(relationId)) {
 				roleId = Integer.valueOf(relationId);
@@ -160,13 +164,12 @@ public class LeftMenuRoleRelation {
 		return rootNode;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, String relationId,int parentId, String pName) {
+	public void addNodes(TreeNode<LeftMenuRoleRelation> node, String relationId,int parentId, String pName) {
 		try {
 			Query query = getSession().getNamedQuery("core.leftmenurolerelation.getchildren");
 			query.setParameter("parentId", parentId);
 			query.setParameter("relationId", relationId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();				
 				if (FunctionLib.getInt(obj[2]) > 0)
@@ -174,8 +177,7 @@ public class LeftMenuRoleRelation {
 				else
 					checkIdsMap.put(FunctionLib.getInt(obj[0]), false);
 				
-				@SuppressWarnings("rawtypes")
-				TreeNodeImpl nodeImpl = new TreeNodeImpl();
+				TreeNodeImpl<LeftMenuRoleRelation> nodeImpl = new TreeNodeImpl<LeftMenuRoleRelation>();
 				nodeImpl.setData(new LeftMenuRoleRelation(FunctionLib.getInt(obj[0]), FunctionLib.getString(obj[1]), FunctionLib.getInt(obj[2])));
 				node.addChild(key, nodeImpl);
 				key++;
@@ -187,15 +189,15 @@ public class LeftMenuRoleRelation {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public void loadTree() {
 		try {
 			
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			
 			String msg = getLang().getProp().get(getMySession().getL()).get("leftmenu");
-			rootNode = new TreeNodeImpl();
+			rootNode = new TreeNodeImpl<LeftMenuRoleRelation>();
 			key = 1;
 			if (hasChild(0))
 				addNodes(rootNode, relationId, 0, msg);

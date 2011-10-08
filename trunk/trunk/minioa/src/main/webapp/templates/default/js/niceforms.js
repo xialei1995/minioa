@@ -8,7 +8,7 @@ Feel free to use and modify but please keep this copyright intact.
 #################################################################*/
 
 //Theme Variables - edit these to match your theme
-var imagesPath = "../images/";
+var imagesPath = "img/";
 var selectRightWidthSimple = 19;
 var selectRightWidthScroll = 2;
 var selectMaxHeight = 200;
@@ -555,25 +555,6 @@ function findPosX(obj) {
 //Get Siblings
 function getInputsByName(name) {
 	var inputs = document.getElementsByTagName("input");
-	var w = 0; var results = new Array();
-	for(var q = 0; q < inputs.length; q++) {if(inputs[q].name == name) {results[w] = inputs[q]; ++w;}}
-	return results;
-}
-
-//Add events
-var existingLoadEvent = window.onload || function () {};
-var existingResizeEvent = window.onresize || function() {};
-window.onload = function () {
-    existingLoadEvent();
-    NFInit();
-}
-window.onresize = function() {
-	if(resizeTest != document.documentElement.clientHeight) {
-		existingResizeEvent();
-		NFFix();
-	}
-	resizeTest = document.documentElement.clientHeight;
-}me("input");
 	var w = 0; var results = new Array();
 	for(var q = 0; q < inputs.length; q++) {if(inputs[q].name == name) {results[w] = inputs[q]; ++w;}}
 	return results;

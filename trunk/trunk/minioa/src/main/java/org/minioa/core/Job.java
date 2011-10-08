@@ -179,6 +179,8 @@ public class Job {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -187,6 +189,8 @@ public class Job {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -277,7 +281,7 @@ public class Job {
 		try {
 			getMySession();
 			recordsList = new ArrayList<Job>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Job.rowcount")) {
 					for (int i = 0; i < mySession.getTempInt().get("Job.rowcount"); i++)
@@ -287,7 +291,7 @@ public class Job {
 			}
 
 			Query query = getSession().getNamedQuery("core.job.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
@@ -350,7 +354,7 @@ public class Job {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			selectRecordById(id);
 		} catch (Exception ex) {
@@ -362,7 +366,7 @@ public class Job {
 		try {
 			Query query = getSession().getNamedQuery("core.job.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				this.reset();
 				Object obj[] = (Object[]) it.next();
@@ -408,7 +412,7 @@ public class Job {
 	 */
 	public void newRecord() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId))
@@ -445,7 +449,7 @@ public class Job {
 	 */
 	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
@@ -480,7 +484,7 @@ public class Job {
 	 */
 	public void deleteRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
@@ -499,7 +503,7 @@ public class Job {
 
 	public void moveRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
@@ -513,7 +517,7 @@ public class Job {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Job.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -540,12 +544,12 @@ public class Job {
 	 * @param node
 	 */
 	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, int orgId, int parentId, String oName, String pName) {
+	public void addNodes(TreeNode<Job> node, int orgId, int parentId, String oName, String pName) {
 		try {
 			Query query = getSession().getNamedQuery("core.job.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
 			String name, desc;
 			while (it.hasNext()) {
@@ -578,12 +582,12 @@ public class Job {
 
 			Query query = getSession().getNamedQuery("core.org.records");
 			Iterator it = query.list().iterator();
-			int id, seq;
+			int id;
 			String name, desc;
 			key = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
-				id = seq = 0;
+				id = 0;
 				name = desc = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
@@ -649,24 +653,22 @@ public class Job {
 	public void buildTreeFile() {
 		try {
 			bf = new StringBuffer();
-			rootNode = new TreeNodeImpl();
+			rootNode = new TreeNodeImpl<Job>();
 
 			Query query = getSession().getNamedQuery("core.org.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
-			String name, desc;
+			String name;
 			level = 1;
 			int i = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name = desc = "";
+				name = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[6] != null)
 					name = String.valueOf(obj[6]);
-				if (obj[7] != null)
-					desc = String.valueOf(obj[7]);
 				bf.append(i + "=org," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
 				addChildren(String.valueOf(i), id, 0, name, name);
 				i++;
@@ -696,20 +698,18 @@ public class Job {
 			Query query = getSession().getNamedQuery("core.job.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
-			String name, desc;
+			String name;
 			int i = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name = desc = "";
+				name  = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)
 					name = String.valueOf(obj[1]);
-				if (obj[2] != null)
-					desc = String.valueOf(obj[2]);
 				bf.append(parentKey + "." + i + "=job," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
 
 				if (hasChild(orgId, id))

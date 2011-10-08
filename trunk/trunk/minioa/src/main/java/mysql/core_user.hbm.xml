@@ -91,6 +91,13 @@
         where ID_ = :id
     ]]>
 	</sql-query>
+	<sql-query name="core.user.updatepassword">
+    <![CDATA[
+        update core_user set MID_ = :mId, MDATE_ = sysdate(), 
+        	password = md5(:password)
+        where ID_ = :id
+    ]]>
+	</sql-query>
 	<sql-query name="core.user.updatepasswordbyid">
     <![CDATA[
         update core_user set MID_ = :mId, MDATE_ = sysdate(), password = md5(:password)
@@ -106,6 +113,12 @@
     <![CDATA[
         select count(*) as tmp
         from core_user where userName = :userName and password = md5(:password)
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.getuserbypassword">
+    <![CDATA[
+        select count(*) as tmp
+        from core_user where ID_ = :id and password = md5(:password)
     ]]>
 	</sql-query>
 	<sql-query name="core.user.autologin">

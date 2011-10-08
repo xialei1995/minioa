@@ -9,8 +9,6 @@ import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.Max;
-import org.hibernate.validator.Min;
 import org.hibernate.validator.NotEmpty;
 import org.jboss.seam.ui.*;
 
@@ -130,6 +128,8 @@ public class Pinyin {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -138,6 +138,8 @@ public class Pinyin {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -201,7 +203,7 @@ public class Pinyin {
 		try {
 			getMySession();
 			recordsList = new ArrayList<Pinyin>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Pinyin.rowcount")) {
 					for (int i = 0; i < mySession.getTempInt().get("Pinyin.rowcount"); i++)
@@ -211,7 +213,7 @@ public class Pinyin {
 			}
 
 			Query query = getSession().getNamedQuery("core.pinyin.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
@@ -262,11 +264,11 @@ public class Pinyin {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			Query query = getSession().getNamedQuery("core.pinyin.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				this.reset();
 				Object obj[] = (Object[]) it.next();
@@ -326,7 +328,7 @@ public class Pinyin {
 	 */
 	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			Query query = getSession().getNamedQuery("core.pinyin.updaterecordbyid");
 			query.setParameter("mId", 0);
@@ -369,7 +371,7 @@ public class Pinyin {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Pinyin.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");

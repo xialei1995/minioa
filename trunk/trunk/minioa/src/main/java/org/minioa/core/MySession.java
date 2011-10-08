@@ -5,11 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.HibernateEntityLoader;
@@ -153,7 +150,7 @@ public class MySession {
 
 	public String getTab() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String tab = (String) params.get("tab");
 			if (tab != null && tab.substring(0, 3).equals("tab"))
 				return tab;
@@ -173,7 +170,6 @@ public class MySession {
 		if (isLogin == null || !isLogin.equals("true")) {
 			if (formUrl == null || formUrl.equals("")) {
 				FacesContext context = FacesContext.getCurrentInstance();
-				HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 				formUrl = context.getExternalContext().getRequestHeaderMap().get("referer");
 			}
 			isLogin = "<script language=\"javascript\">window.location.href = 'login.jsf';</script>";
@@ -311,6 +307,7 @@ public class MySession {
 		this.scrollerPage = data;
 	}
 
+	@SuppressWarnings("unused")
 	private String pageInit;
 
 	public String getPageInit() {
@@ -395,7 +392,7 @@ public class MySession {
 			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core.topmenu.getchildren.role");
 			query.setParameter("parentId", parentId);
 			query.setParameter("userId", this.getUserId());
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
 			String name, url, target;
 			while (it.hasNext()) {
@@ -448,7 +445,7 @@ public class MySession {
 			Query query = new HibernateEntityLoader().getSession().getNamedQuery("core.leftmenu.getchildren.role");
 			query.setParameter("parentId", parentId);
 			query.setParameter("userId", this.getUserId());
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
 			String name, url, target;
 			while (it.hasNext()) {
@@ -520,7 +517,7 @@ public class MySession {
 				hasOp = new HashMap<String, Boolean>();
 				Query query = s.getNamedQuery("core.oprolerelation.hasop");
 				query.setParameter("userId", userId);
-				Iterator it = query.list().iterator();
+				Iterator<?> it = query.list().iterator();
 				while (it.hasNext()) {
 					Object obj[] = (Object[]) it.next();
 					if (obj[1] == null)

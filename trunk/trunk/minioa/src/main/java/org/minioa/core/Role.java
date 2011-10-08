@@ -17,6 +17,8 @@ public class Role {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -25,6 +27,8 @@ public class Role {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -110,7 +114,7 @@ public class Role {
 
 			getDsList();
 			recordsList = new ArrayList<Role>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				int size = 0;
 				while (size < mySession.getPageSize()) {
@@ -141,7 +145,7 @@ public class Role {
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
 
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			Map<String, String> p;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
@@ -162,13 +166,13 @@ public class Role {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (id == null || !FunctionLib.isNum(id))
 				return;
 			Query query = getSession().getNamedQuery("core.role.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				prop = new HashMap<String, String>();
@@ -235,7 +239,7 @@ public class Role {
 	public void updateRecordById() {
 		try {
 			getMySession();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
@@ -288,7 +292,7 @@ public class Role {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Role.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");

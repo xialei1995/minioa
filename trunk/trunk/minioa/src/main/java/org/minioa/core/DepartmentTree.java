@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-
 import org.richfaces.component.html.HtmlTree;
 import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
@@ -22,16 +18,17 @@ public class DepartmentTree {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 	
-	private TreeNode rootNode = null;
-	private List<String> selectedNodeChildren = new ArrayList<String>();
+	private TreeNode<Department> rootNode = null;
 
 	private String nodeTitle;
 	private static final String DATA_PATH = FunctionLib.getBaseDir() + "department.properties";
 
-	private void addNodes(String path, TreeNode node, Properties properties) {
+	private void addNodes(String path, TreeNode<Department> node, Properties properties) {
 		boolean end = false;
 		int counter = 1;
 		while (!end) {
@@ -39,7 +36,7 @@ public class DepartmentTree {
 			String value = properties.getProperty(key);
 			if (value != null) {
 				String[] arr = value.split("\\,");
-				TreeNodeImpl nodeImpl = new TreeNodeImpl();
+				TreeNodeImpl<Department> nodeImpl = new TreeNodeImpl<Department>();
 				nodeImpl.setData(new Department(arr[0],Integer.valueOf(arr[1]), arr[2]));
 				node.addChild(new Integer(counter), nodeImpl);
 				addNodes(key, nodeImpl, properties);
@@ -57,7 +54,7 @@ public class DepartmentTree {
 				InputStream is = new FileInputStream(DATA_PATH);
 				Properties property = new Properties();
 				property.load(is);
-				rootNode = new TreeNodeImpl();
+				rootNode = new TreeNodeImpl<Department>();
 				addNodes(null, rootNode, property);
 			}
 		} catch (IOException e) {
@@ -77,7 +74,7 @@ public class DepartmentTree {
 		}
 	}
 
-	public TreeNode getTreeNode() {
+	public TreeNode<Department> getTreeNode() {
 		if (rootNode == null) {
 			loadTree();
 		}

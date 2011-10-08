@@ -17,6 +17,8 @@ public class TopMenuRoleRelation {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -25,6 +27,8 @@ public class TopMenuRoleRelation {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -115,7 +119,7 @@ public class TopMenuRoleRelation {
 			// if(!getMySession().getHasOp().get("010502"))
 			// return;
 
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			if (FunctionLib.isNum(relationId)) {
 				roleId = Integer.valueOf(relationId);
@@ -150,23 +154,21 @@ public class TopMenuRoleRelation {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private TreeNode rootNode = null;
+	private TreeNode<TopMenuRoleRelation> rootNode = null;
 
-	@SuppressWarnings("rawtypes")
-	public TreeNode getTreeNode() {
+	public TreeNode<TopMenuRoleRelation> getTreeNode() {
 		if (rootNode == null)
 			loadTree();
 		return rootNode;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, String relationId,int parentId, String pName) {
+	public void addNodes(TreeNode<TopMenuRoleRelation> node, String relationId,int parentId, String pName) {
 		try {
 			Query query = getSession().getNamedQuery("core.topmenurolerelation.getchildren");
 			query.setParameter("parentId", parentId);
 			query.setParameter("relationId", relationId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();				
 				if (FunctionLib.getInt(obj[2]) > 0)
@@ -187,15 +189,13 @@ public class TopMenuRoleRelation {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void loadTree() {
 		try {
-			
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			
 			String msg = getLang().getProp().get(getMySession().getL()).get("topmenu");
-			rootNode = new TreeNodeImpl();
+			rootNode = new TreeNodeImpl<TopMenuRoleRelation>();
 			key = 1;
 			if (hasChild(0))
 				addNodes(rootNode, relationId, 0, msg);

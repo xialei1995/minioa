@@ -140,6 +140,8 @@ public class Org {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -148,6 +150,8 @@ public class Org {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -212,7 +216,7 @@ public class Org {
 		try {
 			getMySession();
 			recordsList = new ArrayList<Org>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Org.rowcount")) {
 					for (int i = 0; i < mySession.getTempInt().get("Org.rowcount"); i++)
@@ -222,7 +226,7 @@ public class Org {
 			}
 
 			Query query = getSession().getNamedQuery("core.org.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id, cId, mId,sq;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
@@ -275,11 +279,11 @@ public class Org {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			Query query = getSession().getNamedQuery("core.org.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				this.reset();
 				Object obj[] = (Object[]) it.next();
@@ -342,7 +346,7 @@ public class Org {
 	 */
 	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			Query query = getSession().getNamedQuery("core.org.updaterecordbyid");
 			query.setParameter("mId", 0);
@@ -386,7 +390,7 @@ public class Org {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Org.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");

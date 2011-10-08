@@ -3,6 +3,8 @@ package org.minioa.core;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.faces.context.FacesContext;
 
@@ -206,7 +208,7 @@ public class FunctionLib {
 		try {
 			Query query = s.getNamedQuery(sql);
 			query.setParameter(paramName, paramValue);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj = (Object) it.next();
 				if (obj != null)
@@ -226,7 +228,7 @@ public class FunctionLib {
 			Query query = s.getNamedQuery(sql);
 			query.setParameter(paramName, paramValue);
 			query.setParameter(paramName2, paramValue2);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj = (Object) it.next();
 				if (obj != null)
@@ -236,5 +238,27 @@ public class FunctionLib {
 			ex.printStackTrace();
 		}
 		return str;
+	}
+
+	public static String getIp() {
+		String ip = "";
+		try {
+			FacesContext fc = FacesContext.getCurrentInstance();
+			HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
+			ip = request.getHeader("x-forwarded-for");
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+				ip = request.getHeader("Proxy-Client-IP");
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+				ip = request.getHeader("WL-Proxy-Client-IP");
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+				ip = request.getRemoteAddr();
+			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+				ip = request.getHeader("via");
+			if (ip == null || ip.length() == 0)
+				ip = "unknown";
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return ip;
 	}
 }

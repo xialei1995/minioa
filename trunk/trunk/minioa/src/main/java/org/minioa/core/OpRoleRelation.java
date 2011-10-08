@@ -17,6 +17,8 @@ public class OpRoleRelation {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -25,6 +27,8 @@ public class OpRoleRelation {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -127,13 +131,13 @@ public class OpRoleRelation {
 		try {
 			checkIdsMap.clear();
 			recordsList = new ArrayList<OpRoleRelation>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			if (!FunctionLib.isNum(relationId))
 				return;
 			Query query = getSession().getNamedQuery("core.oprolerelation.records");
 			query.setParameter("relationId", relationId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				if (FunctionLib.getInt(obj[5]) > 0)
@@ -153,7 +157,7 @@ public class OpRoleRelation {
 			// if(!getMySession().getHasOp().get("010502"))
 			// return;
 
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String relationId = (String) params.get("relationId");
 			if (FunctionLib.isNum(relationId)) {
 				roleId = Integer.valueOf(relationId);

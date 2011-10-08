@@ -10,7 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
 
-public class Op {
+public class Basicdata {
 
 	public Lang lang;
 
@@ -59,21 +59,21 @@ public class Op {
 		return prop;
 	}
 
-	private List<Op> recordsList;
+	private List<Basicdata> recordsList;
 
-	public List<Op> getRecordsList() {
+	public List<Basicdata> getRecordsList() {
 		if (recordsList == null)
 			buildRecordsList();
 		return recordsList;
 	}
 
-	public Op() {
+	public Basicdata() {
 	}
 
-	public Op(int i) {
+	public Basicdata(int i) {
 	}
 
-	public Op(Map<String, String> data) {
+	public Basicdata(Map<String, String> data) {
 		setProp(data);
 	}
 
@@ -86,14 +86,14 @@ public class Op {
 
 			String key = "";
 			if (mySession.getTempStr() != null) {
-				if (mySession.getTempStr().get("Op.key") != null)
-					key = mySession.getTempStr().get("Op.key").toString();
+				if (mySession.getTempStr().get("Basicdata.key") != null)
+					key = mySession.getTempStr().get("Basicdata.key").toString();
 			}
 
-			String sql = getSession().getNamedQuery("core.op.records.count").getQueryString();
+			String sql = getSession().getNamedQuery("core.basicdata.records.count").getQueryString();
 			String where = " where 1=1";
 			if (!key.equals(""))
-				where += " and ta.opName like :key";
+				where += " and name like :key";
 			Query query = getSession().createSQLQuery(sql + where);
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
@@ -113,12 +113,12 @@ public class Op {
 		try {
 
 			getDsList();
-			recordsList = new ArrayList<Op>();
+			recordsList = new ArrayList<Basicdata>();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				int size = 0;
 				while (size < mySession.getPageSize()) {
-					recordsList.add(new Op(size));
+					recordsList.add(new Basicdata(size));
 					size++;
 				}
 				return;
@@ -128,16 +128,16 @@ public class Op {
 
 			String key = "";
 			if (mySession.getTempStr() != null) {
-				if (mySession.getTempStr().get("Op.key") != null)
-					key = mySession.getTempStr().get("Op.key").toString();
+				if (mySession.getTempStr().get("Basicdata.key") != null)
+					key = mySession.getTempStr().get("Basicdata.key").toString();
 			}
 
-			String sql = getSession().getNamedQuery("core.op.records").getQueryString();
+			String sql = getSession().getNamedQuery("core.basicdata.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.opName desc limit :limit offset :offset";
+			String other = " order by ta.name, ta.sequence, ta.value, ta.value2 limit :limit offset :offset";
 
 			if (!key.equals(""))
-				where += " and ta.opName like :key";
+				where += " and ta.name like :key";
 			Query query = getSession().createSQLQuery(sql + where + other);
 			query.setParameter("limit", mySession.getPageSize());
 			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
@@ -151,9 +151,11 @@ public class Op {
 				Object obj[] = (Object[]) it.next();
 				p = new HashMap<String, String>();
 				p.put("id", FunctionLib.getString(obj[0]));
-				p.put("opName", FunctionLib.getString(obj[6]));
-				p.put("opDesc", FunctionLib.getString(obj[7]));
-				recordsList.add(new Op(p));
+				p.put("name", FunctionLib.getString(obj[6]));
+				p.put("value", FunctionLib.getString(obj[7]));
+				p.put("value2", FunctionLib.getString(obj[8]));
+				p.put("sequence", FunctionLib.getString(obj[9]));
+				recordsList.add(new Basicdata(p));
 			}
 			it = null;
 		} catch (Exception ex) {
@@ -170,14 +172,17 @@ public class Op {
 			String id = (String) params.get("id");
 			if (id == null || !FunctionLib.isNum(id))
 				return;
-			Query query = getSession().getNamedQuery("core.op.getrecordbyid");
+			Query query = getSession().getNamedQuery("core.basicdata.getrecordbyid");
 			query.setParameter("id", id);
 			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				prop = new HashMap<String, String>();
-				prop.put("opName", FunctionLib.getString(obj[6]));
-				prop.put("opDesc", FunctionLib.getString(obj[7]));
+				prop.put("id", FunctionLib.getString(obj[0]));
+				prop.put("name", FunctionLib.getString(obj[6]));
+				prop.put("value", FunctionLib.getString(obj[7]));
+				prop.put("value2", FunctionLib.getString(obj[8]));
+				prop.put("sequence", FunctionLib.getString(obj[9]));
 			}
 			it = null;
 
@@ -189,21 +194,12 @@ public class Op {
 	public void newRecord() {
 		try {
 			getMySession();
-			if ("".equals(prop.get("opName"))) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
-				getMySession().setMsg(msg, Integer.valueOf(0));
-				return;
-			}
-			if (isRoleExists(prop.get("opName"))) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("opnamehasbeanexists");
-				getMySession().setMsg(msg, Integer.valueOf(0));
-				return;
-			}
-
-			Query query = getSession().getNamedQuery("core.op.newrecord");
-			query.setParameter("cId", 0);
-			query.setParameter("opName", prop.get("opName"));
-			query.setParameter("opDesc", prop.get("opDesc"));
+			Query query = getSession().getNamedQuery("core.basicdata.newrecord");
+			query.setParameter("cId", mySession.getUserId());
+			query.setParameter("name", prop.get("name"));
+			query.setParameter("value", prop.get("value"));
+			query.setParameter("value2", prop.get("value2"));
+			query.setParameter("sequence", prop.get("sequence"));
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
@@ -215,9 +211,9 @@ public class Op {
 		}
 	}
 
-	public boolean isRoleExists(String opName) {
+	public boolean isRoleExists(String roleName) {
 		try {
-			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.op.isrecordexistbyname", "opName", opName, "float")) == 0)
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.basicdata.isrecordexistbyname", "roleName", roleName, "float")) == 0)
 				return false;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -225,9 +221,9 @@ public class Op {
 		return true;
 	}
 
-	public boolean isRoleExists(String opName, String id) {
+	public boolean isRoleExists(String roleName, String id) {
 		try {
-			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.op.isrecordexistbyname.byid", "opName", opName, "id", id, "float")) == 0)
+			if (Integer.valueOf(FunctionLib.exeSql(getSession(), "core.basicdata.isrecordexistbyname.byid", "roleName", roleName, "id", id, "float")) == 0)
 				return false;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -242,21 +238,12 @@ public class Op {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
-
-			if ("".equals(prop.get("opName"))) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("noempty");
-				getMySession().setMsg(msg, Integer.valueOf(0));
-				return;
-			}
-			if (isRoleExists(prop.get("opName"), id)) {
-				String msg = getLang().getProp().get(getMySession().getL()).get("opnamehasbeanexists");
-				getMySession().setMsg(msg, Integer.valueOf(0));
-				return;
-			}
-			Query query = getSession().getNamedQuery("core.op.updaterecordbyid");
-			query.setParameter("mId", 0);
-			query.setParameter("opName", prop.get("opName"));
-			query.setParameter("opDesc", prop.get("opDesc"));
+			Query query = getSession().getNamedQuery("core.basicdata.updaterecordbyid");
+			query.setParameter("mId", mySession.getUserId());
+			query.setParameter("name", prop.get("name"));
+			query.setParameter("value", prop.get("value"));
+			query.setParameter("value2", prop.get("value2"));
+			query.setParameter("sequence", prop.get("sequence"));
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -275,8 +262,8 @@ public class Op {
 	 */
 	public void deleteRecordById() {
 		try {
-			String id = getMySession().getTempStr().get("Op.id");
-			Query query = getSession().getNamedQuery("core.op.deleterecordbyid");
+			String id = getMySession().getTempStr().get("Basicdata.id");
+			Query query = getSession().getNamedQuery("core.basicdata.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -292,12 +279,11 @@ public class Op {
 	public void showDialog() {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			getMySession().getTempStr().put("Op.id", (String) params.get("id"));
+			getMySession().getTempStr().put("Basicdata.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
 	}
-	
 }

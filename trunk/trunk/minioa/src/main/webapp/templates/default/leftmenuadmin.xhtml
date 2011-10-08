@@ -11,67 +11,77 @@
 				<h:panelGrid columns="2" columnClasses="tdTop,tdTop">
 
 					<a4j:form id="treeForm">
-						<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['treemenu']} </legend> <rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="client" value="#{LeftMenu.treeNode}" var="item" nodeSelectListener="#{LeftMenu.processSelection}" ajaxKeys="#{null}">
-							<rich:treeNode style="margin-left:3px;margin-top:3px;">
-								<h:outputText value="#{item.menuName}" />
-							</rich:treeNode>
-						</rich:tree></fieldset>
+						<fieldset class="fieldset">
+							<legend>
+								<h:outputText value=" #{Lang.prop[MySession.l]['treemenu']}" />
+							</legend>
+							<rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="client" value="#{LeftMenu.treeNode}" var="item" nodeSelectListener="#{LeftMenu.processSelection}" ajaxKeys="#{null}">
+								<rich:treeNode style="margin-left:3px;margin-top:3px;">
+									<h:outputText value="#{item.menuName}" />
+								</rich:treeNode>
+							</rich:tree>
+						</fieldset>
 					</a4j:form>
 
 					<a4j:outputPanel id="editForm">
 						<a4j:form>
-							<fieldset class="fieldset" style="width: 267px;"><legend> #{Lang.prop[MySession.l]['topmenu']} </legend> <h:panelGrid columns="3" columnClasses="co1,co2,co3">
-								<h:outputText value="#{Lang.prop[MySession.l]['parentmenu']}:" />
-								<h:outputText value="#{LeftMenu.parentName}" />
-								<h:outputText value="" />
+							<fieldset class="fieldset" style="width: 267px;">
+								<legend>
+									<h:outputText value="#{Lang.prop[MySession.l]['topmenu']}" />
+								</legend>
+								<h:panelGrid columns="3" columnClasses="co1,co2,co3">
+									<h:outputText value="#{Lang.prop[MySession.l]['parentmenu']}:" />
+									<h:outputText value="#{LeftMenu.parentName}" />
+									<h:outputText value="" />
 
-								<h:outputText value="#{Lang.prop[MySession.l]['name']}:" />
-								<h:inputText value="#{LeftMenu.menuName}" style="width:100px;">
-								</h:inputText>
-								<h:outputText value="*" />
+									<h:outputText value="#{Lang.prop[MySession.l]['name']}:" />
+									<h:inputText value="#{LeftMenu.menuName}" style="width:100px;">
+									</h:inputText>
+									<h:outputText value="*" />
 
-								<h:outputText value="#{Lang.prop[MySession.l]['menuurl']}:" />
-								<h:inputText value="#{LeftMenu.menuUrl}" style="width:200px;">
-								</h:inputText>
-								<h:outputText value="" />
+									<h:outputText value="#{Lang.prop[MySession.l]['menuurl']}:" />
+									<h:inputText value="#{LeftMenu.menuUrl}" style="width:200px;">
+									</h:inputText>
+									<h:outputText value="" />
 
-								<h:outputText value="#{Lang.prop[MySession.l]['menutarget']}:" />
+									<h:outputText value="#{Lang.prop[MySession.l]['menutarget']}:" />
 
-								<h:selectOneMenu value="#{LeftMenu.menuTarget}" class="select">
-									<f:selectItem itemValue="_self" itemLabel="当前窗口" />
-									<f:selectItem itemValue="_blank" itemLabel="新窗口" />
-								</h:selectOneMenu>
-								<h:outputText value="" />
+									<h:selectOneMenu value="#{LeftMenu.menuTarget}" class="select">
+										<f:selectItem itemValue="_self" itemLabel="当前窗口" />
+										<f:selectItem itemValue="_blank" itemLabel="新窗口" />
+									</h:selectOneMenu>
+									<h:outputText value="" />
 
-								<h:outputText value="#{Lang.prop[MySession.l]['sequence']}:" />
-								<h:inputText value="#{LeftMenu.sequence}" style="width:30px;">
-								</h:inputText>
-								<h:outputText value="" />
+									<h:outputText value="#{Lang.prop[MySession.l]['sequence']}:" />
+									<h:inputText value="#{LeftMenu.sequence}" style="width:30px;">
+									</h:inputText>
+									<h:outputText value="" />
 
-								<h:outputText value="" />
-								<h:panelGrid columns="4">
-									<a4j:commandLink action="#{LeftMenu.newRecord}" reRender="treeForm,msg">
-										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
-										<f:param name="parentId" value="#{LeftMenu.parentId}" />
-									</a4j:commandLink>
-									<a4j:commandLink action="#{LeftMenu.updateRecordById}" reRender="treeForm,msg">
-										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['save']}" rendered="#{LeftMenu.ID_ gt 0}" />
-										<f:param name="parentId" value="#{LeftMenu.parentId}" />
-										<f:param name="id" value="#{LeftMenu.ID_}" />
-									</a4j:commandLink>
-									<a4j:commandLink action="#{LeftMenu.moveRecordById}" reRender="treeForm,msg">
-										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['move']}" rendered="#{LeftMenu.ID_ gt 0}" />
-										<f:param name="parentId" value="#{LeftMenu.parentId}" />
-										<f:param name="id" value="#{LeftMenu.ID_}" />
-									</a4j:commandLink>
-									<a4j:commandLink onclick="#{rich:component('mpForConfirm')}.show();" reRender="treeForm,msg">
-										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['delete']}" rendered="#{LeftMenu.ID_ gt 0}" />
-										<f:param name="parentId" value="#{LeftMenu.parentId}" />
-										<f:param name="id" value="#{LeftMenu.ID_}" />
-									</a4j:commandLink>
+									<h:outputText value="" />
+									<h:panelGrid columns="4">
+										<a4j:commandLink action="#{LeftMenu.newRecord}" reRender="treeForm,msg">
+											<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
+											<f:param name="parentId" value="#{LeftMenu.parentId}" />
+										</a4j:commandLink>
+										<a4j:commandLink action="#{LeftMenu.updateRecordById}" reRender="treeForm,msg">
+											<h:outputText class="btn" value="#{Lang.prop[MySession.l]['save']}" rendered="#{LeftMenu.ID_ gt 0}" />
+											<f:param name="parentId" value="#{LeftMenu.parentId}" />
+											<f:param name="id" value="#{LeftMenu.ID_}" />
+										</a4j:commandLink>
+										<a4j:commandLink action="#{LeftMenu.moveRecordById}" reRender="treeForm,msg">
+											<h:outputText class="btn" value="#{Lang.prop[MySession.l]['move']}" rendered="#{LeftMenu.ID_ gt 0}" />
+											<f:param name="parentId" value="#{LeftMenu.parentId}" />
+											<f:param name="id" value="#{LeftMenu.ID_}" />
+										</a4j:commandLink>
+										<a4j:commandLink onclick="#{rich:component('mpForConfirm')}.show();" reRender="treeForm,msg">
+											<h:outputText class="btn" value="#{Lang.prop[MySession.l]['delete']}" rendered="#{LeftMenu.ID_ gt 0}" />
+											<f:param name="parentId" value="#{LeftMenu.parentId}" />
+											<f:param name="id" value="#{LeftMenu.ID_}" />
+										</a4j:commandLink>
+									</h:panelGrid>
+									<h:outputText value="" />
 								</h:panelGrid>
-								<h:outputText value="" />
-							</h:panelGrid></fieldset>
+							</fieldset>
 						</a4j:form>
 					</a4j:outputPanel>
 				</h:panelGrid>

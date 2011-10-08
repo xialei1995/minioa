@@ -20,7 +20,7 @@
 					</a4j:commandLink>
 				</a4j:form>
 				<a4j:form id="dataForm" style="margin-top:3px;">
-					<rich:dataTable id="dataTable" rows="#{MySession.pageSize}" value="#{User.recordsList}" var="item" rowKeyVar="rowNum"  style="width:100%;" >
+					<rich:dataTable id="dataTable" rows="#{MySession.pageSize}" value="#{User.recordsList}" var="item" rowKeyVar="rowNum" style="width:100%;">
 						<f:facet name="header">
 							<rich:columnGroup>
 								<rich:column styleClass="left">
@@ -96,128 +96,139 @@
 						</rich:column>
 					</rich:dataTable>
 					<rich:dataTable id="dsTable" rows="#{MySession.pageSize}" value="#{User.dsList}" var="item" style="width:100%;" reRender="ds">
-						<ui:include src="ds.xhtml"/>
+						<ui:include src="ds.xhtml" />
 					</rich:dataTable>
 				</a4j:form>
 			</rich:tab>
 			<rich:tab id="tab2" name="tab2" label="#{Lang.prop[MySession.l]['edit']}">
 				<a4j:outputPanel id="editPanel">
 					<h:outputText value="#{User.init}" style="display:none;" />
-					<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['property']} </legend> <a4j:form id="editForm">
-						<h:panelGrid columns="3" columnClasses="co1,co2,co3">
-							<h:outputText value="#{Lang.prop[MySession.l]['username']}:" />
-							<h:inputText value="#{User.prop['userName']}" style="width:80px;" />
-							<h:outputText value="*" />
+					<fieldset class="fieldset">
+						<legend>
+							<h:outputText value="#{Lang.prop[MySession.l]['property']}" />
+						</legend>
+						<a4j:form id="editForm">
+							<h:panelGrid columns="3" columnClasses="co1,co2,co3">
+								<h:outputText value="#{Lang.prop[MySession.l]['username']}:" />
+								<h:inputText value="#{User.prop['userName']}" style="width:80px;" />
+								<h:outputText value="*" />
 
-							<h:outputText value="#{Lang.prop[MySession.l]['password']}:" />
-							<h:inputSecret value="#{User.prop['password']}" style="width:80px;" />
-							<h:outputText value="*" />
+								<h:outputText value="#{Lang.prop[MySession.l]['password']}:" />
+								<h:inputSecret value="#{User.prop['password']}" style="width:80px;" />
+								<h:outputText value="*" />
 
-							<h:outputText value="#{Lang.prop[MySession.l]['displayname']}:" />
-							<h:inputText value="#{User.prop['displayName']}" style="width:80px;" />
-							<h:outputText value="*" />
+								<h:outputText value="#{Lang.prop[MySession.l]['displayname']}:" />
+								<h:inputText value="#{User.prop['displayName']}" style="width:80px;" />
+								<h:outputText value="*" />
 
-							<h:outputText value="#{Lang.prop[MySession.l]['department']}:" />
-							<h:panelGrid columns="2">
-								<h:outputText id="departmentName" value="#{MySession.tempStr['Department.depaName']}" />
-								<rich:simpleTogglePanel opened="false" id="departmenttree" switchType="client" label="...">
-									<ui:include src="departmenttree.xhtml" />
-								</rich:simpleTogglePanel>
+								<h:outputText value="#{Lang.prop[MySession.l]['department']}:" />
+								<h:panelGrid columns="2">
+									<h:outputText id="departmentName" value="#{MySession.tempStr['Department.depaName']}" />
+									<rich:simpleTogglePanel opened="false" id="departmenttree" switchType="client" label="...">
+										<ui:include src="departmenttree.xhtml" />
+									</rich:simpleTogglePanel>
+								</h:panelGrid>
+								<h:outputText value="*" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
+								<h:panelGrid columns="2">
+									<h:outputText id="jobName" value="#{MySession.tempStr['Job.jobName']}" />
+									<rich:simpleTogglePanel opened="false" id="jobtree" switchType="client" label="...">
+										<ui:include src="jobtree.xhtml" />
+									</rich:simpleTogglePanel>
+								</h:panelGrid>
+								<h:outputText value="*" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
+								<h:panelGrid columns="2">
+									<h:outputText id="jobName2" value="#{MySession.tempStr['Job.jobName2']}" />
+									<rich:simpleTogglePanel opened="false" id="jobtree2" switchType="client" label="...">
+										<ui:include src="jobtree2.xhtml" />
+									</rich:simpleTogglePanel>
+								</h:panelGrid>
+								<h:outputText value="" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['phone']}:" />
+								<h:inputText value="#{User.prop['phone']}" style="width:80px;" />
+								<h:outputText value="" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['mobilephone']}:" />
+								<h:inputText value="#{User.prop['mobilePhone']}" style="width:80px;" />
+								<h:outputText value="" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['email']}:" />
+								<h:inputText value="#{User.prop['email']}" style="width:200px;" />
+								<h:outputText value="" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['gender']}:" />
+								<h:selectOneRadio value="#{User.prop['gender']}">
+									<f:selectItem itemValue="1" itemLabel="#{Lang.prop[MySession.l]['male']}" />
+									<f:selectItem itemValue="0" itemLabel="#{Lang.prop[MySession.l]['female']}" />
+								</h:selectOneRadio>
+								<h:outputText value="" />
+
+								<h:outputText value="#{Lang.prop[MySession.l]['islock']}:" />
+								<h:selectOneRadio value="#{User.prop['isLock']}">
+									<f:selectItem itemValue="1" itemLabel="#{Lang.prop[MySession.l]['yes']}" />
+									<f:selectItem itemValue="0" itemLabel="#{Lang.prop[MySession.l]['no']}" />
+								</h:selectOneRadio>
+								<h:outputText value="" />
+								<h:outputText value="" />
+								<h:panelGrid columns="2">
+									<a4j:commandLink action="#{User.newRecord}" reRender="msg">
+										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
+										<f:param name="redirect" value="false" />
+										<f:param name="reload" value="false" />
+									</a4j:commandLink>
+									<a4j:commandLink action="#{User.updateRecordById}" reRender="msg">
+										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['save']}" />
+										<f:param name="redirect" value="false" />
+										<f:param name="reload" value="false" />
+										<f:param name="id" value="#{param['id']}" />
+									</a4j:commandLink>
+								</h:panelGrid>
+								<h:outputText value="" />
 							</h:panelGrid>
-							<h:outputText value="*" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
-							<h:panelGrid columns="2">
-								<h:outputText id="jobName" value="#{MySession.tempStr['Job.jobName']}" />
-								<rich:simpleTogglePanel opened="false" id="jobtree" switchType="client" label="...">
-									<ui:include src="jobtree.xhtml" />
-								</rich:simpleTogglePanel>
-							</h:panelGrid>
-							<h:outputText value="*" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['job']}:" />
-							<h:panelGrid columns="2">
-								<h:outputText id="jobName2" value="#{MySession.tempStr['Job.jobName2']}" />
-								<rich:simpleTogglePanel opened="false" id="jobtree2" switchType="client" label="...">
-									<ui:include src="jobtree2.xhtml" />
-								</rich:simpleTogglePanel>
-							</h:panelGrid>
-							<h:outputText value="" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['phone']}:" />
-							<h:inputText value="#{User.prop['phone']}" style="width:80px;" />
-							<h:outputText value="" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['mobilephone']}:" />
-							<h:inputText value="#{User.prop['mobilePhone']}" style="width:80px;" />
-							<h:outputText value="" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['email']}:" />
-							<h:inputText value="#{User.prop['email']}" style="width:200px;" />
-							<h:outputText value="" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['gender']}:" />
-							<h:selectOneRadio value="#{User.prop['gender']}">
-								<f:selectItem itemValue="1" itemLabel="#{Lang.prop[MySession.l]['male']}" />
-								<f:selectItem itemValue="0" itemLabel="#{Lang.prop[MySession.l]['female']}" />
-							</h:selectOneRadio>
-							<h:outputText value="" />
-
-							<h:outputText value="#{Lang.prop[MySession.l]['islock']}:" />
-							<h:selectOneRadio value="#{User.prop['isLock']}">
-								<f:selectItem itemValue="1" itemLabel="#{Lang.prop[MySession.l]['yes']}" />
-								<f:selectItem itemValue="0" itemLabel="#{Lang.prop[MySession.l]['no']}" />
-							</h:selectOneRadio>
-							<h:outputText value="" />
-							<h:outputText value="" />
-							<h:panelGrid columns="2">
-								<a4j:commandLink action="#{User.newRecord}" reRender="msg">
-									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
-									<f:param name="redirect" value="false" />
-									<f:param name="reload" value="false" />
+						</a4j:form>
+					</fieldset>
+					<fieldset class="fieldset">
+						<legend>
+							<h:outputText value="#{Lang.prop[MySession.l]['rolelist']}" />
+						</legend>
+						<a4j:form id="relationForm" rendered="#{param['relationId'] gt 0}">
+							<h:panelGrid columns="3">
+								<h:outputText value="#{Lang.prop[MySession.l]['role']}:" />
+								<rich:comboBox value="#{RoleUserRelation.roleName}" suggestionValues="#{Application.roleList}" style="width:60px;margin-top:-6px;">
+								</rich:comboBox>
+								<a4j:commandLink action="#{RoleUserRelation.newRecord}" reRender="relationDataTable,msg" style="margin-left:90px;">
+									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['join']}" />
+									<f:param name="type" value="user" />
+									<f:param name="relationId" value="#{param['relationId']}" />
 								</a4j:commandLink>
-								<a4j:commandLink action="#{User.updateRecordById}" reRender="msg">
-									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['save']}" />
-									<f:param name="redirect" value="false" />
+							</h:panelGrid>
+						</a4j:form>
+						<a4j:form id="relationDataForm" rendered="#{param['relationId'] gt 0}">
+							<h:panelGrid columns="3" style="margin-top:3px;">
+								<a4j:commandLink onclick="javascript:selectAll();return false;">
+									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['selectall']}" />
+								</a4j:commandLink>
+								<a4j:commandLink onclick="javascript:selectNone();return false;">
+									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['selectnone']}" />
+								</a4j:commandLink>
+								<a4j:commandLink reRender="confirmDialog" action="#{RoleUserRelation.showDialog}" onclick="#{rich:component('mpForConfirm2')}.show();">
+									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['deleteselected']}" />
 									<f:param name="reload" value="false" />
-									<f:param name="id" value="#{param['id']}" />
+									<f:param name="type" value="user" />
+									<f:param name="relationId" value="#{param['relationId']}" />
 								</a4j:commandLink>
 							</h:panelGrid>
-							<h:outputText value="" />
-						</h:panelGrid>
-					</a4j:form></fieldset>
-					<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['rolelist']} </legend> <a4j:form id="relationForm" rendered="#{param['relationId'] gt 0}">
-						<h:panelGrid columns="3">
-							<h:outputText value="#{Lang.prop[MySession.l]['role']}:" />
-							<rich:comboBox value="#{RoleUserRelation.roleName}" suggestionValues="#{Application.roleList}" style="width:60px;margin-top:-6px;">
-							</rich:comboBox>
-							<a4j:commandLink action="#{RoleUserRelation.newRecord}" reRender="relationDataTable,msg" style="margin-left:90px;">
-								<h:outputText class="btn" value="#{Lang.prop[MySession.l]['join']}" />
-								<f:param name="type" value="user" />
-								<f:param name="relationId" value="#{param['relationId']}" />
-							</a4j:commandLink>
-						</h:panelGrid>
-					</a4j:form> <a4j:form id="relationDataForm" rendered="#{param['relationId'] gt 0}">
-						<h:panelGrid columns="3" style="margin-top:3px;">
-							<a4j:commandLink onclick="javascript:selectAll();return false;">
-								<h:outputText class="btn" value="#{Lang.prop[MySession.l]['selectall']}" />
-							</a4j:commandLink>
-							<a4j:commandLink onclick="javascript:selectNone();return false;">
-								<h:outputText class="btn" value="#{Lang.prop[MySession.l]['selectnone']}" />
-							</a4j:commandLink>
-							<a4j:commandLink reRender="confirmDialog" action="#{RoleUserRelation.showDialog}" onclick="#{rich:component('mpForConfirm2')}.show();">
-								<h:outputText class="btn" value="#{Lang.prop[MySession.l]['deleteselected']}" />
-								<f:param name="reload" value="false" />
-								<f:param name="type" value="user" />
-								<f:param name="relationId" value="#{param['relationId']}" />
-							</a4j:commandLink>
-						</h:panelGrid>
-						<rich:dataGrid id="relationDataTable" value="#{RoleUserRelation.recordsList}" var="item" columns="5">
-							<h:selectBooleanCheckbox value="#{RoleUserRelation.checkIdsMap[item.ID_]}">
-							</h:selectBooleanCheckbox>
-							<h:outputText value="#{item.roleName}" />
-						</rich:dataGrid>
-					</a4j:form></fieldset>
+							<rich:dataGrid id="relationDataTable" value="#{RoleUserRelation.recordsList}" var="item" columns="5">
+								<h:selectBooleanCheckbox value="#{RoleUserRelation.checkIdsMap[item.ID_]}">
+								</h:selectBooleanCheckbox>
+								<h:outputText value="#{item.roleName}" />
+							</rich:dataGrid>
+						</a4j:form>
+					</fieldset>
 				</a4j:outputPanel>
 			</rich:tab>
 		</rich:tabPanel>

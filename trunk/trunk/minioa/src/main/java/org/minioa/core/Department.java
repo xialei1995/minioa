@@ -11,8 +11,6 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
 import org.jboss.seam.ui.*;
 import org.richfaces.component.html.HtmlTree;
 import org.richfaces.event.NodeSelectedEvent;
@@ -171,6 +169,8 @@ public class Department {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -179,6 +179,8 @@ public class Department {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -265,7 +267,7 @@ public class Department {
 		try {
 			getMySession();
 			recordsList = new ArrayList<Department>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("Department.rowcount")) {
 					for (int i = 0; i < mySession.getTempInt().get("Department.rowcount"); i++)
@@ -275,7 +277,7 @@ public class Department {
 			}
 
 			Query query = getSession().getNamedQuery("core.department.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
@@ -334,7 +336,7 @@ public class Department {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			selectRecordById(id);
 		} catch (Exception ex) {
@@ -345,7 +347,7 @@ public class Department {
 		try {
 			Query query = getSession().getNamedQuery("core.department.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				this.reset();
 				Object obj[] = (Object[]) it.next();
@@ -388,7 +390,7 @@ public class Department {
 	 */
 	public void newRecord() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			if (!FunctionLib.isNum(orgId) || !FunctionLib.isNum(parentId))
@@ -424,7 +426,7 @@ public class Department {
 	 */
 	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
@@ -458,7 +460,7 @@ public class Department {
 	 */
 	public void deleteRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
@@ -477,7 +479,7 @@ public class Department {
 
 	public void moveRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String orgId = (String) params.get("orgId");
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
@@ -491,7 +493,7 @@ public class Department {
 	
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("Department.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -518,12 +520,12 @@ public class Department {
 	 * @param node
 	 */
 	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, int orgId, int parentId, String oName, String pName) {
+	public void addNodes(TreeNode<Department> node, int orgId, int parentId, String oName, String pName) {
 		try {
 			Query query = getSession().getNamedQuery("core.department.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
 			String name, desc;
 			while (it.hasNext()) {
@@ -627,24 +629,22 @@ public class Department {
 	public void buildTreeFile() {
 		try {
 			bf = new StringBuffer();
-			rootNode = new TreeNodeImpl();
+			rootNode = new TreeNodeImpl<Department>();
 
 			Query query = getSession().getNamedQuery("core.org.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
-			String name, desc;
+			String name;
 			level = 1;
 			int i = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name = desc = "";
+				name = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[6] != null)
 					name = String.valueOf(obj[6]);
-				if (obj[7] != null)
-					desc = String.valueOf(obj[7]);
 				bf.append(i + "=org," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
 				addChildren(String.valueOf(i), id, 0, name, name);
 				i++;
@@ -674,20 +674,18 @@ public class Department {
 			Query query = getSession().getNamedQuery("core.department.getchildren");
 			query.setParameter("orgId", orgId);
 			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
-			String name, desc;
+			String name;
 			int i = 1;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name = desc = "";
+				name = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)
 					name = String.valueOf(obj[1]);
-				if (obj[2] != null)
-					desc = String.valueOf(obj[2]);
 				bf.append(parentKey + "." + i + "=depa," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
 				
 				if (hasChild(orgId, id))

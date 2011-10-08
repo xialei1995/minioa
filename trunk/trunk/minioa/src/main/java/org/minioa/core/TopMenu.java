@@ -164,6 +164,8 @@ public class TopMenu {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if(lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -172,6 +174,8 @@ public class TopMenu {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if(mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -248,7 +252,7 @@ public class TopMenu {
 		try {
 			getMySession();
 			recordsList = new ArrayList<TopMenu>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				if (null != mySession.getTempInt() && mySession.getTempInt().containsKey("TopMenu.rowcount")) {
 					for (int i = 0; i < mySession.getTempInt().get("TopMenu.rowcount"); i++)
@@ -258,7 +262,7 @@ public class TopMenu {
 			}
 
 			Query query = getSession().getNamedQuery("core.topmenu.records");
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
@@ -317,7 +321,7 @@ public class TopMenu {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			selectRecordById(id);
 		} catch (Exception ex) {
@@ -329,7 +333,7 @@ public class TopMenu {
 		try {
 			Query query = getSession().getNamedQuery("core.topmenu.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				this.reset();
 				Object obj[] = (Object[]) it.next();
@@ -373,7 +377,7 @@ public class TopMenu {
 	 */
 	public void newRecord() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String parentId = (String) params.get("parentId");
 			if (!FunctionLib.isNum(parentId))
 				return;
@@ -408,7 +412,7 @@ public class TopMenu {
 	 */
 	public void updateRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
@@ -442,7 +446,7 @@ public class TopMenu {
 	 */
 	public void deleteRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
@@ -461,7 +465,7 @@ public class TopMenu {
 
 	public void moveRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String parentId = (String) params.get("parentId");
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(parentId) || !FunctionLib.isNum(id))
@@ -474,7 +478,7 @@ public class TopMenu {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("TopMenu.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -500,12 +504,11 @@ public class TopMenu {
 	 * 
 	 * @param node
 	 */
-	@SuppressWarnings("unchecked")
-	public void addNodes(TreeNode node, int parentId, String pName) {
+	public void addNodes(TreeNode<TopMenu> node, int parentId, String pName) {
 		try {
 			Query query = getSession().getNamedQuery("core.topmenu.getchildren");
 			query.setParameter("parentId", parentId);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			int id;
 			String name, url, target;
 			while (it.hasNext()) {
@@ -520,8 +523,7 @@ public class TopMenu {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
-				@SuppressWarnings("rawtypes")
-				TreeNodeImpl nodeImpl = new TreeNodeImpl();
+				TreeNodeImpl<TopMenu> nodeImpl = new TreeNodeImpl<TopMenu>();
 				nodeImpl.setData(new TopMenu(id, id, pName, name, url, target));
 				node.addChild(key, nodeImpl);
 				key++;
@@ -533,11 +535,11 @@ public class TopMenu {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public void loadTree() {
 		try {
 			String msg = getLang().getProp().get(getMySession().getL()).get("topmenu");
-			rootNode = new TreeNodeImpl();
+			rootNode = new TreeNodeImpl<TopMenu>();
 			key = 1;
 			if (hasChild(0))
 				addNodes(rootNode, 0, msg);

@@ -6,10 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
@@ -22,6 +19,8 @@ public class User {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
+		if (lang == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
 
@@ -30,6 +29,8 @@ public class User {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
+		if (mySession == null)
+			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
 
@@ -54,7 +55,7 @@ public class User {
 		selectUserProfile();
 		return initProfile;
 	}
-	
+
 	private Map<String, String> prop;
 
 	public void setProp(Map<String, String> data) {
@@ -128,7 +129,7 @@ public class User {
 
 			getDsList();
 			recordsList = new ArrayList<User>();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				int size = 0;
 				while (size < mySession.getPageSize()) {
@@ -165,7 +166,7 @@ public class User {
 			if (!key2.equals(""))
 				query.setParameter("key2", "%" + key2 + "%");
 
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			Map<String, String> p;
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
@@ -195,13 +196,13 @@ public class User {
 	 */
 	public void selectRecordById() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (id == null || !FunctionLib.isNum(id))
 				id = String.valueOf(getMySession().getUserId());
 			Query query = getSession().getNamedQuery("core.user.getrecordbyid");
 			query.setParameter("id", id);
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				prop = new HashMap<String, String>();
@@ -230,11 +231,12 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
+
 	public void selectUserProfile() {
 		try {
 			Query query = getSession().getNamedQuery("core.user.getrecordbyid");
 			query.setParameter("id", getMySession().getUserId());
-			Iterator it = query.list().iterator();
+			Iterator<?> it = query.list().iterator();
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				prop = new HashMap<String, String>();
@@ -250,16 +252,16 @@ public class User {
 				prop.put("displayName", FunctionLib.getString(obj[14]));
 				prop.put("isLock", FunctionLib.getString(obj[15]));
 				prop.put("password", FunctionLib.getString(obj[19]));
-				
+
 				String passwordKey = FunctionLib.getWebParameter("passwordKey");
 				String userName = prop.get("userName");
 				String password = prop.get("password");
 				String url = FunctionLib.getWebAppName();
-				if("".equals(url))
+				if ("".equals(url))
 					url = "http://" + FunctionLib.getRequestHeaderMap("host") + "/autologin.jsf?url=";
 				else
 					url = "http://" + FunctionLib.getRequestHeaderMap("host") + "/" + url + "/autologin.jsf?url=";
-				prop.put("url", url + new Blowfish(passwordKey).encryptString(userName + ";" + password));
+				prop.put("url", url + new Blowfish(passwordKey).encryptString(userName + ";" + password + ";" + FunctionLib.getIp()));
 
 				getMySession().getTempInt().put("Department.id", FunctionLib.getInt(obj[6]));
 				getMySession().getTempStr().put("Department.depaName", FunctionLib.getString(obj[16]));
@@ -274,6 +276,7 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
+
 	public void newRecord() {
 		try {
 			getMySession();
@@ -343,7 +346,7 @@ public class User {
 	public void updateRecordById() {
 		try {
 			getMySession();
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
@@ -384,6 +387,7 @@ public class User {
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
+
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -424,6 +428,39 @@ public class User {
 		}
 	}
 
+	public void updatePassword() {
+		try {
+			String oldpassword = prop.get("password");
+			String newpassword = prop.get("password2");
+			String confirmpassword = prop.get("password3");
+			Query query = getSession().getNamedQuery("core.user.getuserbypassword");
+			query.setParameter("id", getMySession().getUserId());
+			query.setParameter("password", oldpassword);
+			if ("1".equals(String.valueOf(query.list().get(0)))) {
+				if (!newpassword.equals("") && newpassword.equals(confirmpassword)) {
+					query = getSession().getNamedQuery("core.user.updatepassword");
+					query.setParameter("password", newpassword);
+					query.setParameter("id", getMySession().getUserId());
+					query.setParameter("mId", getMySession().getUserId());
+					query.executeUpdate();
+					query = null;
+					String msg = getLang().getProp().get(getMySession().getL()).get("yourpasswordhasbeenupdate");
+					getMySession().setMsg(msg, Integer.valueOf(1));
+				} else {
+					String msg = getLang().getProp().get(getMySession().getL()).get("confirmpasswordnotequalsnewpassword");
+					getMySession().setMsg(msg, Integer.valueOf(2));
+				}
+			} else {
+				String msg = getLang().getProp().get(getMySession().getL()).get("oldpasswordincorrect");
+				getMySession().setMsg(msg, Integer.valueOf(2));
+			}
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
+
 	/**
 	 * É¾³ýÒ»Ìõ¼ÇÂ¼
 	 */
@@ -445,7 +482,7 @@ public class User {
 
 	public void showDialog() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			getMySession().getTempStr().put("User.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -470,7 +507,7 @@ public class User {
 			if ("1".equals(String.valueOf(query.list().get(0)))) {
 				query = getSession().getNamedQuery("core.user.getrecordbyusername");
 				query.setParameter("userName", name);
-				Iterator it = query.list().iterator();
+				Iterator<?> it = query.list().iterator();
 				while (it.hasNext()) {
 					Object obj[] = (Object[]) it.next();
 					if ("1".equals(FunctionLib.getString(obj[14]))) {
@@ -505,53 +542,59 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
-	
+
+	@SuppressWarnings("unused")
 	private String autoLogin;
-	
+
 	public String getAutoLogin() {
 		try {
-			Map params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			String url = (String) params.get("url");
-
-			String passwordKey = FunctionLib.getWebParameter("passwordKey");
-			url = new Blowfish(passwordKey).decryptString(url);
-
-			String[] arr = url.split(";");
-			String name = arr[0];
-			String pwd = arr[1];
-			
-			Query query = getSession().getNamedQuery("core.user.autologin");
-			query.setParameter("userName", name);
-			query.setParameter("password", pwd);
-			if ("1".equals(String.valueOf(query.list().get(0)))) {
-				query = getSession().getNamedQuery("core.user.getrecordbyusername");
-				query.setParameter("userName", name);
-				Iterator it = query.list().iterator();
-				while (it.hasNext()) {
-					Object obj[] = (Object[]) it.next();
-					if ("1".equals(FunctionLib.getString(obj[14])))
-						return "";
-					getMySession().setUserId(FunctionLib.getInt(obj[0]));
-					getMySession().setDepaName(FunctionLib.getString(obj[16]));
-					getMySession().setEmail(FunctionLib.getString(obj[9]));
-					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
-					getMySession().buildOpList(getSession());
-					getMySession().buildTopMenu();
-					getMySession().buildLeftMenu();
+			String url;
+			if (!"true".equals(getMySession().getIsLogin())) {
+				Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+				url = (String) params.get("url");
+				String passwordKey = FunctionLib.getWebParameter("passwordKey");
+				url = new Blowfish(passwordKey).decryptString(url);
+				String[] arr = url.split(";");
+				if (arr.length == 3) {
+					String name = arr[0];
+					String pwd = arr[1];
+					String ip = FunctionLib.getIp();
+					if (ip.equals(arr[2])) {
+						Query query = getSession().getNamedQuery("core.user.autologin");
+						query.setParameter("userName", name);
+						query.setParameter("password", pwd);
+						if ("1".equals(String.valueOf(query.list().get(0)))) {
+							query = getSession().getNamedQuery("core.user.getrecordbyusername");
+							query.setParameter("userName", name);
+							Iterator<?> it = query.list().iterator();
+							while (it.hasNext()) {
+								Object obj[] = (Object[]) it.next();
+								if ("1".equals(FunctionLib.getString(obj[14])))
+									return "";
+								getMySession().setUserId(FunctionLib.getInt(obj[0]));
+								getMySession().setDepaName(FunctionLib.getString(obj[16]));
+								getMySession().setEmail(FunctionLib.getString(obj[9]));
+								getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+								getMySession().buildOpList(getSession());
+								getMySession().buildTopMenu();
+								getMySession().buildLeftMenu();
+							}
+							it = null;
+							getMySession().setUserName(name);
+							getMySession().setIsLogin("true");
+							System.out.println(name + " auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
+						} else
+							System.out.println(name + " attempt to auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
+					} else
+						System.out.println(name + " auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is incorrect");
 				}
-				it = null;
-				getMySession().setUserName(name);
-				getMySession().setIsLogin("true");
-				System.out.println(name + " auto login at time " + FunctionLib.dtf.format(new java.util.Date()));
-			}else
-				System.out.println(name + " attempt to auto login at time " + FunctionLib.dtf.format(new java.util.Date()));
-			
+			}
 			url = FunctionLib.getWebAppName();
-			if("".equals(url))
+			if ("".equals(url))
 				url = "http://" + FunctionLib.getRequestHeaderMap("host") + "/";
 			else
 				url = "http://" + FunctionLib.getRequestHeaderMap("host") + "/" + url;
-			
+
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 			response.sendRedirect(url);
@@ -560,6 +603,7 @@ public class User {
 		}
 		return "";
 	}
+
 	public void logout() {
 		try {
 			getMySession().setHasOp(null);

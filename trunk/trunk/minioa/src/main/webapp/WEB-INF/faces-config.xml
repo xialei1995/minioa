@@ -102,6 +102,11 @@
 		<managed-bean-class>org.minioa.core.Pinyin</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>Basicdata</managed-bean-name>
+		<managed-bean-class>org.minioa.core.Basicdata</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<application>
 		<navigation-handler>org.richfaces.ui.application.StateNavigationHandler</navigation-handler>
 		<el-resolver>org.richfaces.el.StateELResolver</el-resolver>

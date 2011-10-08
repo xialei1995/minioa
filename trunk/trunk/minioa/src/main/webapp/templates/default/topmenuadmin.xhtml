@@ -11,7 +11,7 @@
 				<h:panelGrid columns="2" columnClasses="tdTop,tdTop">
 
 					<a4j:form id="treeForm">
-						<fieldset class="fieldset"><legend> #{Lang.prop[MySession.l]['treemenu']} </legend> <rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="client" value="#{TopMenu.treeNode}" var="item" nodeSelectListener="#{TopMenu.processSelection}" ajaxKeys="#{null}">
+						<fieldset class="fieldset"><legend> <h:outputText value="#{Lang.prop[MySession.l]['treemenu']}" /> </legend> <rich:tree reRender="editForm,mpForConfirm" style="margin:0px 5px 0px 1px;width:300px;" ajaxSubmitSelection="true" switchType="client" value="#{TopMenu.treeNode}" var="item" nodeSelectListener="#{TopMenu.processSelection}" ajaxKeys="#{null}">
 							<rich:treeNode style="margin-left:3px;margin-top:3px;">
 								<h:outputText value="#{item.menuName}" />
 							</rich:treeNode>
@@ -20,7 +20,7 @@
 
 					<a4j:outputPanel id="editForm">
 						<a4j:form>
-							<fieldset class="fieldset" style="width: 267px;"><legend> #{Lang.prop[MySession.l]['topmenu']} </legend> <h:panelGrid columns="3" columnClasses="co1,co2,co3">
+							<fieldset class="fieldset" style="width: 267px;"><legend> <h:outputText value="#{Lang.prop[MySession.l]['topmenu']}" /> </legend> <h:panelGrid columns="3" columnClasses="co1,co2,co3">
 								<h:outputText value="#{Lang.prop[MySession.l]['parentmenu']}:" />
 								<h:outputText value="#{TopMenu.parentName}" />
 								<h:outputText value="" />
