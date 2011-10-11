@@ -47,7 +47,7 @@
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
 							<a4j:commandLink action="#{Op.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
-								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" style="border:0px;width:16px;" url="images/delete.png">
+								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" class="imgBtn" url="images/delete.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="reload" value="false" />

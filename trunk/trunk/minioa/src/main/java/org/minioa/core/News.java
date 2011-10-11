@@ -10,14 +10,14 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
 
-public class Basicdata {
+public class News {
 
 	public Lang lang;
 
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
-		if(lang == null)
+		if (lang == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
@@ -27,7 +27,7 @@ public class Basicdata {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
-		if(mySession == null)
+		if (mySession == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
@@ -47,6 +47,16 @@ public class Basicdata {
 		return init;
 	}
 
+	private String uuid;
+
+	public void setUuid(String data) {
+		uuid = data;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
 	private Map<String, String> prop;
 
 	public void setProp(Map<String, String> data) {
@@ -59,21 +69,33 @@ public class Basicdata {
 		return prop;
 	}
 
-	private List<Basicdata> recordsList;
+	private Map<String, Integer> propInt;
 
-	public List<Basicdata> getRecordsList() {
+	public void setPropInt(Map<String, Integer> data) {
+		propInt = data;
+	}
+
+	public Map<String, Integer> getPropInt() {
+		if (propInt == null)
+			propInt = new HashMap<String, Integer>();
+		return propInt;
+	}
+	
+	private List<News> recordsList;
+
+	public List<News> getRecordsList() {
 		if (recordsList == null)
 			buildRecordsList();
 		return recordsList;
 	}
 
-	public Basicdata() {
+	public News() {
 	}
 
-	public Basicdata(int i) {
+	public News(int i) {
 	}
 
-	public Basicdata(Map<String, String> data) {
+	public News(Map<String, String> data) {
 		setProp(data);
 	}
 
@@ -86,18 +108,18 @@ public class Basicdata {
 
 			String key = "";
 			if (mySession.getTempStr() != null) {
-				if (mySession.getTempStr().get("Basicdata.key") != null)
-					key = mySession.getTempStr().get("Basicdata.key").toString();
+				if (mySession.getTempStr().get("News.key") != null)
+					key = mySession.getTempStr().get("News.key").toString();
 			}
 
-			String sql = getSession().getNamedQuery("core.basicdata.records.count").getQueryString();
+			String sql = getSession().getNamedQuery("core.news.records.count").getQueryString();
 			String where = " where 1=1";
 			if (!key.equals(""))
-				where += " and name like :key";
+				where += " and (title like :key or content like :key)";
 			Query query = getSession().createSQLQuery(sql + where);
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
-			
+
 			int i = 0;
 			int dc = Integer.valueOf(String.valueOf(query.list().get(0)));
 			while (i < dc) {
@@ -113,12 +135,12 @@ public class Basicdata {
 		try {
 
 			getDsList();
-			recordsList = new ArrayList<Basicdata>();
+			recordsList = new ArrayList<News>();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			if ("false".equals((String) params.get("reload"))) {
 				int size = 0;
 				while (size < mySession.getPageSize()) {
-					recordsList.add(new Basicdata(size));
+					recordsList.add(new News(size));
 					size++;
 				}
 				return;
@@ -128,16 +150,16 @@ public class Basicdata {
 
 			String key = "";
 			if (mySession.getTempStr() != null) {
-				if (mySession.getTempStr().get("Basicdata.key") != null)
-					key = mySession.getTempStr().get("Basicdata.key").toString();
+				if (mySession.getTempStr().get("News.key") != null)
+					key = mySession.getTempStr().get("News.key").toString();
 			}
 
-			String sql = getSession().getNamedQuery("core.basicdata.records").getQueryString();
+			String sql = getSession().getNamedQuery("core.news.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.name, ta.sequence, ta.value, ta.value2 limit :limit offset :offset";
+			String other = " order by ta.ID_ desc limit :limit offset :offset";
 
 			if (!key.equals(""))
-				where += " and ta.name like :key";
+				where += " and (ta.title like :key or ta.content like :key)";
 			Query query = getSession().createSQLQuery(sql + where + other);
 			query.setParameter("limit", mySession.getPageSize());
 			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
@@ -151,11 +173,14 @@ public class Basicdata {
 				Object obj[] = (Object[]) it.next();
 				p = new HashMap<String, String>();
 				p.put("id", FunctionLib.getString(obj[0]));
-				p.put("name", FunctionLib.getString(obj[6]));
-				p.put("value", FunctionLib.getString(obj[7]));
-				p.put("value2", FunctionLib.getString(obj[8]));
-				p.put("sequence", FunctionLib.getString(obj[9]));
-				recordsList.add(new Basicdata(p));
+				p.put("uuid", FunctionLib.getString(obj[5]));
+				p.put("cate", FunctionLib.getString(obj[6]));
+				p.put("title", FunctionLib.getString(obj[7]));
+				p.put("ispicnews", FunctionLib.getString(obj[8]));
+				p.put("status", FunctionLib.getString(obj[9]));
+				p.put("times", FunctionLib.getString(obj[10]));
+				p.put("catename", FunctionLib.getString(obj[11]));
+				recordsList.add(new News(p));
 			}
 			it = null;
 		} catch (Exception ex) {
@@ -171,19 +196,30 @@ public class Basicdata {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (FunctionLib.isNum(id)){
-				Query query = getSession().getNamedQuery("core.basicdata.getrecordbyid");
+				Query query = getSession().getNamedQuery("core.news.getrecordbyid");
 				query.setParameter("id", id);
 				Iterator<?> it = query.list().iterator();
 				while (it.hasNext()) {
 					Object obj[] = (Object[]) it.next();
 					prop = new HashMap<String, String>();
+					propInt = new HashMap<String, Integer>();
 					prop.put("id", FunctionLib.getString(obj[0]));
-					prop.put("name", FunctionLib.getString(obj[6]));
-					prop.put("value", FunctionLib.getString(obj[7]));
-					prop.put("value2", FunctionLib.getString(obj[8]));
-					prop.put("sequence", FunctionLib.getString(obj[9]));
+					prop.put("uuid", FunctionLib.getString(obj[5]));
+					prop.put("cate", FunctionLib.getString(obj[6]));
+					prop.put("title", FunctionLib.getString(obj[7]));
+					prop.put("content", FunctionLib.getString(obj[8]));
+					propInt.put("ispicnews", FunctionLib.getInt(obj[9]));
+					prop.put("status", FunctionLib.getString(obj[10]));
+					prop.put("times", FunctionLib.getString(obj[11]));
+					uuid = prop.get("uuid");
 				}
 				it = null;
+			}
+			if(null == uuid || "".equals(uuid))
+				uuid = java.util.UUID.randomUUID().toString();
+			if(null == propInt){
+				propInt = new HashMap<String, Integer>();
+				propInt.put("ispicnews",0);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -193,13 +229,15 @@ public class Basicdata {
 	public void newRecord() {
 		try {
 			getMySession();
-			
-			Query query = getSession().getNamedQuery("core.basicdata.newrecord");
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+
+			Query query = getSession().getNamedQuery("core.news.newrecord");
 			query.setParameter("cId", mySession.getUserId());
-			query.setParameter("name", prop.get("name"));
-			query.setParameter("value", prop.get("value"));
-			query.setParameter("value2", prop.get("value2"));
-			query.setParameter("sequence", prop.get("sequence"));
+			query.setParameter("uuid", (String) params.get("uuid"));
+			query.setParameter("cate", prop.get("cate"));
+			query.setParameter("title", prop.get("title"));
+			query.setParameter("content", prop.get("content"));
+			query.setParameter("ispicnews", propInt.get("ispicnews"));
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
@@ -217,18 +255,61 @@ public class Basicdata {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
 			if (FunctionLib.isNum(id)){
-				Query query = getSession().getNamedQuery("core.basicdata.updaterecordbyid");
+				Query query = getSession().getNamedQuery("core.news.updaterecordbyid");
 				query.setParameter("mId", mySession.getUserId());
-				query.setParameter("name", prop.get("name"));
-				query.setParameter("value", prop.get("value"));
-				query.setParameter("value2", prop.get("value2"));
-				query.setParameter("sequence", prop.get("sequence"));
+				query.setParameter("cate", prop.get("cate"));
+				query.setParameter("title", prop.get("title"));
+				query.setParameter("content", prop.get("content"));
+				query.setParameter("ispicnews", propInt.get("ispicnews"));
+				query.setParameter("id", id);
+				query.executeUpdate();
+				query = null;
+				String msg = getLang().getProp().get(getMySession().getL()).get("success");
+				getMySession().setMsg(msg, Integer.valueOf(1));
+			}
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
+
+	public void updateTimesById() {
+		try {
+			getMySession();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String id = (String) params.get("id");
+			if (FunctionLib.isNum(id)){
+				Query query = getSession().getNamedQuery("core.news.updatetimesbyid");
+				query.setParameter("times", prop.get("times"));
 				query.setParameter("id", id);
 				query.executeUpdate();
 				query = null;
 
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));	
+				getMySession().setMsg(msg, Integer.valueOf(1));
+			}
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
+
+	public void updateStatusById() {
+		try {
+			getMySession();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String id = (String) params.get("id");
+			if (FunctionLib.isNum(id)){
+				Query query = getSession().getNamedQuery("core.news.updatestatusbyid");
+				query.setParameter("status_", prop.get("status_"));
+				query.setParameter("id", id);
+				query.executeUpdate();
+				query = null;
+
+				String msg = getLang().getProp().get(getMySession().getL()).get("success");
+				getMySession().setMsg(msg, Integer.valueOf(1));
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -242,8 +323,8 @@ public class Basicdata {
 	 */
 	public void deleteRecordById() {
 		try {
-			String id = getMySession().getTempStr().get("Basicdata.id");
-			Query query = getSession().getNamedQuery("core.basicdata.deleterecordbyid");
+			String id = getMySession().getTempStr().get("News.id");
+			Query query = getSession().getNamedQuery("core.news.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -259,7 +340,7 @@ public class Basicdata {
 	public void showDialog() {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			getMySession().getTempStr().put("Basicdata.id", (String) params.get("id"));
+			getMySession().getTempStr().put("News.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));

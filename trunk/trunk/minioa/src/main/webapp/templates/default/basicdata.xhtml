@@ -46,7 +46,7 @@
 						</rich:column>
 						<rich:column style="text-align:center;white-space:nowrap;width:42px;">
 							<a4j:commandLink reRender="editPanel">
-								<h:graphicImage id="edit" onclick="RichFaces.switchTab('tab','tab2','tab2');" title="#{Lang.prop[MySession.l]['edit']}" style="border:0px;width:18px;margin-right:6px;" url="images/edit.png">
+								<h:graphicImage id="edit" onclick="RichFaces.switchTab('tab','tab2','tab2');" title="#{Lang.prop[MySession.l]['edit']}" class="imgBtn" url="images/edit.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="relationId" value="#{item.prop['id']}" />
@@ -54,7 +54,7 @@
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
 							<a4j:commandLink action="#{Basicdata.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
-								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" style="border:0px;width:16px;" url="images/delete.png">
+								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" class="imgBtn" url="images/delete.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="reload" value="false" />

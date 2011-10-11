@@ -27,5 +27,7 @@
 		<mapping resource="mysql/core_leftmenu_role_relation.hbm.xml" />
 		<mapping resource="mysql/core_pinyin.hbm.xml" />
 		<mapping resource="mysql/core_basicdata.hbm.xml" />
+		<mapping resource="mysql/core_news.hbm.xml" />
+		<mapping resource="mysql/core_news_attachment.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

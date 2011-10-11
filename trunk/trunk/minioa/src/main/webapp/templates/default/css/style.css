@@ -1,5 +1,12 @@
-a:link {
+a {
 	text-decoration: none;
+	margin-right: 3px;
+}
+
+.imgBtn {
+	border: 0px;
+	width: 16px;
+	margin-left: 3px;
 }
 
 .co1 {
@@ -1058,9 +1065,10 @@ div.pagination span.disabled {
 
 .rich-dtascroller-table {
 	font-family: Candara;
-	font-size:10pt;
+	font-size: 10pt;
 }
-.rich-dtascroller-table select{
+
+.rich-dtascroller-table select {
 	font-family: Candara;
-	font-size:10pt;
+	font-size: 10pt;
 }

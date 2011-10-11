@@ -1,9 +1,13 @@
 package org.minioa.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.faces.context.FacesContext;
@@ -94,9 +98,13 @@ public class FunctionLib {
 	}
 
 	public static int getInt(Object o) {
-		if (o != null)
+		if (o != null) {
+			if (String.valueOf(o).equals("true"))
+				return 1;
+			if (String.valueOf(o).equals("false"))
+				return 0;
 			return Integer.valueOf(String.valueOf(o));
-		else
+		} else
 			return 0;
 	}
 
@@ -260,5 +268,68 @@ public class FunctionLib {
 			ex.printStackTrace();
 		}
 		return ip;
+	}
+
+	public static void download(String filename, String oldname) {
+		try {
+			FacesContext ctx = FacesContext.getCurrentInstance();
+			ctx.responseComplete();
+			String contentType = "application/x-download;charset=utf-8";
+			HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
+			response.setContentType(contentType);
+			StringBuffer contentDisposition = new StringBuffer();
+			contentDisposition.append("attachment;");
+			contentDisposition.append("filename=\"");
+			contentDisposition.append(oldname);
+			contentDisposition.append("\"");
+			response.setHeader("Content-Disposition", new String(contentDisposition.toString().getBytes(System.getProperty("file.encoding")), "iso8859_1"));
+			ServletOutputStream out = response.getOutputStream();
+			byte[] bytes = new byte[0xffff];
+			File file = new File(getBaseDir() + filename);
+			if (!file.exists())
+				return;
+			InputStream is = new FileInputStream(file);
+			int b = 0;
+			while ((b = is.read(bytes, 0, 0xffff)) > 0)
+				out.write(bytes, 0, b);
+			is.close();
+			ctx.responseComplete();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public static boolean isDirExists(String dir) {
+		try {
+			File file = new File(dir);
+			if (file.exists())
+				return true;
+			else
+				return file.mkdirs();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	public static String getFileType(String fileName) {
+		if (fileName.lastIndexOf(".") > -1)
+			return fileName.substring(fileName.lastIndexOf("."));
+		else
+			return "";
+	}
+
+	public static String getFileName(String path) {
+		String fileName = path;
+		if (path.indexOf("\\") > -1) {
+			int i = path.lastIndexOf("\\") + 1;
+			fileName = path.substring(i);
+			return fileName;
+		}
+		if (path.indexOf("/") > -1) {
+			int i = path.lastIndexOf("/") + 1;
+			fileName = path.substring(i);
+		}
+		return fileName;
 	}
 }
