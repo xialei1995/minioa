@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 <ui:composition template="main.xhtml">
 	<ui:define name="title">
 		<h:outputText value="#{Lang.prop[MySession.l]['useradmin']}" />
 	</ui:define>
 	<ui:define name="body">
-		<rich:tabPanel id="tab" switchType="client" headerAlignment="left">
+		<rich:tabPanel id="tab" switchType="client" headerAlignment="left" rendered="#{MySession.hasOp['100401']==true}">
 			<rich:tab id="tab1" name="tab1" label="#{Lang.prop[MySession.l]['list']}">
 				<a4j:form id="searchForm">
 					<h:outputText value="#{Lang.prop[MySession.l]['username']}:" />
@@ -64,7 +64,7 @@
 								<f:param name="type" value="user" />
 								<f:param name="reload" value="false" />
 							</a4j:commandLink>
-							<a4j:commandLink action="#{User.showDialog}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
+							<a4j:commandLink action="#{User.showDialog}" rendered="#{MySession.hasOp['100402']==true}" onclick="#{rich:component('mpForConfirm')}.show();hideObject('dataForm:dataTable:#{rowNum}:edit');hideObject('dataForm:dataTable:#{rowNum}:del');">
 								<h:graphicImage id="del" title="#{Lang.prop[MySession.l]['delete']}" class="imgBtn" url="images/delete.png">
 								</h:graphicImage>
 								<f:param name="id" value="#{item.prop['id']}" />
@@ -174,7 +174,7 @@
 								</h:selectOneRadio>
 								<h:outputText value="" />
 								<h:outputText value="" />
-								<h:panelGrid columns="2">
+								<h:panelGrid columns="2" rendered="#{MySession.hasOp['100402']==true}">
 									<a4j:commandLink action="#{User.newRecord}" reRender="msg">
 										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
 										<f:param name="redirect" value="false" />
@@ -195,7 +195,7 @@
 						<legend>
 							<h:outputText value="#{Lang.prop[MySession.l]['rolelist']}" />
 						</legend>
-						<a4j:form id="relationForm" rendered="#{param['relationId'] gt 0}">
+						<a4j:form id="relationForm" rendered="#{param['relationId'] gt 0 and MySession.hasOp['100402']==true}">
 							<h:panelGrid columns="3">
 								<h:outputText value="#{Lang.prop[MySession.l]['role']}:" />
 								<rich:comboBox value="#{RoleUserRelation.roleName}" suggestionValues="#{Application.roleList}" style="width:60px;margin-top:-6px;">
@@ -207,7 +207,7 @@
 								</a4j:commandLink>
 							</h:panelGrid>
 						</a4j:form>
-						<a4j:form id="relationDataForm" rendered="#{param['relationId'] gt 0}">
+						<a4j:form id="relationDataForm" rendered="#{param['relationId'] gt 0 and MySession.hasOp['100402']==true}">
 							<h:panelGrid columns="3" style="margin-top:3px;">
 								<a4j:commandLink onclick="javascript:selectAll();return false;">
 									<h:outputText class="btn" value="#{Lang.prop[MySession.l]['selectall']}" />

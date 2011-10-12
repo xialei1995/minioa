@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" 
 xmlns:ui="http://java.sun.com/jsf/facelets" 
 xmlns:h="http://java.sun.com/jsf/html" 
@@ -9,7 +9,7 @@ xmlns:rich="http://richfaces.org/rich">
 <ui:composition template="main.xhtml">
 	<ui:define name="title">Hello World Demo</ui:define>
 	<ui:define name="body">
-		<a4j:form rendered="#{MySession.hasOp['helloworld']=='true'}">
+		<a4j:form rendered="#{MySession.hasOp['helloworld']==true}">
 			<h:outputText id="message" value="#{HelloWorld.message}" style="color:red;font-size:14pt;" />
 			<br />
 			<br />

@@ -5,8 +5,8 @@
 		<h:outputText value="#{Lang.prop[MySession.l]['operationsetting']}" />
 	</ui:define>
 	<ui:define name="body">
-		<a4j:region selfRendered="true">
-			<h:outputText value="#{Role.init}" />
+		<a4j:region selfRendered="true" rendered="#{MySession.hasOp['100603']==true}">
+			<h:outputText value="#{Role.init}" style="display:none;"/>
 			<a4j:form>
 				<h:outputText value="#{Lang.prop[MySession.l]['role']} : #{Role.prop['roleName']}" />
 

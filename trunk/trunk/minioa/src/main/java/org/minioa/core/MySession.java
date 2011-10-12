@@ -323,6 +323,7 @@ public class MySession {
 		else
 			pageCount = (int) (Math.ceil(rowCount / pageSize)) + 1;
 		List<SelectItem> list = new ArrayList<SelectItem>();
+		list.add(new SelectItem(1));
 		for (int i = 1; i <= pageCount; i++) {
 			if (Math.abs(i - scrollerPage) < 10) {
 				SelectItem item = new SelectItem(i);
