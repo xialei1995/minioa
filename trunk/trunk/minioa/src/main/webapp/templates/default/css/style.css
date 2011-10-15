@@ -26,6 +26,34 @@ a {
 	verticle-align: top;
 }
 
+.panelCo1 {
+	width: 200px;
+	text-align: left;
+	font-size: 12pt;
+}
+
+.panelCo2 {
+	width: 136px;
+	text-align: right;
+}
+
+.rich-panel {
+	border: 1px solid #DBE1E1;
+}
+
+.rich-panel-header {
+	border: 0;
+	background: url(../images/title_bg.jpg) repeat-x -14px -83px;
+}
+
+.rich-panel-body {
+	padding: 1px;
+}
+
+.rich-panel-body table {
+	border-bottom: 0;
+}
+
 .tdNormal {
 	
 }
@@ -52,22 +80,20 @@ a {
 }
 
 .note {
-	font-size: 9pt;
 	font-family: ¿¬Ìå_gb2312;
 	color: red;
 }
 
 input[type=text] {
 	border: 1px dotted #D5D8DC;
-	font-size: 9pt;
-	height: 18px;
+	height: 15px;
 	margin: 0 3px 0 3px;
+	font-size: 10pt;
 }
 
 input[type=password] {
 	border: 1px dotted #D5D8DC;
-	font-size: 9pt;
-	height: 18px;
+	height: 15px;
 	margin: 0 3px 0 3px;
 }
 
@@ -88,7 +114,7 @@ body {
 	background: url(../images/bg.jpg) no-repeat center top #310b28;
 	font-family: Arial, Helvetica, sans-serif;
 	padding: 0;
-	font-size: 12px;
+	font-size: 10pt;
 	margin: 0 auto;
 	color: #0e4354;
 }
@@ -200,7 +226,7 @@ a.forgot_pass {
 	margin: 0 auto;
 	width: 900px;;
 	height: auto;
-	padding: 0px 0 50px 0;
+	padding: 0px 0 3px 0;
 	background: url(../images/menu_bg.jpg) no-repeat center top #fff;
 }
 
@@ -251,7 +277,7 @@ a.forgot_pass {
 
 /*---------------- menu----------------------*/
 .menu {
-	font-size: 11px;
+	font-size: 10pt;
 	padding: 0px 10px 0 10px;
 	float: left;
 	width: 880px;
@@ -291,7 +317,7 @@ a.forgot_pass {
 	display: block;
 	float: left;
 	height: 100%;
-	font-size: 11px;
+	font-size: 10pt;
 	text-decoration: none;
 	color: #fff;
 	padding: 0 21px 0 17px;
@@ -310,7 +336,7 @@ a.forgot_pass {
 	width: 12em;
 	height: 100%;
 	line-height: 1em;
-	padding: 1em 1em;
+	padding: 8px 8px;
 }
 
 .menu ul table ul a,.menu ul table ul a:visited {
@@ -472,6 +498,10 @@ a.forgot_pass {
 	width: 195px;
 }
 
+.sidebarmenu a {
+	font-size: 10pt;
+}
+
 .sidebarmenu a.menuitem {
 	background: url(../images/sidebar_menu_top.gif) no-repeat center top;
 	color: #fff;
@@ -577,7 +607,7 @@ input.search_input {
 	padding: 4px 0 0 2px;
 	float: left;
 	color: #096184;
-	font-size: 11px;
+	font-size: 10pt;
 }
 
 input.search_submit {
@@ -949,7 +979,7 @@ div.pagination span.disabled {
 .rich-table th {
 	padding: 3px;
 	font-weight: normal;
-	font-size: 13px;
+	font-size: 10pt;
 	color: #039;
 	background: #60c8f2;
 	border-width: 0px;
@@ -957,9 +987,14 @@ div.pagination span.disabled {
 
 .rich-table td {
 	padding: 3px;
-	background: #ecf8fd;
 	border-width: 0px;
-	color: #669
+	color: #669;
+	background: #fff;
+}
+
+.rich-table a {
+	font-size: 10pt;
+	line-height: 20px;
 }
 
 .rich-table tr {
@@ -1070,5 +1105,114 @@ div.pagination span.disabled {
 
 .rich-dtascroller-table select {
 	font-family: Candara;
+	font-size: 10pt;
+}
+
+.news_content img {
+	margin-left: -34px;
+}
+
+/*pic news*/
+.focusPic {
+	background: #fff;
+	border: 0;
+	width: 335px;
+	height: 245px;
+}
+
+.focusPic .main {
+	width: 335px;
+	height: 245px;
+	margin: 4px auto 0;
+	overflow: hidden;
+}
+
+.focusPic .main h2 {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 24px;
+	margin-top: 3px;
+}
+
+.focusPic .main .icon {
+	border: none;
+}
+
+.focusPic .sidePic {
+	float: right;
+	height: 24px;
+}
+
+.sidePic li {
+	float: left;
+	width: 21px;
+	list-style: none;
+	margin-right: 3px;
+	height: 24px;
+	line-height: 26px;
+	background: url(../images/focusbg2.gif) no-repeat left bottom;
+	text-align: center;
+	color: #2B2B2B;
+	font-weight: bold;
+	font-size: 14px;
+	font-family: Tahoma;
+	cursor: pointer;
+}
+
+.sidePic .on {
+	background: url(../images/focusbg1.gif) no-repeat left bottom;
+	color: #fff;
+}
+
+.tab .normal {
+	display: none;
+}
+
+.tab .on {
+	display: block;
+}
+
+.clearfix:after {
+	clear: both;
+	height: 0;
+	overflow: hidden;
+	display: block;
+	visibility: hidden;
+	content: ".";
+}
+
+.normal a:link {
+	font-size: 10pt;
+}
+
+.picBtn li:hover {
+	background: url(../images/focusbg1.gif) no-repeat left bottom;
+	color: #fff;
+}
+
+.focusPic img {
+	border: 0;
+	width: 335px;
+}
+
+/*end of pic news*/
+
+.datetimeBlue {
+	text-align: left;
+	font-family: Berlin Sans FB, Constantia, Candara;
+	color: blue;
+	vertical-align: bottom;
+	font-size: 8pt;
+}
+
+.datetimeRed {
+	text-align: left;
+	font-family: Berlin Sans FB, Constantia, Candara;
+	color: red;
+	vertical-align: bottom;
+	font-size: 8pt;
+}
+
+.rich-tree {
 	font-size: 10pt;
 }

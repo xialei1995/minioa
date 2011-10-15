@@ -17,6 +17,20 @@
         left join core_basicdata tb on tb.value2 = ta.cate and tb.name='news'
     ]]>
 	</sql-query>
+	<sql-query name="core.news.panellist">
+    <![CDATA[
+        select ta.ID_,ta.CDATE_,ta.UUID_,ta.title
+        from core_news ta 
+        left join core_basicdata tb on tb.value2 = ta.cate and tb.name='news'
+        where ta.status_ = 1 and ta.cate = :cate
+        order by ta.CDATE_ desc limit 10
+    ]]>
+	</sql-query>
+	<sql-query name="core.news.catename">
+    <![CDATA[
+        select ifnull((select value from core_basicdata where value2 = :cate and name='news'),"") from dual
+    ]]>
+	</sql-query>
 	<sql-query name="core.news.records.count">
     <![CDATA[
         select count(*) as ds from core_news
@@ -25,8 +39,10 @@
 	<sql-query name="core.news.getrecordbyid">
     <![CDATA[
         select ta.ID_,ta.CID_,ta.CDATE_,ta.MID_,ta.MDATE_,ta.UUID_,
-        	ta.cate,ta.title,ta.content,ta.ispicnews,ta.status_,ta.times
+        	ta.cate,ta.title,ta.content,ta.ispicnews,ta.status_,ta.times,tb.displayName,tc.value
         from core_news ta
+        left join core_user tb on tb.ID_ = ta.CID_
+        left join core_basicdata tc on tc.name='news' and tc.value2 = ta.cate
         where ta.ID_ = :id
     ]]>
 	</sql-query>
@@ -39,14 +55,13 @@
 	</sql-query>
 	<sql-query name="core.news.updatestatusbyid">
     <![CDATA[
-        update core_news set status_ = :status_
-        where ID_ = :id
+        update core_news set MID_ = :mId, MDATE_ = sysdate(), status_ = :status where ID_ = :id
     ]]>
 	</sql-query>
 	<sql-query name="core.news.updatetimesbyid">
     <![CDATA[
-        update core_news set times = :times
-        where ID_ = :id
+        update core_news set times = times + 1
+        where ID_ = :id and status_ = 1
     ]]>
 	</sql-query>
 	<sql-query name="core.news.deleterecordbyid">
@@ -54,4 +69,19 @@
         delete from core_news where ID_ = :id
     ]]>
 	</sql-query>
+    <sql-query name="core.news.newspic">
+    <![CDATA[
+        select ta.ID_,ta.title,ta.UUID_,(select tb.filename from core_news_attachment tb where LOWER(tb.filetype) in ('.jpeg','.jpg','.gif','.bpm','.png') and tb.UUID_ = ta.UUID_ order by ta.ID_ limit 1) as url
+        from core_news ta
+        where ta.ispicnews = 1 and ta.status_ = 1
+		order by ta.CDATE_ desc limit 5
+    ]]>
+    </sql-query>
+    <sql-query name="core.news.newspic.count">
+    <![CDATA[
+        select ifnull((select count(*)
+        from core_news ta
+        where ta.ispicnews = 1 and ta.status_ = 1),0) from dual
+    ]]>
+    </sql-query>
 </hibernate-mapping>

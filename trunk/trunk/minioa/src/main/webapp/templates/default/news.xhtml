@@ -68,14 +68,20 @@
 							<h:outputText value="#{item.prop['catename']}" />
 						</rich:column>
 						<rich:column style="width:*;text-align:left;">
-							<h:outputText value="#{item.prop['title']}" />
+							<h:outputLink value="newsview.jsf">
+								<h:outputText value="#{item.prop['title']}" />
+								<f:param name="view" value="true" />
+								<f:param name="id" value="#{item.prop['id']}" />
+								<f:param name="uuid" value="#{item.prop['uuid']}" />
+							</h:outputLink>
 						</rich:column>
 						<rich:column style="width:36px;text-align:left;">
 							<h:outputText value="#{Lang.prop[MySession.l]['yes']}" rendered="#{item.prop['ispicnews'] == true}" />
 							<h:outputText value="#{Lang.prop[MySession.l]['no']}" rendered="#{item.prop['ispicnews'] == false}" />
 						</rich:column>
 						<rich:column style="width:36px;text-align:center;">
-							<h:outputText value="#{item.prop['status']}" />
+							<h:outputText value="未审核" rendered="#{item.prop['status']=='0'}" style="color:blue;"/>
+							<h:outputText value="已审核" rendered="#{item.prop['status']=='1'}" style="color:green;"/>
 						</rich:column>
 						<rich:column style="width:36px;text-align:center;">
 							<h:outputText value="#{item.prop['times']}" />
@@ -138,18 +144,32 @@
 								<h:outputText value="" />
 
 								<h:outputText value="" />
-								<h:panelGrid columns="4" rendered="#{MySession.hasOp['101102']==true}">
+								<h:panelGrid columns="7" rendered="#{MySession.hasOp['101102']==true}">
 									<a4j:commandLink action="#{News.newRecord}" reRender="msg">
 										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['newrecord']}" />
-										<f:param name="redirect" value="false" />
+										<f:param name="redirect" value="true" />
 										<f:param name="reload" value="false" />
 										<f:param name="uuid" value="#{News.uuid}" />
 									</a4j:commandLink>
-									<a4j:commandLink action="#{News.updateRecordById}" reRender="msg">
+									<a4j:commandLink action="#{News.updateRecordById}" rendered="#{param['id'] gt 0}" reRender="msg">
 										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['save']}" />
-										<f:param name="redirect" value="false" />
+										<f:param name="redirect" value="true" />
 										<f:param name="reload" value="false" />
 										<f:param name="id" value="#{param['id']}" />
+									</a4j:commandLink>
+									<a4j:commandLink action="#{News.approve}" rendered="#{param['id'] gt 0 and MySession.tempStr['News.status']=='0'}" reRender="msg">
+										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['approve']}" />
+										<f:param name="redirect" value="true" />
+										<f:param name="reload" value="false" />
+										<f:param name="id" value="#{param['id']}" />
+										<f:param name="status" value="1" />
+									</a4j:commandLink>
+									<a4j:commandLink action="#{News.approve}" rendered="#{param['id'] gt 0 and MySession.tempStr['News.status']=='1'}" eRender="msg">
+										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['cancelapprove']}" />
+										<f:param name="redirect" value="true" />
+										<f:param name="reload" value="false" />
+										<f:param name="id" value="#{param['id']}" />
+										<f:param name="status" value="0" />
 									</a4j:commandLink>
 									<a4j:commandLink reRender="editPanel,mpForAttachment">
 										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['reset']}" />
@@ -161,11 +181,15 @@
 										<f:param name="reload" value="false" />
 										<f:param name="uuid" value="#{News.uuid}" />
 									</a4j:commandLink>
+									<h:commandLink action="#{News.redirect}" target="_blank">
+										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['preview']}" />
+										<f:param name="uuid" value="#{News.uuid}" />
+									</h:commandLink>
 								</h:panelGrid>
 								<h:outputText value="" />
 
-								<h:outputText value="" rendered="#{MySession.hasOp['101102']==true}"/>
-								<rich:simpleTogglePanel rendered="#{MySession.hasOp['101102']==true}" opened="false" switchType="client" label="#{Lang.prop[MySession.l]['uploadattachment']}..." style="width:397px;">
+								<h:outputText value="" rendered="#{MySession.hasOp['101102']==true}" />
+								<rich:simpleTogglePanel rendered="#{MySession.hasOp['101102']==true}" opened="false" switchType="client" label="#{Lang.prop[MySession.l]['attachment']}..." style="width:397px;">
 									<rich:fileUpload fileUploadListener="#{NewsAttachment.uploadListener}" maxFilesQuantity="100" listWidth="376" listHeight="60" ondblclick="#{rich:component('mpForAttachment')}.hide()">
 										<a4j:support event="onuploadcomplete" reRender="msg" />
 										<f:param name="uuid" value="#{News.uuid}" />

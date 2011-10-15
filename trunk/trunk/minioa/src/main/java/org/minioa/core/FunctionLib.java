@@ -91,6 +91,12 @@ public class FunctionLib {
 		return str;
 	}
 
+	public static String getSubString18(String str) {
+		if (str.length() > 18)
+			return str.substring(0, 18);
+		return str;
+	}
+
 	public static String getSubString24(String str) {
 		if (str.length() > 24)
 			return str.substring(0, 24);

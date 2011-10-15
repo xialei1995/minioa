@@ -151,7 +151,7 @@ public class User {
 
 			String sql = getSession().getNamedQuery("core.user.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.userName desc limit :limit offset :offset";
+			String other = " order by convert(ta.displayName using gbk) asc limit :limit offset :offset";
 
 			if (!key.equals(""))
 				where += " and ta.userName like :key";

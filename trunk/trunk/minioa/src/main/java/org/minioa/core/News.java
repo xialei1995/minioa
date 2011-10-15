@@ -80,13 +80,19 @@ public class News {
 			propInt = new HashMap<String, Integer>();
 		return propInt;
 	}
-	
-	private List<News> recordsList;
+
+	private List<News> recordsList, panelList;
 
 	public List<News> getRecordsList() {
 		if (recordsList == null)
 			buildRecordsList();
 		return recordsList;
+	}
+
+	public List<News> getPanelList() {
+		if (panelList == null)
+			buildPanelList();
+		return panelList;
 	}
 
 	public News() {
@@ -188,14 +194,55 @@ public class News {
 		}
 	}
 
+	public void buildPanelList() {
+		try {
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String cate = (String) params.get("cate");
+			if(prop!=null)
+				return ;
+			if (null != cate && !"".equals(cate)) {
+				panelList = new ArrayList<News>();
+				Query query = getSession().getNamedQuery("core.news.catename");
+				query.setParameter("cate", cate);
+				prop = new HashMap<String, String>();
+				prop.put("catename", FunctionLib.getString(query.list().get(0)));
+				query = getSession().getNamedQuery("core.news.panellist");
+				query.setParameter("cate", cate);
+				Iterator<?> it = query.list().iterator();
+				Map<String, String> p;
+				int i = 0;
+				long now = new java.util.Date().getTime();
+				while (it.hasNext()) {
+					Object obj[] = (Object[]) it.next();
+					p = new HashMap<String, String>();
+					i++;
+					p.put("i", String.valueOf(i));
+					p.put("id", String.valueOf(FunctionLib.getInt(obj[0])));
+					p.put("cDate", FunctionLib.getDateString(obj[1]));
+					p.put("uuid", FunctionLib.getString(obj[2]));
+					p.put("title", FunctionLib.getSubString18(FunctionLib.getString(obj[3])));
+					if (now - FunctionLib.getDate(obj[1]).getTime() < 86400000)
+						p.put("isNew", "true");
+					else
+						p.put("isNew", "false");
+					panelList.add(new News(p));
+				}
+				it = null;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	/**
 	 * 读取一条记录
 	 */
 	public void selectRecordById() {
 		try {
+			getMySession().getTempStr().put("News.status", "0");
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.news.getrecordbyid");
 				query.setParameter("id", id);
 				Iterator<?> it = query.list().iterator();
@@ -204,6 +251,8 @@ public class News {
 					prop = new HashMap<String, String>();
 					propInt = new HashMap<String, Integer>();
 					prop.put("id", FunctionLib.getString(obj[0]));
+					prop.put("cId", FunctionLib.getString(obj[1]));
+					prop.put("cDate", FunctionLib.getDateTimeString(obj[2]));
 					prop.put("uuid", FunctionLib.getString(obj[5]));
 					prop.put("cate", FunctionLib.getString(obj[6]));
 					prop.put("title", FunctionLib.getString(obj[7]));
@@ -211,15 +260,24 @@ public class News {
 					propInt.put("ispicnews", FunctionLib.getInt(obj[9]));
 					prop.put("status", FunctionLib.getString(obj[10]));
 					prop.put("times", FunctionLib.getString(obj[11]));
+					prop.put("cUser", FunctionLib.getString(obj[12]));
+					prop.put("cateName", FunctionLib.getString(obj[13]));
 					uuid = prop.get("uuid");
+					getMySession().getTempStr().put("News.status", prop.get("status"));
 				}
 				it = null;
+				//
+				if ("true".equals(params.get("view"))) {
+					query = getSession().getNamedQuery("core.news.updatetimesbyid");
+					query.setParameter("id", id);
+					query.executeUpdate();
+				}
 			}
-			if(null == uuid || "".equals(uuid))
+			if (null == uuid || "".equals(uuid))
 				uuid = java.util.UUID.randomUUID().toString();
-			if(null == propInt){
+			if (null == propInt) {
 				propInt = new HashMap<String, Integer>();
-				propInt.put("ispicnews",0);
+				propInt.put("ispicnews", 0);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -242,6 +300,10 @@ public class News {
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
+
+			if ("true".equals((String) params.get("redirect")))
+				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
+
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -254,7 +316,7 @@ public class News {
 			getMySession();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.news.updaterecordbyid");
 				query.setParameter("mId", mySession.getUserId());
 				query.setParameter("cate", prop.get("cate"));
@@ -267,6 +329,32 @@ public class News {
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
 				getMySession().setMsg(msg, Integer.valueOf(1));
 			}
+			if ("true".equals((String) params.get("redirect")))
+				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
+		} catch (Exception ex) {
+			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
+			getMySession().setMsg(msg, Integer.valueOf(2));
+			ex.printStackTrace();
+		}
+	}
+
+	public void approve() {
+		try {
+			getMySession();
+			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String id = (String) params.get("id");
+			if (FunctionLib.isNum(id)) {
+				Query query = getSession().getNamedQuery("core.news.updatestatusbyid");
+				query.setParameter("mId", mySession.getUserId());
+				query.setParameter("status", (String) params.get("status"));
+				query.setParameter("id", id);
+				query.executeUpdate();
+				query = null;
+				String msg = getLang().getProp().get(getMySession().getL()).get("success");
+				getMySession().setMsg(msg, Integer.valueOf(1));
+			}
+			if ("true".equals((String) params.get("redirect")))
+				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -279,7 +367,7 @@ public class News {
 			getMySession();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.news.updatetimesbyid");
 				query.setParameter("times", prop.get("times"));
 				query.setParameter("id", id);
@@ -301,7 +389,7 @@ public class News {
 			getMySession();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.news.updatestatusbyid");
 				query.setParameter("status_", prop.get("status_"));
 				query.setParameter("id", id);
@@ -347,4 +435,70 @@ public class News {
 			ex.printStackTrace();
 		}
 	}
+
+	private String preView;
+
+	public String getPreView() {
+		getMySession();
+		prop = new HashMap<String, String>();
+		prop.put("title", mySession.getTempStr().get("News.title"));
+		prop.put("content", mySession.getTempStr().get("News.content"));
+		mySession.getTempStr().remove("News.title");
+		mySession.getTempStr().remove("News.content");
+		return "";
+	}
+
+	public void redirect() {
+		Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		getMySession();
+		mySession.getTempStr().put("News.title", prop.get("title"));
+		mySession.getTempStr().put("News.content", prop.get("content"));
+		FunctionLib.redirect(mySession.getTemplateName(), "newspreview.jsf?uuid=" + (String) params.get("uuid"));
+	}
+
+	public String newsPic;
+
+	public String getNewsPic() {
+		try {
+
+			// core.news.newspic.count
+			Query query = getSession().getNamedQuery("core.news.newspic.count");
+			int count = FunctionLib.getInt(query.list().get(0));
+			if (count == 0)
+				return null;
+
+			query = getSession().getNamedQuery("core.news.newspic");
+			Iterator<?> it = query.list().iterator();
+			prop = new HashMap<String, String>();
+			StringBuffer text = new StringBuffer();
+			StringBuffer js = new StringBuffer();
+			String url, title, href;
+			url = title = href = "";
+			int i = 1;
+			while (it.hasNext()) {
+				Object obj[] = (Object[]) it.next();
+				url = FunctionLib.getString(obj[3]);
+				if (!"".equals(url)) {
+					url = url.replaceAll("\\\\", "/");
+					url = "../../" + url.substring(url.indexOf("upload"));
+				}
+				href = "newsview.jsf?id=" + FunctionLib.getString(obj[0]) + "&uuid=" + FunctionLib.getString(obj[2]);
+				title = FunctionLib.getString(obj[1]);
+				if (i == 1) {
+					text.append("<");
+					js.append("<");
+				}
+				text.append("<div id=\"pic" + i + "\" class=\"normal on\"><a href=\"" + href + "\"><img src=\"" + url + "\" title=\"" + title + "\" alt=\"" + title + "\" width=\"320\" height=\"220\" /></a><h2><a href=\"" + href + "\">" + title + "</a></h2></div>\r\n");
+				js.append("<li onclick=\"setFocus(" + i + "," + count + ")\" style=\"overflow:visible;\">" + i + "</li>\r\n");
+				i++;
+			}
+			it = null;
+			prop.put("js", js.toString().substring(1));
+			prop.put("text", text.toString().substring(1));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return newsPic;
+	}
+
 }
