@@ -6,7 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
@@ -519,6 +522,7 @@ public class User {
 					getMySession().setDepaName(FunctionLib.getString(obj[16]));
 					getMySession().setEmail(FunctionLib.getString(obj[9]));
 					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+					getMySession().setIp(FunctionLib.getIp());
 					getMySession().buildOpList(getSession());
 					getMySession().buildTopMenu();
 					getMySession().buildLeftMenu();
@@ -575,6 +579,7 @@ public class User {
 								getMySession().setDepaName(FunctionLib.getString(obj[16]));
 								getMySession().setEmail(FunctionLib.getString(obj[9]));
 								getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+								getMySession().setIp(FunctionLib.getIp());
 								getMySession().buildOpList(getSession());
 								getMySession().buildTopMenu();
 								getMySession().buildLeftMenu();
@@ -606,14 +611,18 @@ public class User {
 
 	public void logout() {
 		try {
-			getMySession().setHasOp(null);
-			getMySession().setTopMenu(null);
-			getMySession().setLeftMenu(null);
-			FunctionLib.redirect(getMySession().getTemplateName(), "index.jsf");
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("MySession");
+			FacesContext context = FacesContext.getCurrentInstance();
+			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+			
+			Query query = getSession().getNamedQuery("core.user.session.delete");
+			query.setParameter("sessionId", request.getSession().getId());
+			query.executeUpdate();
+			
+			HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+			session.invalidate();
+			if(getMySession()!=null)
+				FunctionLib.redirect(getMySession().getTemplateName(), "index.jsf");
 		} catch (Exception ex) {
-			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
 			ex.printStackTrace();
 		}
 	}

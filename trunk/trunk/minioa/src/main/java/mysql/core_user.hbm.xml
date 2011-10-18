@@ -127,4 +127,14 @@
         from core_user where userName = :userName and password = :password
     ]]>
 	</sql-query>
+	<sql-query name="core.user.session.update">
+    <![CDATA[
+        call core_online(:cId,:sId,:cTime,:mTime,:ipAddress)
+    ]]>
+	</sql-query>
+	<sql-query name="core.user.session.delete">
+    <![CDATA[
+        delete from core_user_session where sessionId = :sessionId
+    ]]>
+	</sql-query>
 </hibernate-mapping>
