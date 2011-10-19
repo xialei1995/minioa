@@ -1005,6 +1005,9 @@ div.pagination span.disabled {
 	background: #d2e7f0;
 }
 
+.rich-table-nohover tr:hover td {
+	background: #fff;
+}
 .rich-tab-header {
 	background-image: url(../images/menu_bg.gif);
 	border: 1px solid #5FC7F1;

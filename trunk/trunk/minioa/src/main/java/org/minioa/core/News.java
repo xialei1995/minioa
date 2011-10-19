@@ -5,10 +5,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.faces.context.FacesContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
+import java.io.Reader;
+import java.io.StringReader;
+import org.wltea.analyzer.IKSegmentation;
+import org.wltea.analyzer.Lexeme;
 
 public class News {
 
@@ -121,10 +128,10 @@ public class News {
 			String sql = getSession().getNamedQuery("core.news.records.count").getQueryString();
 			String where = " where 1=1";
 			if (!key.equals(""))
-				where += " and (title like :key or content like :key)";
+				where += " and match(keywords) against(:key in boolean mode)";
 			Query query = getSession().createSQLQuery(sql + where);
 			if (!key.equals(""))
-				query.setParameter("key", "%" + key + "%");
+				query.setParameter("key", key);
 
 			int i = 0;
 			int dc = Integer.valueOf(String.valueOf(query.list().get(0)));
@@ -165,13 +172,13 @@ public class News {
 			String other = " order by ta.ID_ desc limit :limit offset :offset";
 
 			if (!key.equals(""))
-				where += " and (ta.title like :key or ta.content like :key)";
+				where += " and match(ta.keywords) against(:key in boolean mode)";
 			Query query = getSession().createSQLQuery(sql + where + other);
 			query.setParameter("limit", mySession.getPageSize());
 			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
 
 			if (!key.equals(""))
-				query.setParameter("key", "%" + key + "%");
+				query.setParameter("key", key);
 
 			Iterator<?> it = query.list().iterator();
 			Map<String, String> p;
@@ -198,8 +205,8 @@ public class News {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String cate = (String) params.get("cate");
-			if(prop!=null)
-				return ;
+			if (prop != null)
+				return;
 			if (null != cate && !"".equals(cate)) {
 				panelList = new ArrayList<News>();
 				Query query = getSession().getNamedQuery("core.news.catename");
@@ -296,6 +303,7 @@ public class News {
 			query.setParameter("title", prop.get("title"));
 			query.setParameter("content", prop.get("content"));
 			query.setParameter("ispicnews", propInt.get("ispicnews"));
+			query.setParameter("keywords", getKeyWords(prop.get("title") + "," + prop.get("content")));
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
@@ -323,11 +331,14 @@ public class News {
 				query.setParameter("title", prop.get("title"));
 				query.setParameter("content", prop.get("content"));
 				query.setParameter("ispicnews", propInt.get("ispicnews"));
+				query.setParameter("keywords", getKeyWords(prop.get("title") + "," + prop.get("content")));
 				query.setParameter("id", id);
 				query.executeUpdate();
 				query = null;
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
 				getMySession().setMsg(msg, Integer.valueOf(1));
+				//
+				
 			}
 			if ("true".equals((String) params.get("redirect")))
 				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
@@ -501,4 +512,28 @@ public class News {
 		return newsPic;
 	}
 
+	public static String getKeyWords(String str) throws Exception {
+		StringBuffer sb = new StringBuffer();
+		try {
+			Pattern p;
+			Matcher m;
+			String value;
+			p = Pattern.compile("([\u4e00-\u9FA5]+|[^\\x00-\\x80\uFE30-\uFFA0]+)");
+			m = p.matcher(str);
+			Reader r;
+			IKSegmentation ikSeg;
+			while (m.find()) {
+				value = m.group(0);
+				r = new StringReader(value);
+				ikSeg = new IKSegmentation(r, true);
+				Lexeme lexeme;
+				while ((lexeme = ikSeg.next()) != null) {
+					sb.append(lexeme.getLexemeText() + " ");
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return sb.toString();
+	}
 }

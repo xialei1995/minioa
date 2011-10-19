@@ -29,5 +29,6 @@
 		<mapping resource="mysql/core_basicdata.hbm.xml" />
 		<mapping resource="mysql/core_news.hbm.xml" />
 		<mapping resource="mysql/core_news_attachment.hbm.xml" />
+		<mapping resource="mysql/core_search.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

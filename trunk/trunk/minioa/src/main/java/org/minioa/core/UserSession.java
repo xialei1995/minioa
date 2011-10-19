@@ -1,19 +1,11 @@
 package org.minioa.core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
-import org.jivesoftware.util.Blowfish;
 
 public class UserSession {
 
@@ -49,8 +41,8 @@ public class UserSession {
 	}
 
 	private String online;
-	
-	public String getOnline(){
+
+	public String getOnline() {
 		try {
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -61,13 +53,13 @@ public class UserSession {
 			query.setParameter("mTime", request.getSession().getLastAccessedTime());
 			query.setParameter("ipAddress", getMySession().getIp());
 			online = String.valueOf(query.list().get(0));
-			if("-1".equals(online)){
+			if ("-1".equals(online)) {
 				query = getSession().getNamedQuery("core.user.session.delete");
 				query.setParameter("sessionId", request.getSession().getId());
 				query.executeUpdate();
 				HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
 				session.invalidate();
-				FunctionLib.redirect(FunctionLib.getWebAppName());
+				online = "<script language=\"javascript\">if(document.getElementById('mponline')) {document.getElementById('mpForMsgContentDiv').style.backgroundImage='url(images/error.png)';document.getElementById('mponline').component.show();}</script>";
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

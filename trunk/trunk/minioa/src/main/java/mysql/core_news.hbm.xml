@@ -6,7 +6,7 @@
 <hibernate-mapping auto-import="true" package="org.minioa.core">
 	<sql-query name="core.news.newrecord">
     <![CDATA[
-        insert into core_news(CID_,CDATE_,UUID_,cate,title,content,ispicnews) values(:cId,sysdate(),:uuid,:cate,:title,:content,:ispicnews)
+        insert into core_news(CID_,CDATE_,UUID_,cate,title,content,ispicnews, keywords) values(:cId,sysdate(),:uuid,:cate,:title,:content,:ispicnews, :keywords)
     ]]>
 	</sql-query>
 	<sql-query name="core.news.records">
@@ -49,7 +49,7 @@
 	<sql-query name="core.news.updaterecordbyid">
     <![CDATA[
         update core_news set MID_ = :mId, MDATE_ = sysdate(), 
-        	cate = :cate, title = :title, content = :content, ispicnews = :ispicnews
+        	cate = :cate, title = :title, content = :content, ispicnews = :ispicnews, keywords = :keywords
         where ID_ = :id
     ]]>
 	</sql-query>
