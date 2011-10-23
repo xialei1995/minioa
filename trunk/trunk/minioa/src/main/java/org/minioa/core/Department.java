@@ -98,7 +98,7 @@ public class Department {
 		return init;
 	}
 
-	private int orgId, parentId,sequence;
+	private int orgId, parentId, sequence;
 	private String orgName, parentName, depaName, depaDesc;
 
 	public void setDepaName(String data) {
@@ -148,6 +148,7 @@ public class Department {
 	public int getParentId() {
 		return parentId;
 	}
+
 	public void setSequence(int data) {
 		sequence = data;
 	}
@@ -155,7 +156,7 @@ public class Department {
 	public int getSequence() {
 		return sequence;
 	}
-	
+
 	private List<Department> recordsList;
 
 	public List<Department> getRecordsList() {
@@ -169,7 +170,7 @@ public class Department {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
-		if(lang == null)
+		if (lang == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
@@ -179,7 +180,7 @@ public class Department {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
-		if(mySession == null)
+		if (mySession == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
@@ -193,6 +194,7 @@ public class Department {
 	}
 
 	private String type;
+
 	public void setType(String data) {
 		type = data;
 	}
@@ -200,19 +202,20 @@ public class Department {
 	public String getType() {
 		return type;
 	}
-	
-	
+
 	public Department() {
 	}
 
 	public Department(int i) {
 		setID_(i);
 	}
-	public Department(String type,int i,String name) {
+
+	public Department(String type, int i, String name) {
 		setType(type);
 		setID_(i);
 		setDepaName(name);
 	}
+
 	public Department(int org, int parent, int id, String oName, String pName, String name, String desc) {
 		setOrgId(org);
 		setParentId(parent);
@@ -235,7 +238,7 @@ public class Department {
 	 * @param name
 	 * @param desc
 	 */
-	public Department(int id, int cId, String cDate, int mId, String mDate, String uuid, int org, int parent, String name, String desc,int seq) {
+	public Department(int id, int cId, String cDate, int mId, String mDate, String uuid, int org, int parent, String name, String desc, int seq) {
 		setID_(id);
 		setCID_(cId);
 		setCDATE(cDate);
@@ -281,7 +284,7 @@ public class Department {
 			int id, cId, mId;
 			String cDate, mDate, uuid;
 			java.util.Date cDate_, mDate_;
-			int org, parent,seq;
+			int org, parent, seq;
 			String name, desc;
 			int rowcount = 0;
 			while (it.hasNext()) {
@@ -320,7 +323,7 @@ public class Department {
 					desc = String.valueOf(obj[9]);
 				if (obj[10] != null)
 					seq = Integer.valueOf(String.valueOf(obj[10]));
-				recordsList.add(new Department(id, cId, cDate, mId, mDate, uuid, org, parent, name, desc,seq));
+				recordsList.add(new Department(id, cId, cDate, mId, mDate, uuid, org, parent, name, desc, seq));
 				rowcount++;
 			}
 			it = null;
@@ -343,6 +346,7 @@ public class Department {
 			ex.printStackTrace();
 		}
 	}
+
 	public void selectRecordById(String id) {
 		try {
 			Query query = getSession().getNamedQuery("core.department.getrecordbyid");
@@ -385,6 +389,7 @@ public class Department {
 			ex.printStackTrace();
 		}
 	}
+
 	/**
 	 * 新增一条记录，注意这里没有使用到insert语句，这是hibernate的特点
 	 */
@@ -413,7 +418,6 @@ public class Department {
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
-
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -445,6 +449,10 @@ public class Department {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
+			
+			query = getSession().getNamedQuery("core.department.of.update");
+			query.setParameter("id", id);
+			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
@@ -464,12 +472,18 @@ public class Department {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
-			Query query = getSession().getNamedQuery("core.department.deleterecordbyid");
+			
+			Query query = getSession().getNamedQuery("core.department.of.delete");
+			query.setParameter("id", id);
+			query.executeUpdate();
+			
+			query = getSession().getNamedQuery("core.department.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
+			
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, Integer.valueOf(2));
@@ -490,7 +504,7 @@ public class Department {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void showDialog() {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -610,7 +624,7 @@ public class Department {
 			parentId = bean.getParentId();
 			orgName = bean.getOrgName();
 			parentName = bean.getParentName();
-			if(FunctionLib.isNum(getMySession().getTempStr().get("Department.move.id"))){
+			if (FunctionLib.isNum(getMySession().getTempStr().get("Department.move.id"))) {
 				Query query = getSession().getNamedQuery("core.department.moverecordbyid");
 				query.setParameter("mId", 0);
 				query.setParameter("orgId", orgId);
@@ -619,6 +633,11 @@ public class Department {
 				query.executeUpdate();
 				query = null;
 				getMySession().getTempStr().put("Department.move.id", "");
+				
+				query = getSession().createSQLQuery("CALL of_update_group(:id)");
+				query.setParameter("id", getMySession().getTempStr().get("Department.move.id"));
+				query.executeUpdate();
+
 				FunctionLib.refresh();
 			}
 		} catch (Exception ex) {
@@ -687,7 +706,7 @@ public class Department {
 				if (obj[1] != null)
 					name = String.valueOf(obj[1]);
 				bf.append(parentKey + "." + i + "=depa," + id + "," + FunctionLib.gb23122Unicode(name) + "\r\n");
-				
+
 				if (hasChild(orgId, id))
 					addChildren(parentKey + "." + i, orgId, id, oName, name);
 				i++;

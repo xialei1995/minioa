@@ -203,6 +203,13 @@ public class User {
 			String id = (String) params.get("id");
 			if (id == null || !FunctionLib.isNum(id))
 				id = String.valueOf(getMySession().getUserId());
+			selectRecordById(Integer.valueOf(id));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	public void selectRecordById(int id) {
+		try {
 			Query query = getSession().getNamedQuery("core.user.getrecordbyid");
 			query.setParameter("id", id);
 			Iterator<?> it = query.list().iterator();
@@ -220,6 +227,7 @@ public class User {
 				prop.put("gender", FunctionLib.getString(obj[13]));
 				prop.put("displayName", FunctionLib.getString(obj[14]));
 				prop.put("isLock", FunctionLib.getString(obj[15]));
+				prop.put("password", FunctionLib.getString(obj[19]));
 
 				getMySession().getTempInt().put("Department.id", FunctionLib.getInt(obj[6]));
 				getMySession().getTempStr().put("Department.depaName", FunctionLib.getString(obj[16]));
@@ -234,7 +242,6 @@ public class User {
 			ex.printStackTrace();
 		}
 	}
-
 	public void selectUserProfile() {
 		try {
 			Query query = getSession().getNamedQuery("core.user.getrecordbyid");
@@ -259,6 +266,7 @@ public class User {
 				String passwordKey = FunctionLib.getWebParameter("passwordKey");
 				String userName = prop.get("userName");
 				String password = prop.get("password");
+				password = new Blowfish(FunctionLib.getOpenfireProperty(getSession(), "passwordKey")).decryptString(password);
 				String url = FunctionLib.getWebAppName();
 				if ("".equals(url))
 					url = "http://" + FunctionLib.getRequestHeaderMap("host") + "/autologin.jsf?url=";
@@ -278,6 +286,18 @@ public class User {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	public String getUserPassword(String userName) {
+		try {
+			Query query = getSession().getNamedQuery("core.user.getpassword.byusername");
+			query.setParameter("userName", userName);
+			String password = String.valueOf(query.list().get(0));
+			if(!"".equals(password))
+				return new Blowfish(FunctionLib.getOpenfireProperty(getSession(), "passwordKey")).decryptString(password);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return "0x1";
 	}
 
 	public void newRecord() {
@@ -301,6 +321,9 @@ public class User {
 			if (null == mySession.getTempInt().get("Department.id") || null == mySession.getTempInt().get("Job.id")) {
 				return;
 			}
+			
+			String enpasswd = new Blowfish(FunctionLib.getOpenfireProperty(getSession(), "passwordKey")).encryptString(prop.get("password"));
+			
 			Query query = getSession().getNamedQuery("core.user.newrecord");
 			query.setParameter("cId", 0);
 			query.setParameter("depaId", mySession.getTempInt().get("Department.id"));
@@ -311,10 +334,14 @@ public class User {
 			query.setParameter("phone", prop.get("phone"));
 			query.setParameter("mobilePhone", prop.get("mobilePhone"));
 			query.setParameter("displayName", prop.get("displayName"));
-			query.setParameter("password", prop.get("password"));
+			query.setParameter("password", enpasswd);
 			query.setParameter("gender", prop.get("gender"));
 			query.setParameter("isLock", prop.get("isLock"));
+			query.executeUpdate();
 
+			query = getSession().getNamedQuery("core.user.of.update");
+			query.setParameter("username", prop.get("userName"));
+			query.setParameter("password", enpasswd);
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
@@ -387,6 +414,12 @@ public class User {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
+			
+			selectRecordById(Integer.valueOf(id));
+			query = getSession().getNamedQuery("core.user.of.update");
+			query.setParameter("userName", prop.get("userName"));
+			query.setParameter("password", prop.get("password"));
+			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
@@ -422,6 +455,12 @@ public class User {
 			query.executeUpdate();
 			query = null;
 
+			selectRecordById(mySession.getUserId());
+			query = getSession().getNamedQuery("core.user.of.update");
+			query.setParameter("userName", prop.get("userName"));
+			query.setParameter("password", prop.get("password"));
+			query.executeUpdate();
+			
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, Integer.valueOf(1));
 		} catch (Exception ex) {
@@ -436,17 +475,26 @@ public class User {
 			String oldpassword = prop.get("password");
 			String newpassword = prop.get("password2");
 			String confirmpassword = prop.get("password3");
+			String enpasswd = new Blowfish(FunctionLib.getOpenfireProperty(getSession(), "passwordKey")).encryptString(oldpassword);
 			Query query = getSession().getNamedQuery("core.user.getuserbypassword");
 			query.setParameter("id", getMySession().getUserId());
-			query.setParameter("password", oldpassword);
+			query.setParameter("password", enpasswd);
 			if ("1".equals(String.valueOf(query.list().get(0)))) {
 				if (!newpassword.equals("") && newpassword.equals(confirmpassword)) {
+					enpasswd = new Blowfish(FunctionLib.getOpenfireProperty(getSession(), "passwordKey")).encryptString(newpassword);
 					query = getSession().getNamedQuery("core.user.updatepassword");
-					query.setParameter("password", newpassword);
+					query.setParameter("password", enpasswd);
 					query.setParameter("id", getMySession().getUserId());
 					query.setParameter("mId", getMySession().getUserId());
 					query.executeUpdate();
 					query = null;
+
+					selectRecordById(getMySession().getUserId());
+					query = getSession().getNamedQuery("core.user.of.update");
+					query.setParameter("userName", prop.get("userName"));
+					query.setParameter("password", enpasswd);
+					query.executeUpdate();
+					
 					String msg = getLang().getProp().get(getMySession().getL()).get("yourpasswordhasbeenupdate");
 					getMySession().setMsg(msg, Integer.valueOf(1));
 				} else {
@@ -470,7 +518,12 @@ public class User {
 	public void deleteRecordById() {
 		try {
 			String id = getMySession().getTempStr().get("User.id");
-			Query query = getSession().getNamedQuery("core.user.deleterecordbyid");
+			
+			Query query = getSession().getNamedQuery("core.user.of.delete");
+			query.setParameter("id", id);
+			query.executeUpdate();
+
+			query = getSession().getNamedQuery("core.user.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
@@ -504,16 +557,15 @@ public class User {
 				getMySession().setMsg(msg, Integer.valueOf(2));
 				return;
 			}
-			Query query = getSession().getNamedQuery("core.user.login");
-			query.setParameter("userName", name);
-			query.setParameter("password", pwd);
-			if ("1".equals(String.valueOf(query.list().get(0)))) {
-				query = getSession().getNamedQuery("core.user.getrecordbyusername");
+			String password = getUserPassword(name);
+			if (pwd.equals(password)) {
+				String ip = FunctionLib.getIp();
+				Query query = getSession().getNamedQuery("core.user.getrecordbyusername");
 				query.setParameter("userName", name);
 				Iterator<?> it = query.list().iterator();
 				while (it.hasNext()) {
 					Object obj[] = (Object[]) it.next();
-					if ("1".equals(FunctionLib.getString(obj[14]))) {
+					if ("1".equals(FunctionLib.getString(obj[15]))) {
 						String msg = getLang().getProp().get(getMySession().getL()).get("userhasbeenlocked");
 						getMySession().setMsg(msg, Integer.valueOf(2));
 						return;
@@ -521,8 +573,8 @@ public class User {
 					getMySession().setUserId(FunctionLib.getInt(obj[0]));
 					getMySession().setDepaName(FunctionLib.getString(obj[16]));
 					getMySession().setEmail(FunctionLib.getString(obj[9]));
-					getMySession().setDisplayName(FunctionLib.getString(obj[13]));
-					getMySession().setIp(FunctionLib.getIp());
+					getMySession().setDisplayName(FunctionLib.getString(obj[14]));
+					getMySession().setIp(ip);
 					getMySession().buildOpList(getSession());
 					getMySession().buildTopMenu();
 					getMySession().buildLeftMenu();
@@ -530,10 +582,12 @@ public class User {
 				it = null;
 				getMySession().setUserName(name);
 				getMySession().setIsLogin("true");
-				// FunctionLib.redirect(getMySession().getTemplateName(),"index.jsf");
 				FacesContext context = FacesContext.getCurrentInstance();
 				HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 				response.sendRedirect(getMySession().getFormUrl());
+				
+				FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), name + " login, the ip is " + ip);
+				
 				System.out.println(name + " login at time " + FunctionLib.dtf.format(new java.util.Date()));
 			} else {
 				System.out.println(name + " attempt to login at time " + FunctionLib.dtf.format(new java.util.Date()));
@@ -564,21 +618,19 @@ public class User {
 					String pwd = arr[1];
 					String ip = FunctionLib.getIp();
 					if (ip.equals(arr[2])) {
-						Query query = getSession().getNamedQuery("core.user.autologin");
-						query.setParameter("userName", name);
-						query.setParameter("password", pwd);
-						if ("1".equals(String.valueOf(query.list().get(0)))) {
-							query = getSession().getNamedQuery("core.user.getrecordbyusername");
+						String password = getUserPassword(name);
+						if (pwd.equals(password)) {
+							Query query = getSession().getNamedQuery("core.user.getrecordbyusername");
 							query.setParameter("userName", name);
 							Iterator<?> it = query.list().iterator();
 							while (it.hasNext()) {
 								Object obj[] = (Object[]) it.next();
-								if ("1".equals(FunctionLib.getString(obj[14])))
+								if ("1".equals(FunctionLib.getString(obj[15])))
 									return "";
 								getMySession().setUserId(FunctionLib.getInt(obj[0]));
 								getMySession().setDepaName(FunctionLib.getString(obj[16]));
 								getMySession().setEmail(FunctionLib.getString(obj[9]));
-								getMySession().setDisplayName(FunctionLib.getString(obj[13]));
+								getMySession().setDisplayName(FunctionLib.getString(obj[14]));
 								getMySession().setIp(FunctionLib.getIp());
 								getMySession().buildOpList(getSession());
 								getMySession().buildTopMenu();
@@ -588,6 +640,8 @@ public class User {
 							getMySession().setUserName(name);
 							getMySession().setIsLogin("true");
 							System.out.println(name + " auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
+							
+							FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), name + " auto login, the ip is " + ip);
 						} else
 							System.out.println(name + " attempt to auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
 					} else
@@ -611,6 +665,8 @@ public class User {
 
 	public void logout() {
 		try {
+			String username = getMySession().getDisplayName();
+			
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 			
@@ -622,6 +678,7 @@ public class User {
 			session.invalidate();
 			if(getMySession()!=null)
 				FunctionLib.redirect(getMySession().getTemplateName(), "index.jsf");
+			FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), username + " log out!");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

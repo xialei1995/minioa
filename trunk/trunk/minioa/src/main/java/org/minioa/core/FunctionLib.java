@@ -13,14 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.faces.context.FacesContext;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.MessageListener;
+import org.jivesoftware.smack.packet.Message;
 
 public class FunctionLib {
 
 	public static String dbType = "mysql";
 
-	public static String baseDir, separator, webAppName;
+	public static String baseDir, separator, webAppName, openfireAdmin;
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 
 	public static String getSeparator() {
 		if (separator == null) {
@@ -47,6 +52,11 @@ public class FunctionLib {
 		return webAppName;
 	}
 
+	public static String getOpenfireAdmin() {
+		if (openfireAdmin == null)
+			openfireAdmin = getWebParameter("openfireAdmin");
+		return openfireAdmin;
+	}
 	public static String getWebParameter(String parameter) {
 		return FacesContext.getCurrentInstance().getExternalContext().getInitParameter(parameter);
 	}
@@ -338,4 +348,41 @@ public class FunctionLib {
 		}
 		return fileName;
 	}
+
+	public static String getOpenfireProperty(Session s, String property) {
+		String str = "";
+		try {
+			Query query = s.createSQLQuery("SELECT propValue FROM ofproperty where name=:property");
+			query.setParameter("property", property);
+			str = String.valueOf((Object) query.list().get(0));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return str;
+	}
+
+	public static void sendOfMessage(String username, String messageText) {
+		try {
+			Application beanApp = (Application) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Application");
+			if(null == beanApp)
+				return ;
+			if (beanApp.getInit() == 2) {
+				MessageListener messageListener = new MessageListener() {
+					@Override
+					public void processMessage(Chat arg0, Message arg1) {
+						;
+					}
+				};
+				Chat chat = beanApp.getXmppConn().getChatManager().createChat(username + "@" + beanApp.getXmppConn().getServiceName(), messageListener);
+				Message msg = new Message();
+				msg.setBody(messageText + "\r\n" + dtf.format(new java.util.Date()));
+				chat.sendMessage(msg);
+				System.out.println("A short message has sent to " + username + " at time " + dtf.format(new java.util.Date()));
+			} else
+				System.out.println("The Xmpp is not Open!");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 }

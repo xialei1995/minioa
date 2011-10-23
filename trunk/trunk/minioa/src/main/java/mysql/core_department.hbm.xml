@@ -81,4 +81,14 @@
          from core_department where orgId = :orgId and parentId = :parentId
     ]]>
 	</sql-query>
+	<sql-query name="core.department.of.update">
+    <![CDATA[
+         call core_of_update_group(:id)
+    ]]>
+	</sql-query>
+	<sql-query name="core.department.of.delete">
+    <![CDATA[
+         call core_of_delete_group(:id)
+    ]]>
+	</sql-query>
 </hibernate-mapping>

@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.HibernateEntityLoader;
+import org.jivesoftware.util.Blowfish;
 
 public class MySession {
 

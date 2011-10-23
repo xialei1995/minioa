@@ -10,10 +10,13 @@ import javax.faces.model.SelectItem;
 
 import org.hibernate.Query;
 import org.jboss.seam.ui.HibernateEntityLoader;
+import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.XMPPConnection;
 
 public class Application {
 
 	public List<String> userList;
+
 	public List<SelectItem> userSelectItem;
 
 	public List<String> getUserList() {
@@ -45,6 +48,7 @@ public class Application {
 	}
 
 	public List<String> roleList;
+
 	public List<SelectItem> roleSelectItem;
 
 	public List<String> getRoleList() {
@@ -76,6 +80,7 @@ public class Application {
 	}
 
 	public Map<String, List<String>> bs;
+
 	public Map<String, List<SelectItem>> bsi;
 
 	public Map<String, List<SelectItem>> getBsi() {
@@ -132,5 +137,46 @@ public class Application {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	private int init = 0;
+
+	public void setInit(int data) {
+		init = data;
+	}
+
+	public int getInit() {
+		if (init == 0) {
+			init = 1;
+			if (xmppConn == null || !xmppConn.isConnected()) {
+				if (FunctionLib.getWebParameter("enableOpenfire").equals("true"))
+					xmppOpen();
+			}
+		}
+		return init;
+	}
+
+	private ConnectionConfiguration xmppConfig = new ConnectionConfiguration(FunctionLib.getWebParameter("openfireHost"), Integer.valueOf(FunctionLib.getWebParameter("openfirePort")), "Work");
+
+	private XMPPConnection xmppConn;
+
+	public XMPPConnection getXmppConn() {
+		return xmppConn;
+	}
+
+	public void xmppOpen() {
+		try {
+			if (xmppConn == null || !xmppConn.isConnected()) {
+				xmppConn = new XMPPConnection(xmppConfig);
+				xmppConn.connect();
+				xmppConn.login(FunctionLib.getWebParameter("openfireUsername") + "@" + xmppConn.getServiceName(), FunctionLib.getWebParameter("openfirePassword"));
+				init = 2;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public Application() {
 	}
 }

@@ -18,6 +18,30 @@
 		<param-value>ABCDx81_*,</param-value>
 	</context-param>
 	<context-param>
+		<param-name>enableOpenfire</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>openfireHost</param-name>
+		<param-value>127.0.0.1</param-value>
+	</context-param>
+	<context-param>
+		<param-name>openfirePort</param-name>
+		<param-value>5222</param-value>
+	</context-param>
+	<context-param>
+		<param-name>openfireUsername</param-name>
+		<param-value>system</param-value>
+	</context-param>
+	<context-param>
+		<param-name>openfirePassword</param-name>
+		<param-value>123456</param-value>
+	</context-param>
+	<context-param>
+		<param-name>openfireAdmin</param-name>
+		<param-value>admin</param-value>
+	</context-param>
+	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
 	</context-param>
