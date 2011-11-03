@@ -19,7 +19,7 @@
 	</context-param>
 	<context-param>
 		<param-name>enableOpenfire</param-name>
-		<param-value>true</param-value>
+		<param-value>false</param-value>
 	</context-param>
 	<context-param>
 		<param-name>openfireHost</param-name>

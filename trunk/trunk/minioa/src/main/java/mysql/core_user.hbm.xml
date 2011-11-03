@@ -36,7 +36,7 @@
 	<sql-query name="core.user.getuserlist">
     <![CDATA[
         select ta.ID_,ta.userName,ta.displayName
-        from core_user ta
+        from core_user ta order by convert(ta.displayName using gbk)
     ]]>
 	</sql-query>
 	<sql-query name="core.user.getid.byusername">

@@ -30,5 +30,7 @@
 		<mapping resource="mysql/core_news.hbm.xml" />
 		<mapping resource="mysql/core_news_attachment.hbm.xml" />
 		<mapping resource="mysql/core_search.hbm.xml" />
+		<mapping resource="mysql/core_ballot.hbm.xml" />
+		<mapping resource="mysql/core_ballot_items.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
