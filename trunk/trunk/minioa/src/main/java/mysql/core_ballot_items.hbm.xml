@@ -28,6 +28,11 @@
         where ta.headerId = :headerId order by ta.orderNum asc
     ]]>
 	</sql-query>
+	<sql-query name="core.ballot.items.records.count">
+    <![CDATA[
+        select count(*) from core_ballot_items where headerId = :headerId 
+    ]]>
+	</sql-query>
 	<sql-query name="core.ballot.items.check">
     <![CDATA[
         select ifnull((select min(ID_) from core_ballot_items where headerId = :headerId and MID_ = :mId and orderNum = 0),0) from dual

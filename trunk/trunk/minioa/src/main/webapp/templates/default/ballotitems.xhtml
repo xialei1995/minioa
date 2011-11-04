@@ -11,7 +11,7 @@
 				<f:param name="headerId" value="#{param['headerId']}" />
 			</a4j:commandLink>
 		</a4j:form>
-		<a4j:form id="dataForm">
+		<a4j:form id="dataForm" rendered="#{MySession.hasOp['101202']==true}">
 			<rich:dataTable id="dataTable" value="#{BallotItems.recordsList}" var="item" rowKeyVar="rowNum">
 				<f:facet name="header">
 					<rich:columnGroup>

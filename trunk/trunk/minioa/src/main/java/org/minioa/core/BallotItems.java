@@ -234,7 +234,7 @@ public class BallotItems {
 				String cDate, mDate, uuid;
 				String t;
 				int o;
-				int rowcount = 0;
+				String hasOp = "false";
 				while (it.hasNext()) {
 					Object obj[] = (Object[]) it.next();
 					id = cId = mId = 0;
@@ -249,13 +249,12 @@ public class BallotItems {
 					t = FunctionLib.getString(obj[7]);
 					o = FunctionLib.getInt(obj[8]);
 					recordsList.add(new BallotItems(id, cId, cDate, mId, mDate, uuid, Integer.valueOf(hId), t, o, FunctionLib.getString(obj[9])));
-					if (o == 0)
-						rowcount++;
+					if (mId == getMySession().getUserId() && o == 0)
+						hasOp = "true";
 				}
 				it = null;
-				getMySession().getTempInt().put("BallotItems.size", rowcount);
+				getMySession().getTempStr().put("BallotItems.hasOp", hasOp);
 			}
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -318,9 +317,6 @@ public class BallotItems {
 		}
 	}
 
-	/**
-	 * ≥È«©
-	 */
 	public void updateRecordById() {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -377,9 +373,9 @@ public class BallotItems {
 
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String hId = (String) params.get("headerId");
-			Query query = getSession().getNamedQuery("core.ballot.items.records");
+			Query query = getSession().getNamedQuery("core.ballot.items.records.count");
 			query.setParameter("headerId", hId);
-			int rowcount = query.list().size() + 1;
+			int rowcount = Integer.valueOf(query.list().get(0).toString());
 			//
 			query = getSession().getNamedQuery("core.ballot.items.check");
 			query.setParameter("headerId", hId);
@@ -393,9 +389,7 @@ public class BallotItems {
 			boolean bool = true;
 			while (bool) {
 				Random random = new Random();
-				int order = random.nextInt(rowcount);
-				if (order == 0)
-					order = random.nextInt(rowcount);
+				int order = random.nextInt(rowcount) + 1;
 				query = getSession().getNamedQuery("core.ballot.items.getordernum");
 				query.setParameter("id", ID_);
 				query.setParameter("orderNum", order);
