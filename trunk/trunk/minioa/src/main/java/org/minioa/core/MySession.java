@@ -1,4 +1,4 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class MySession {
 		return lang;
 	}
 
-	// ÏûÏ¢
+	// æ¶ˆæ¯
 	public String msg;
 	public int msgType;
 
@@ -51,7 +51,7 @@ public class MySession {
 		return msg;
 	}
 
-	// ÏÔÊ¾ÏûÏ¢µÄ½Å±¾
+	// æ˜¾ç¤ºæ¶ˆæ¯çš„è„šæœ¬
 	public String msgScript;
 
 	public String getMsgScript() {
@@ -59,7 +59,7 @@ public class MySession {
 		return msgScript;
 	}
 
-	// ÏÔÊ¾ÏûÏ¢µÄ½Å±¾
+	// æ˜¾ç¤ºæ¶ˆæ¯çš„è„šæœ¬
 	public String subMsgScript;
 
 	public String getSubMsgScript() {

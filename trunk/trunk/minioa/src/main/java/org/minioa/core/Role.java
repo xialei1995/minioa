@@ -1,4 +1,4 @@
-package org.minioa.core;
+Ôªøpackage org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +162,7 @@ public class Role {
 	}
 
 	/**
-	 * ∂¡»°“ªÃıº«¬º
+	 * ËØªÂèñ‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void selectRecordById() {
 		try {
@@ -208,10 +208,10 @@ public class Role {
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -263,16 +263,16 @@ public class Role {
 			query = null;
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * …æ≥˝“ªÃıº«¬º
+	 * Âà†Èô§‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void deleteRecordById() {
 		try {
@@ -282,10 +282,10 @@ public class Role {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -296,7 +296,7 @@ public class Role {
 			getMySession().getTempStr().put("Role.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

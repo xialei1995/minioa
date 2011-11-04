@@ -1,4 +1,4 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +19,7 @@ import org.richfaces.model.TreeNodeImpl;
 
 public class Department {
 	/**
-	 * orgIdµ¥Î»id,parentIdÉÏ¼¶²¿ÃÅid,depaName ²¿ÃÅÃû³Æ depaDesc ²¿ÃÅÃèÊö
+	 * orgIdå•ä½id,parentIdä¸Šçº§éƒ¨é—¨id,depaName éƒ¨é—¨åç§° depaDesc éƒ¨é—¨æè¿°
 	 */
 	private int key, level;
 	private StringBuffer bf;
@@ -227,7 +227,7 @@ public class Department {
 	}
 
 	/**
-	 * ¹¹Ôìº¯Êı£¬ÓÃÓÚ´´½¨recordsList
+	 * æ„é€ å‡½æ•°ï¼Œç”¨äºåˆ›å»ºrecordsList
 	 * 
 	 * @param id
 	 * @param cId
@@ -253,7 +253,7 @@ public class Department {
 	}
 
 	/**
-	 * ³õÊ¼»¯±äÁ¿
+	 * åˆå§‹åŒ–å˜é‡
 	 */
 	public void reset() {
 		ID_ = CID_ = MID_ = 0;
@@ -264,7 +264,7 @@ public class Department {
 	}
 
 	/**
-	 * ½«È«²¿¼ÇÂ¼¼ÓÈëÁĞ±í
+	 * å°†å…¨éƒ¨è®°å½•åŠ å…¥åˆ—è¡¨
 	 */
 	public void buildRecordsList() {
 		try {
@@ -294,7 +294,7 @@ public class Department {
 				cDate_ = mDate_ = null;
 				org = parent = seq = 0;
 				name = desc = "";
-				// ¶ÁÈ¡objÊı¾İÊ±£¬Ò»¶¨ÒªÈ·±£obj²»ÄÜÎªnull
+				// è¯»å–objæ•°æ®æ—¶ï¼Œä¸€å®šè¦ç¡®ä¿objä¸èƒ½ä¸ºnull
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)
@@ -335,7 +335,7 @@ public class Department {
 	}
 
 	/**
-	 * ¶ÁÈ¡Ò»Ìõ¼ÇÂ¼
+	 * è¯»å–ä¸€æ¡è®°å½•
 	 */
 	public void selectRecordById() {
 		try {
@@ -391,7 +391,7 @@ public class Department {
 	}
 
 	/**
-	 * ĞÂÔöÒ»Ìõ¼ÇÂ¼£¬×¢ÒâÕâÀïÃ»ÓĞÊ¹ÓÃµ½insertÓï¾ä£¬ÕâÊÇhibernateµÄÌØµã
+	 * æ–°å¢ä¸€æ¡è®°å½•ï¼Œæ³¨æ„è¿™é‡Œæ²¡æœ‰ä½¿ç”¨åˆ°insertè¯­å¥ï¼Œè¿™æ˜¯hibernateçš„ç‰¹ç‚¹
 	 */
 	public void newRecord() {
 		try {
@@ -402,7 +402,7 @@ public class Department {
 				return;
 			if ("".equals(depaName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			Department bean = new Department();
@@ -417,16 +417,16 @@ public class Department {
 			bean = null;
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * ¸üĞÂÒ»Ìõ¼ÇÂ¼
+	 * æ›´æ–°ä¸€æ¡è®°å½•
 	 */
 	public void updateRecordById() {
 		try {
@@ -438,7 +438,7 @@ public class Department {
 				return;
 			if ("".equals(depaName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			Query query = getSession().getNamedQuery("core.department.updaterecordbyid");
@@ -455,16 +455,16 @@ public class Department {
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * É¾³ıÒ»Ìõ¼ÇÂ¼
+	 * åˆ é™¤ä¸€æ¡è®°å½•
 	 */
 	public void deleteRecordById() {
 		try {
@@ -482,11 +482,11 @@ public class Department {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 			
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -511,7 +511,7 @@ public class Department {
 			getMySession().getTempStr().put("Department.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -679,10 +679,10 @@ public class Department {
 			out.write(bf.toString());
 			out.close();
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

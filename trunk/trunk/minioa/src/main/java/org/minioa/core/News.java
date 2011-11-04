@@ -1,4 +1,4 @@
-package org.minioa.core;
+Ôªøpackage org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -242,7 +242,7 @@ public class News {
 	}
 
 	/**
-	 * ∂¡»°“ªÃıº«¬º
+	 * ËØªÂèñ‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void selectRecordById() {
 		try {
@@ -307,14 +307,14 @@ public class News {
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 
 			if ("true".equals((String) params.get("redirect")))
 				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
 
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -336,7 +336,7 @@ public class News {
 				query.executeUpdate();
 				query = null;
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 				//
 				
 			}
@@ -344,7 +344,7 @@ public class News {
 				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -362,13 +362,13 @@ public class News {
 				query.executeUpdate();
 				query = null;
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			}
 			if ("true".equals((String) params.get("redirect")))
 				FunctionLib.redirect(getMySession().getTemplateName(), "news.jsf");
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -386,11 +386,11 @@ public class News {
 				query = null;
 
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -408,17 +408,17 @@ public class News {
 				query = null;
 
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * …æ≥˝“ªÃıº«¬º
+	 * Âà†Èô§‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void deleteRecordById() {
 		try {
@@ -428,10 +428,10 @@ public class News {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -442,7 +442,7 @@ public class News {
 			getMySession().getTempStr().put("News.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

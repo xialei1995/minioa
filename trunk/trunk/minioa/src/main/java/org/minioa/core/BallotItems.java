@@ -1,4 +1,4 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -176,7 +176,7 @@ public class BallotItems {
 	}
 
 	/**
-	 * ¹¹Ôìº¯Êı£¬ÓÃÓÚ´´½¨recordsList
+	 * æ„é€ å‡½æ•°ï¼Œç”¨äºåˆ›å»ºrecordsList
 	 * 
 	 * @param id
 	 * @param cId
@@ -202,7 +202,7 @@ public class BallotItems {
 	}
 
 	/**
-	 * ³õÊ¼»¯±äÁ¿
+	 * åˆå§‹åŒ–å˜é‡
 	 */
 	public void reset() {
 		ID_ = CID_ = MID_ = 0;
@@ -213,7 +213,7 @@ public class BallotItems {
 	}
 
 	/**
-	 * ½«È«²¿¼ÇÂ¼¼ÓÈëÁĞ±í
+	 * å°†å…¨éƒ¨è®°å½•åŠ å…¥åˆ—è¡¨
 	 */
 	public void buildRecordsList() {
 		try {
@@ -261,7 +261,7 @@ public class BallotItems {
 	}
 
 	/**
-	 * ¶ÁÈ¡Ò»Ìõ¼ÇÂ¼
+	 * è¯»å–ä¸€æ¡è®°å½•
 	 */
 	public void selectRecordById() {
 		try {
@@ -289,7 +289,7 @@ public class BallotItems {
 	}
 
 	/**
-	 * ĞÂÔöÒ»Ìõ¼ÇÂ¼£¬×¢ÒâÕâÀïÃ»ÓĞÊ¹ÓÃµ½insertÓï¾ä£¬ÕâÊÇhibernateµÄÌØµã
+	 * æ–°å¢ä¸€æ¡è®°å½•ï¼Œæ³¨æ„è¿™é‡Œæ²¡æœ‰ä½¿ç”¨åˆ°insertè¯­å¥ï¼Œè¿™æ˜¯hibernateçš„ç‰¹ç‚¹
 	 */
 	public void newRecord() {
 		try {
@@ -308,11 +308,11 @@ public class BallotItems {
 				getSession().save(bean);
 				bean = null;
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -330,16 +330,16 @@ public class BallotItems {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * É¾³ıÒ»Ìõ¼ÇÂ¼
+	 * åˆ é™¤ä¸€æ¡è®°å½•
 	 */
 	public void deleteRecordById() {
 		try {
@@ -349,10 +349,10 @@ public class BallotItems {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -363,7 +363,7 @@ public class BallotItems {
 			getMySession().getTempStr().put("BallotItems.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -383,7 +383,7 @@ public class BallotItems {
 			ID_ = FunctionLib.getInt(query.list().get(0));
 			if(ID_ ==0){
 				String msg = getLang().getProp().get(getMySession().getL()).get("ballotwaring");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			boolean bool = true;
@@ -408,7 +408,7 @@ public class BallotItems {
 			query.executeUpdate();
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

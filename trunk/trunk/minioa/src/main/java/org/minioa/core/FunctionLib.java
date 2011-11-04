@@ -1,4 +1,4 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -163,7 +163,7 @@ public class FunctionLib {
 	}
 
 	/**
-	 * ½«1×ª»¯³Étrue£¬ÆäËü×ª»¯³Éfalse£¬Õë¶ÔMySQLÊı¾İ¿âµÄTINYINT×Ö¶ÎÀàĞÍ
+	 * å°†1è½¬åŒ–æˆtrueï¼Œå…¶å®ƒè½¬åŒ–æˆfalseï¼Œé’ˆå¯¹MySQLæ•°æ®åº“çš„TINYINTå­—æ®µç±»å‹
 	 * 
 	 * @param str
 	 *            0 or 1

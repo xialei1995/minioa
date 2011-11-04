@@ -1,4 +1,4 @@
-package org.minioa.core;
+Ôªøpackage org.minioa.core;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -127,7 +127,7 @@ public class NewsAttachment {
 	}
 
 	/**
-	 * ∂¡»°“ªÃıº«¬º
+	 * ËØªÂèñ‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void selectRecordById() {
 		try {
@@ -162,7 +162,7 @@ public class NewsAttachment {
 	}
 
 	/**
-	 * …æ≥˝“ªÃıº«¬º
+	 * Âà†Èô§‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void deleteRecordById() {
 		try {
@@ -178,11 +178,11 @@ public class NewsAttachment {
 				query.executeUpdate();
 				query = null;
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -194,7 +194,7 @@ public class NewsAttachment {
 			getMySession().getTempStr().put("NewsAttachment.uuid", (String) params.get("uuid"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -209,7 +209,7 @@ public class NewsAttachment {
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -240,10 +240,10 @@ public class NewsAttachment {
 					query.executeUpdate();
 				}
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, Integer.valueOf(1));
+				getMySession().setMsg(msg, 1);
 			} catch (Exception ex) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				ex.printStackTrace();
 			}
 		}

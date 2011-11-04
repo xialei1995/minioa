@@ -1,4 +1,4 @@
-package org.minioa.core;
+﻿package org.minioa.core;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -146,10 +146,10 @@ public class TopMenuRoleRelation {
 				}
 			}
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

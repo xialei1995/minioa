@@ -1,4 +1,4 @@
-package org.minioa.core;
+﻿package org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -249,7 +249,7 @@ public class RoleUserRelation {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 		}
 	}
 
@@ -269,7 +269,7 @@ public class RoleUserRelation {
 			getMySession().setMsg(msg, Integer.valueOf(0));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -284,7 +284,7 @@ public class RoleUserRelation {
 			getMySession().getTempMap().put("RoleUserRelation.checkIdsMap", checkIdsMap);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

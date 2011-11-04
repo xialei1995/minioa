@@ -1,4 +1,4 @@
-package org.minioa.core;
+﻿package org.minioa.core;
 
 import org.hibernate.Hibernate;
 import org.hibernate.dialect.MySQLInnoDBDialect;

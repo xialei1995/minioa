@@ -1,4 +1,4 @@
-package org.minioa.core;
+﻿package org.minioa.core;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;

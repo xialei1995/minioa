@@ -1,4 +1,4 @@
-package org.minioa.core;
+﻿package org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;

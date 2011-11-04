@@ -1,4 +1,4 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import org.richfaces.model.TreeNodeImpl;
 
 public class LeftMenu {
 	/**
-	 * parentIdÉÏ¼¶²Ëµ¥id,menuName ²Ëµ¥Ãû³Æ, menuUrl²Ëµ¥ÍøÖ·,menuTarget ²Ëµ¥Ä¿±ê
+	 * parentIdä¸Šçº§èœå•id,menuName èœå•åç§°, menuUrlèœå•ç½‘å€,menuTarget èœå•ç›®æ ‡
 	 */
 	private int key;
 	private int ID_, CID_, MID_;
@@ -235,7 +235,7 @@ public class LeftMenu {
 	}
 
 	/**
-	 * ³õÊ¼»¯±äÁ¿
+	 * åˆå§‹åŒ–å˜é‡
 	 */
 	public void reset() {
 		ID_ = CID_ = MID_ = 0;
@@ -246,7 +246,7 @@ public class LeftMenu {
 	}
 
 	/**
-	 * ½«È«²¿¼ÇÂ¼¼ÓÈëÁĞ±í
+	 * å°†å…¨éƒ¨è®°å½•åŠ å…¥åˆ—è¡¨
 	 */
 	public void buildRecordsList() {
 		try {
@@ -276,7 +276,7 @@ public class LeftMenu {
 				cDate_ = mDate_ = null;
 				parent = seq = 0;
 				name = url = target = "";
-				// ¶ÁÈ¡objÊı¾İÊ±£¬Ò»¶¨ÒªÈ·±£obj²»ÄÜÎªnull
+				// è¯»å–objæ•°æ®æ—¶ï¼Œä¸€å®šè¦ç¡®ä¿objä¸èƒ½ä¸ºnull
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)
@@ -317,7 +317,7 @@ public class LeftMenu {
 	}
 
 	/**
-	 * ¶ÁÈ¡Ò»Ìõ¼ÇÂ¼
+	 * è¯»å–ä¸€æ¡è®°å½•
 	 */
 	public void selectRecordById() {
 		try {
@@ -373,7 +373,7 @@ public class LeftMenu {
 	}
 
 	/**
-	 * ĞÂÔöÒ»Ìõ¼ÇÂ¼£¬×¢ÒâÕâÀïÃ»ÓĞÊ¹ÓÃµ½insertÓï¾ä£¬ÕâÊÇhibernateµÄÌØµã
+	 * æ–°å¢ä¸€æ¡è®°å½•ï¼Œæ³¨æ„è¿™é‡Œæ²¡æœ‰ä½¿ç”¨åˆ°insertè¯­å¥ï¼Œè¿™æ˜¯hibernateçš„ç‰¹ç‚¹
 	 */
 	public void newRecord() {
 		try {
@@ -383,7 +383,7 @@ public class LeftMenu {
 				return;
 			if ("".equals(menuName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			LeftMenu bean = new LeftMenu();
@@ -398,17 +398,17 @@ public class LeftMenu {
 			bean = null;
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * ¸üĞÂÒ»Ìõ¼ÇÂ¼
+	 * æ›´æ–°ä¸€æ¡è®°å½•
 	 */
 	public void updateRecordById() {
 		try {
@@ -419,7 +419,7 @@ public class LeftMenu {
 				return;
 			if ("".equals(menuName)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("name") + getLang().getProp().get(getMySession().getL()).get("cannotbenull");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			Query query = getSession().getNamedQuery("core.leftmenu.updaterecordbyid");
@@ -433,16 +433,16 @@ public class LeftMenu {
 			query = null;
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * É¾³ıÒ»Ìõ¼ÇÂ¼
+	 * åˆ é™¤ä¸€æ¡è®°å½•
 	 */
 	public void deleteRecordById() {
 		try {
@@ -455,10 +455,10 @@ public class LeftMenu {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -482,7 +482,7 @@ public class LeftMenu {
 			getMySession().getTempStr().put("LeftMenu.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}

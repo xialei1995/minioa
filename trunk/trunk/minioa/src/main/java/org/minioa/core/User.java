@@ -1,4 +1,4 @@
-package org.minioa.core;
+Ôªøpackage org.minioa.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,7 +195,7 @@ public class User {
 	}
 
 	/**
-	 * ∂¡»°“ªÃıº«¬º
+	 * ËØªÂèñ‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void selectRecordById() {
 		try {
@@ -345,10 +345,10 @@ public class User {
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -422,11 +422,11 @@ public class User {
 			query.executeUpdate();
 
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -462,10 +462,10 @@ public class User {
 			query.executeUpdate();
 			
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -496,24 +496,24 @@ public class User {
 					query.executeUpdate();
 					
 					String msg = getLang().getProp().get(getMySession().getL()).get("yourpasswordhasbeenupdate");
-					getMySession().setMsg(msg, Integer.valueOf(1));
+					getMySession().setMsg(msg, 1);
 				} else {
 					String msg = getLang().getProp().get(getMySession().getL()).get("confirmpasswordnotequalsnewpassword");
-					getMySession().setMsg(msg, Integer.valueOf(2));
+					getMySession().setMsg(msg, 2);
 				}
 			} else {
 				String msg = getLang().getProp().get(getMySession().getL()).get("oldpasswordincorrect");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * …æ≥˝“ªÃıº«¬º
+	 * Âà†Èô§‰∏ÄÊù°ËÆ∞ÂΩï
 	 */
 	public void deleteRecordById() {
 		try {
@@ -528,10 +528,10 @@ public class User {
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
-			getMySession().setMsg(msg, Integer.valueOf(1));
+			getMySession().setMsg(msg, 1);
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -542,7 +542,7 @@ public class User {
 			getMySession().getTempStr().put("User.id", (String) params.get("id"));
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
@@ -554,7 +554,7 @@ public class User {
 
 			if ("".equals(name) || "".equals(pwd)) {
 				String msg = getLang().getProp().get(getMySession().getL()).get("usernameorpasswordnoempty");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 				return;
 			}
 			String password = getUserPassword(name);
@@ -567,7 +567,7 @@ public class User {
 					Object obj[] = (Object[]) it.next();
 					if ("1".equals(FunctionLib.getString(obj[15]))) {
 						String msg = getLang().getProp().get(getMySession().getL()).get("userhasbeenlocked");
-						getMySession().setMsg(msg, Integer.valueOf(2));
+						getMySession().setMsg(msg, 2);
 						return;
 					}
 					getMySession().setUserId(FunctionLib.getInt(obj[0]));
@@ -592,11 +592,11 @@ public class User {
 			} else {
 				System.out.println(name + " attempt to login at time " + FunctionLib.dtf.format(new java.util.Date()));
 				String msg = getLang().getProp().get(getMySession().getL()).get("usernameorpasswordincorrect");
-				getMySession().setMsg(msg, Integer.valueOf(2));
+				getMySession().setMsg(msg, 2);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
-			getMySession().setMsg(msg, Integer.valueOf(2));
+			getMySession().setMsg(msg, 2);
 			ex.printStackTrace();
 		}
 	}
