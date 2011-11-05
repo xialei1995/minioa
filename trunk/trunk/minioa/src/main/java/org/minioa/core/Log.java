@@ -1,26 +1,30 @@
-package org.minioa.core;
+ï»¿package org.minioa.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
+
+import jxl.Workbook;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
 
 public class Log {
 	/**
-	 * ×÷Õß£ºdaiqianjie ÍøÖ·£ºwww.minioa.net ´´½¨ÈÕÆÚ£º2011-11-05
+	 * ä½œè€…ï¼šdaiqianjie ç½‘å€ï¼šwww.minioa.net åˆ›å»ºæ—¥æœŸï¼š2011-11-05
 	 * 
 	 * 
-	 * ±íÃû core_log£¬×Ö¶ÎËµÃ÷ £ºtag£¬±êÇ©£» refId£¬Ïà¹Ø±íµÄ¼ÇÂ¼id£¬ÓÃÓÚÌØÊâ±íµÄÈÕÖ¾¼ÇÂ¼£»summary£¬²Ù×÷ÕªÒª£»details£¬
-	 * ÏêÏ¸µÄ²Ù×÷sql£»ip£¬²Ù×÷Õßip
+	 * è¡¨å core_logï¼Œå­—æ®µè¯´æ˜ ï¼štagï¼Œæ ‡ç­¾ï¼› refIdï¼Œç›¸å…³è¡¨çš„è®°å½•idï¼Œç”¨äºç‰¹æ®Šè¡¨çš„æ—¥å¿—è®°å½•ï¼›summaryï¼Œæ“ä½œæ‘˜è¦ï¼›detailsï¼Œ
+	 * è¯¦ç»†çš„æ“ä½œsqlï¼›ipï¼Œæ“ä½œè€…ip
 	 */
 
 	/**
-	 * »ñÈ¡ÃûÎªLangµÄjavabean
+	 * è·å–åä¸ºLangçš„javabean
 	 */
 	public Lang lang;
 
@@ -33,7 +37,7 @@ public class Log {
 	}
 
 	/**
-	 * »ñÈ¡ÃûÎªMySessionµÄjavabean£¬ÓÃÓÚ»ñÈ¡µ±Ç°ÓÃ»§µÄ»á»°Êı¾İ
+	 * è·å–åä¸ºMySessionçš„javabeanï¼Œç”¨äºè·å–å½“å‰ç”¨æˆ·çš„ä¼šè¯æ•°æ®
 	 */
 	public MySession mySession;
 
@@ -46,7 +50,7 @@ public class Log {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öÊı¾İÁ¬½Ó»á»°
+	 * åˆ›å»ºä¸€ä¸ªæ•°æ®è¿æ¥ä¼šè¯
 	 */
 	private Session session;
 
@@ -57,7 +61,7 @@ public class Log {
 	}
 
 	/**
-	 * ³õÊ¼»¯Ò»Ìõ¼ÇÂ¼£¬ÓÃÓÚ³õÊ¼»¯ĞŞ¸Ä¼ÇÂ¼µÄÒ³Ãæ
+	 * åˆå§‹åŒ–ä¸€æ¡è®°å½•ï¼Œç”¨äºåˆå§‹åŒ–ä¿®æ”¹è®°å½•çš„é¡µé¢
 	 */
 	private String init;
 
@@ -67,7 +71,7 @@ public class Log {
 	}
 
 	/**
-	 * ¶¨Òå×Ö¶ÎMap£¬×Ö·ûÀàĞÍ
+	 * å®šä¹‰å­—æ®µMapï¼Œå­—ç¬¦ç±»å‹
 	 */
 	private Map<String, String> prop;
 
@@ -82,7 +86,7 @@ public class Log {
 	}
 
 	/**
-	 * ¶¨Òå¼ÇÂ¼ÁĞ±í£¬ÓÃÓÚ³äµ±Êı¾İ±írich:dataTableµÄÊı¾İÔ´
+	 * å®šä¹‰è®°å½•åˆ—è¡¨ï¼Œç”¨äºå……å½“æ•°æ®è¡¨rich:dataTableçš„æ•°æ®æº
 	 */
 	private List<Log> recordsList;
 
@@ -93,7 +97,7 @@ public class Log {
 	}
 
 	/**
-	 * ¶¨Òå¹¹Ôìº¯Êı
+	 * å®šä¹‰æ„é€ å‡½æ•°
 	 */
 	public Log() {
 	}
@@ -106,7 +110,7 @@ public class Log {
 	}
 
 	/**
-	 * ·ÖÒ³ÁĞ±í£¬½öÓÃÓÚ·ÖÒ³
+	 * åˆ†é¡µåˆ—è¡¨ï¼Œä»…ç”¨äºåˆ†é¡µ
 	 */
 	public List<Integer> dsList;
 
@@ -145,7 +149,7 @@ public class Log {
 	}
 
 	/**
-	 * ¹¹Ôì¼ÇÂ¼ÁĞ±í
+	 * æ„é€ è®°å½•åˆ—è¡¨
 	 */
 	public void buildRecordsList() {
 		try {
@@ -195,7 +199,7 @@ public class Log {
 				p = new HashMap<String, String>();
 				p.put("id", FunctionLib.getString(obj[0]));
 				p.put("cId", FunctionLib.getString(obj[1]));
-				p.put("cDate", FunctionLib.getString(obj[2]));
+				p.put("cDate", FunctionLib.getDateTimeString(obj[2]));
 				p.put("tag", FunctionLib.getString(obj[3]));
 				p.put("summary", FunctionLib.getString(obj[4]));
 				p.put("ip", FunctionLib.getString(obj[5]));
@@ -209,7 +213,7 @@ public class Log {
 	}
 
 	/**
-	 * ¶ÁÈ¡Ò»Ìõ¼ÇÂ¼
+	 * è¯»å–ä¸€æ¡è®°å½•
 	 */
 	public void selectRecordById() {
 		try {
@@ -224,7 +228,7 @@ public class Log {
 					prop = new HashMap<String, String>();
 					prop.put("id", FunctionLib.getString(obj[0]));
 					prop.put("cId", FunctionLib.getString(obj[1]));
-					prop.put("cDate", FunctionLib.getString(obj[2]));
+					prop.put("cDate", FunctionLib.getDateTimeString(obj[2]));
 					prop.put("tag", FunctionLib.getString(obj[3]));
 					prop.put("refId", FunctionLib.getString(obj[4]));
 					prop.put("summary", FunctionLib.getString(obj[5]));
@@ -240,7 +244,7 @@ public class Log {
 	}
 
 	/**
-	 * É¾³ıÒ»Ìõ¼ÇÂ¼
+	 * åˆ é™¤ä¸€æ¡è®°å½•
 	 */
 	public void deleteRecordById() {
 		try {
@@ -251,7 +255,7 @@ public class Log {
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, 1);
 
-			msg = getMySession().getDisplayName() + "É¾³ı³ıÁËÒ»ÌõÈÕÖ¾¼ÇÂ¼";
+			msg = getMySession().getDisplayName() + "åˆ é™¤é™¤äº†ä¸€æ¡æ—¥å¿—è®°å½•";
 			FunctionLib.writelog(getSession(), getMySession().getUserId(), getMySession().getIp(), "log", Integer.valueOf(id), msg, query.getQueryString());
 
 			query = null;
@@ -263,7 +267,7 @@ public class Log {
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ıefId´óÓÚÁãµÄÈÕÖ¾
+	 * æ‰¹é‡åˆ é™¤efIdå¤§äºé›¶çš„æ—¥å¿—
 	 */
 	public void deleteRecords() {
 		try {
@@ -273,7 +277,7 @@ public class Log {
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, 1);
 
-			msg = getMySession().getDisplayName() + "Çå¿ÕÁËÈÕÖ¾";
+			msg = getMySession().getDisplayName() + "æ¸…ç©ºäº†æ—¥å¿—";
 			FunctionLib.writelog(getSession(), getMySession().getUserId(), getMySession().getIp(), "log", 1, msg, "");
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
@@ -283,7 +287,7 @@ public class Log {
 	}
 
 	/**
-	 * É¾³ı¼ÇÂ¼Ç°È·ÈÏ¶Ô»°¿ò
+	 * åˆ é™¤è®°å½•å‰ç¡®è®¤å¯¹è¯æ¡†
 	 */
 	public void showDialog() {
 		try {
@@ -292,6 +296,61 @@ public class Log {
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, 2);
+			ex.printStackTrace();
+		}
+	}
+
+	/**
+	 * å¯¼å‡ºæ—¥å¿—
+	 */
+	public void export() {
+		try {
+			String dir = FunctionLib.getBaseDir() + "temp" + FunctionLib.getSeparator() + "export" + FunctionLib.getSeparator() + getMySession().getUserId();
+			if (FunctionLib.isDirExists(dir)) {
+				dir = dir + FunctionLib.getSeparator() + "log.xls";
+				File file = new File(dir);
+				if (file.exists())
+					file.delete();
+				jxl.write.WritableWorkbook wwb = Workbook.createWorkbook(new File(dir));
+				jxl.write.WritableSheet ws = wwb.createSheet("data", 0);
+				jxl.write.Label label;
+
+				label = new jxl.write.Label(0, 0, "æ“ä½œäºº");
+				ws.addCell(label);
+				label = new jxl.write.Label(1, 0, "æ“ä½œip");
+				ws.addCell(label);
+				label = new jxl.write.Label(2, 0, "æ“ä½œæ—¶é—´");
+				ws.addCell(label);
+				label = new jxl.write.Label(3, 0, "æ ‡ç­¾");
+				ws.addCell(label);
+				label = new jxl.write.Label(4, 0, "æ‘˜è¦");
+				ws.addCell(label);
+				label = new jxl.write.Label(5, 0, "æ˜ç»†");
+				ws.addCell(label);
+
+				buildRecordsList();
+				
+				Log bean;
+				for (int i = 0; i < recordsList.size(); i++) {
+					bean = (Log) recordsList.get(i);
+					label = new jxl.write.Label(0, i + 1, bean.getProp().get("cUser"));
+					ws.addCell(label);
+					label = new jxl.write.Label(1, i + 1, bean.getProp().get("ip"));
+					ws.addCell(label);
+					label = new jxl.write.Label(2, i + 1, bean.getProp().get("cDate"));
+					ws.addCell(label);
+					label = new jxl.write.Label(3, i + 1, bean.getProp().get("tag"));
+					ws.addCell(label);
+					label = new jxl.write.Label(4, i + 1, bean.getProp().get("summary"));
+					ws.addCell(label);
+					label = new jxl.write.Label(5, i + 1, bean.getProp().get("details"));
+					ws.addCell(label);
+				}
+				wwb.write();
+				wwb.close();
+				FunctionLib.download(dir, "æ—¥å¿—" + FunctionLib.dtf.format(new java.util.Date()) + ".xls");
+			}
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}

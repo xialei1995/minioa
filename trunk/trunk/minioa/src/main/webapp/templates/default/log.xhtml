@@ -13,7 +13,10 @@
 					<a4j:commandLink action="#{Log.buildRecordsList}" reRender="dataForm">
 						<h:outputText value="搜索" class="btn" />
 					</a4j:commandLink>
-					<a4j:commandLink action="#{Log.deleteRecords}" reRender="dataForm, msg" rendered="#{MySession.hasOp['101002']==true}">
+					<h:commandLink action="#{Log.export}" rendered="#{MySession.hasOp['101002']==true}">
+						<h:outputText value="下载" class="btn" />
+					</h:commandLink>
+					<a4j:commandLink action="#{Log.deleteRecords}" reRender="msg" rendered="#{MySession.hasOp['101002']==true}">
 						<h:outputText value="批量删除" class="btn" />
 					</a4j:commandLink>
 					<a4j:commandLink style="margin-left:6px;" onclick="$('searchForm:key').value='';return false;">
@@ -56,8 +59,8 @@
 							</a4j:commandLink>
 						</rich:column>
 						<rich:column style="width:120px;text-align:left;">
-							<a4j:commandLink reRender="viewPanel" onclick="RichFaces.switchTab('tab','tab2','tab2');" >
-								<h:outputText value="#{item.prop['tag']}"/>
+							<a4j:commandLink reRender="viewPanel" onclick="RichFaces.switchTab('tab','tab2','tab2');">
+								<h:outputText value="#{item.prop['tag']}" />
 								<f:param name="id" value="#{item.prop['id']}" />
 								<f:param name="type" value="role" />
 								<f:param name="reload" value="false" />
@@ -89,7 +92,7 @@
 						<h:outputText value="IP地址:" />
 						<h:outputText value="#{Log.prop['ip']}" />
 						<h:outputText value="时间:" />
-						<h:outputText value="#{Log.prop['cDate']}" class="datetimeBlue"/>
+						<h:outputText value="#{Log.prop['cDate']}" class="datetimeBlue" />
 						<h:outputText value="摘要:" />
 						<h:outputText value="#{Log.prop['summary']}" />
 						<h:outputText value="明细:" />
