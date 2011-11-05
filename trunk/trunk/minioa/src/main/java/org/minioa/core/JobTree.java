@@ -13,6 +13,9 @@ import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
 public class JobTree {
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public MySession mySession;
 
 	public MySession getMySession() {

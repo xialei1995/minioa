@@ -19,6 +19,7 @@ import org.richfaces.model.TreeNodeImpl;
 
 public class Department {
 	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
 	 * orgId单位id,parentId上级部门id,depaName 部门名称 depaDesc 部门描述
 	 */
 	private int key, level;
@@ -449,7 +450,7 @@ public class Department {
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
-			
+
 			query = getSession().getNamedQuery("core.department.of.update");
 			query.setParameter("id", id);
 			query.executeUpdate();
@@ -472,18 +473,18 @@ public class Department {
 			String id = (String) params.get("id");
 			if (!FunctionLib.isNum(id))
 				return;
-			
+
 			Query query = getSession().getNamedQuery("core.department.of.delete");
 			query.setParameter("id", id);
 			query.executeUpdate();
-			
+
 			query = getSession().getNamedQuery("core.department.deleterecordbyid");
 			query.setParameter("id", id);
 			query.executeUpdate();
 			query = null;
 			String msg = getLang().getProp().get(getMySession().getL()).get("success");
 			getMySession().setMsg(msg, 1);
-			
+
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");
 			getMySession().setMsg(msg, 2);
@@ -633,7 +634,7 @@ public class Department {
 				query.executeUpdate();
 				query = null;
 				getMySession().getTempStr().put("Department.move.id", "");
-				
+
 				query = getSession().createSQLQuery("CALL of_update_group(:id)");
 				query.setParameter("id", getMySession().getTempStr().get("Department.move.id"));
 				query.executeUpdate();

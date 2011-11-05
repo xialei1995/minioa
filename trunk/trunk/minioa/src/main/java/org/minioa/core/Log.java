@@ -202,8 +202,9 @@ public class Log {
 				p.put("cDate", FunctionLib.getDateTimeString(obj[2]));
 				p.put("tag", FunctionLib.getString(obj[3]));
 				p.put("summary", FunctionLib.getString(obj[4]));
-				p.put("ip", FunctionLib.getString(obj[5]));
-				p.put("cUser", FunctionLib.getString(obj[6]));
+				p.put("details", FunctionLib.getString(obj[5]));
+				p.put("ip", FunctionLib.getString(obj[6]));
+				p.put("cUser", FunctionLib.getString(obj[7]));
 				recordsList.add(new Log(p));
 			}
 			it = null;
@@ -348,7 +349,7 @@ public class Log {
 				}
 				wwb.write();
 				wwb.close();
-				FunctionLib.download(dir, "日志" + FunctionLib.dtf.format(new java.util.Date()) + ".xls");
+				FunctionLib.download(dir, "日志" + FunctionLib.df.format(new java.util.Date()) + ".xls");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

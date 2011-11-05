@@ -1,25 +1,19 @@
 ﻿package org.minioa.core;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.faces.context.FacesContext;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.*;
-import org.richfaces.event.UploadEvent;
-import org.richfaces.model.UploadItem;
 
 public class Search {
-
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public Lang lang;
 
 	public Lang getLang() {

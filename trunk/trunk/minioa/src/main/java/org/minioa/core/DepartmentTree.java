@@ -13,16 +13,19 @@ import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
 public class DepartmentTree {
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public MySession mySession;
 
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
-		if(mySession == null)
+		if (mySession == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
-	
+
 	private TreeNode<Department> rootNode = null;
 
 	private String nodeTitle;
@@ -37,7 +40,7 @@ public class DepartmentTree {
 			if (value != null) {
 				String[] arr = value.split("\\,");
 				TreeNodeImpl<Department> nodeImpl = new TreeNodeImpl<Department>();
-				nodeImpl.setData(new Department(arr[0],Integer.valueOf(arr[1]), arr[2]));
+				nodeImpl.setData(new Department(arr[0], Integer.valueOf(arr[1]), arr[2]));
 				node.addChild(new Integer(counter), nodeImpl);
 				addNodes(key, nodeImpl, properties);
 				counter++;
@@ -65,10 +68,10 @@ public class DepartmentTree {
 	public void processSelection(NodeSelectedEvent event) {
 		HtmlTree tree = (HtmlTree) event.getComponent();
 		Department bean = (Department) tree.getRowData();
-		if(bean.getType().equals("depa")){
+		if (bean.getType().equals("depa")) {
 			getMySession().getTempInt().put("Department.id", bean.getID_());
 			getMySession().getTempStr().put("Department.depaName", bean.getDepaName());
-		}else{
+		} else {
 			getMySession().getTempInt().put("Department.id", 0);
 			getMySession().getTempStr().put("Department.depaName", "");
 		}

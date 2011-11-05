@@ -19,6 +19,7 @@ import org.richfaces.model.TreeNodeImpl;
 
 public class Job {
 	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
 	 * orgId单位id,parentId上级部门id,jobName 岗位名称 jobDesc 岗位描述
 	 */
 	private int key, level;
@@ -179,7 +180,7 @@ public class Job {
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
-		if(lang == null)
+		if (lang == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
@@ -189,7 +190,7 @@ public class Job {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
-		if(mySession == null)
+		if (mySession == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
@@ -705,7 +706,7 @@ public class Job {
 			while (it.hasNext()) {
 				Object obj[] = (Object[]) it.next();
 				id = 0;
-				name  = "";
+				name = "";
 				if (obj[0] != null)
 					id = Integer.valueOf(String.valueOf(obj[0]));
 				if (obj[1] != null)

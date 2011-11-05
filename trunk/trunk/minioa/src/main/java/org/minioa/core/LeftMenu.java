@@ -18,6 +18,8 @@ import org.richfaces.model.TreeNodeImpl;
 
 public class LeftMenu {
 	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 *
 	 * parentId上级菜单id,menuName 菜单名称, menuUrl菜单网址,menuTarget 菜单目标
 	 */
 	private int key;

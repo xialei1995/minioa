@@ -1,5 +1,9 @@
 public class HelloWorld {
-
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 * 
+	 * 演示javabean的特性
+	 */
 	private String message;
 
 	public void setMessage(String data) {

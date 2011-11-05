@@ -17,6 +17,8 @@ import org.jboss.seam.ui.*;
 
 public class Org {
 	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 *
 	 * orgName 单位名称 orgDesc 单位描述
 	 */
 

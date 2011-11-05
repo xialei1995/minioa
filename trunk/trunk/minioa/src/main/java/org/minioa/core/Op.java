@@ -12,6 +12,9 @@ import org.jboss.seam.ui.*;
 
 public class Op {
 
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public Lang lang;
 
 	public Lang getLang() {

@@ -12,7 +12,7 @@
 	<sql-query name="core.log.records">
     <![CDATA[
         select ta.ID_,ta.CID_,ta.CDATE_,
-        	ta.tag, ta.summary, ta.ip, tb.displayName
+        	ta.tag, ta.summary, ta.details, ta.ip, tb.displayName
         from core_log ta 
         left join core_user tb on tb.ID_ = ta.CID_
     ]]>

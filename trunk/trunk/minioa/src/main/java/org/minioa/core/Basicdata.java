@@ -11,13 +11,15 @@ import org.hibernate.Session;
 import org.jboss.seam.ui.*;
 
 public class Basicdata {
-
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public Lang lang;
 
 	public Lang getLang() {
 		if (lang == null)
 			lang = (Lang) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Lang");
-		if(lang == null)
+		if (lang == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return lang;
 	}
@@ -27,7 +29,7 @@ public class Basicdata {
 	public MySession getMySession() {
 		if (mySession == null)
 			mySession = (MySession) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("MySession");
-		if(mySession == null)
+		if (mySession == null)
 			FunctionLib.redirect(FunctionLib.getWebAppName());
 		return mySession;
 	}
@@ -97,7 +99,7 @@ public class Basicdata {
 			Query query = getSession().createSQLQuery(sql + where);
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
-			
+
 			int i = 0;
 			int dc = Integer.valueOf(String.valueOf(query.list().get(0)));
 			while (i < dc) {
@@ -170,7 +172,7 @@ public class Basicdata {
 		try {
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.basicdata.getrecordbyid");
 				query.setParameter("id", id);
 				Iterator<?> it = query.list().iterator();
@@ -193,7 +195,7 @@ public class Basicdata {
 	public void newRecord() {
 		try {
 			getMySession();
-			
+
 			Query query = getSession().getNamedQuery("core.basicdata.newrecord");
 			query.setParameter("cId", mySession.getUserId());
 			query.setParameter("name", prop.get("name"));
@@ -216,7 +218,7 @@ public class Basicdata {
 			getMySession();
 			Map<?, ?> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String id = (String) params.get("id");
-			if (FunctionLib.isNum(id)){
+			if (FunctionLib.isNum(id)) {
 				Query query = getSession().getNamedQuery("core.basicdata.updaterecordbyid");
 				query.setParameter("mId", mySession.getUserId());
 				query.setParameter("name", prop.get("name"));
@@ -228,7 +230,7 @@ public class Basicdata {
 				query = null;
 
 				String msg = getLang().getProp().get(getMySession().getL()).get("success");
-				getMySession().setMsg(msg, 1);	
+				getMySession().setMsg(msg, 1);
 			}
 		} catch (Exception ex) {
 			String msg = getLang().getProp().get(getMySession().getL()).get("faield");

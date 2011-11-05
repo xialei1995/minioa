@@ -19,7 +19,9 @@ import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
 
 public class FunctionLib {
-
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	public static String dbType = "mysql";
 
 	public static String baseDir, separator, webAppName, openfireAdmin;
@@ -301,7 +303,7 @@ public class FunctionLib {
 			response.setHeader("Content-Disposition", new String(contentDisposition.toString().getBytes(System.getProperty("file.encoding")), "iso8859_1"));
 			ServletOutputStream out = response.getOutputStream();
 			byte[] bytes = new byte[0xffff];
-			File file = new File(getBaseDir() + filename);
+			File file = new File(filename);
 			if (!file.exists())
 				return;
 			InputStream is = new FileInputStream(file);

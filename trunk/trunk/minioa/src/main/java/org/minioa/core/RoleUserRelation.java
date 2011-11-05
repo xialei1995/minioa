@@ -11,6 +11,9 @@ import org.hibernate.Session;
 import org.jboss.seam.ui.*;
 
 public class RoleUserRelation {
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	private int ID_, CID_;
 	private String CDATE, init;
 	private java.util.Date CDATE_;

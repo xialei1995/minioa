@@ -8,7 +8,9 @@ import java.util.Properties;
 import java.util.Map.Entry;
 
 public class Lang {
-
+	/**
+	 * 作者：daiqianjie 网址：www.minioa.net 创建日期：2011-11-05
+	 */
 	private Map<String, Map<String, String>> prop;
 
 	public void setProp(Map<String, Map<String, String>> data) {
