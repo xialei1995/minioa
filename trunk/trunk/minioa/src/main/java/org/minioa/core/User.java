@@ -588,6 +588,9 @@ public class User {
 				
 				FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), name + " login, the ip is " + ip);
 				
+				String msg = getMySession().getDisplayName() + "登录到系统";
+				FunctionLib.writelog(getSession(), getMySession().getUserId(), getMySession().getIp(), "login", 0, msg, "");
+				
 				System.out.println(name + " login at time " + FunctionLib.dtf.format(new java.util.Date()));
 			} else {
 				System.out.println(name + " attempt to login at time " + FunctionLib.dtf.format(new java.util.Date()));
@@ -642,6 +645,9 @@ public class User {
 							System.out.println(name + " auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
 							
 							FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), name + " auto login, the ip is " + ip);
+							
+							String msg = getMySession().getDisplayName() + "自动登录到系统";
+							FunctionLib.writelog(getSession(), getMySession().getUserId(), getMySession().getIp(), "login", 0, msg, "");
 						} else
 							System.out.println(name + " attempt to auto login at time " + FunctionLib.dtf.format(new java.util.Date()) + ", ip is " + ip);
 					} else
@@ -674,11 +680,15 @@ public class User {
 			query.setParameter("sessionId", request.getSession().getId());
 			query.executeUpdate();
 			
+			String msg = getMySession().getDisplayName() + "安全退出系统";
+			FunctionLib.writelog(getSession(), getMySession().getUserId(), getMySession().getIp(), "logout", 0, msg, "");
+			
 			HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
 			session.invalidate();
 			if(getMySession()!=null)
 				FunctionLib.redirect(getMySession().getTemplateName(), "index.jsf");
 			FunctionLib.sendOfMessage(FunctionLib.getOpenfireAdmin(), username + " log out!");
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

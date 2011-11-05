@@ -94,7 +94,7 @@ public class Ballot {
 	}
 
 	@NotEmpty
-	@Length(min = 2, max = 12)
+	@Length(min = 2, max = 64)
 	private String title;
 
 	public void setTitle(String data) {

@@ -25,7 +25,6 @@ public class FunctionLib {
 	public static String baseDir, separator, webAppName, openfireAdmin;
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	public static SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
 
 	public static String getSeparator() {
 		if (separator == null) {
@@ -57,6 +56,7 @@ public class FunctionLib {
 			openfireAdmin = getWebParameter("openfireAdmin");
 		return openfireAdmin;
 	}
+
 	public static String getWebParameter(String parameter) {
 		return FacesContext.getCurrentInstance().getExternalContext().getInitParameter(parameter);
 	}
@@ -364,8 +364,8 @@ public class FunctionLib {
 	public static void sendOfMessage(String username, String messageText) {
 		try {
 			Application beanApp = (Application) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("Application");
-			if(null == beanApp)
-				return ;
+			if (null == beanApp)
+				return;
 			if (beanApp.getInit() == 2) {
 				MessageListener messageListener = new MessageListener() {
 					@Override
@@ -385,4 +385,36 @@ public class FunctionLib {
 		}
 	}
 
+	/**
+	 * 写入操作日志
+	 * 
+	 * @param s
+	 *            数据库会话
+	 * @param cId
+	 *            操作人id
+	 * @param ip
+	 *            操作人ip
+	 * @param tag
+	 *            标签，或表名
+	 * @param refId
+	 *            相关表记录id
+	 * @param summary
+	 *            摘要
+	 * @param details
+	 *            sql明细
+	 */
+	public static void writelog(Session s, int cId, String ip, String tag, int refId, String summary, String details) {
+		try {
+			Query query = s.getNamedQuery("core.log.newrecord");
+			query.setParameter("cId", cId);
+			query.setParameter("tag", tag);
+			query.setParameter("refId", refId);
+			query.setParameter("summary", summary);
+			query.setParameter("details", details);
+			query.setParameter("ip", ip);
+			query.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
