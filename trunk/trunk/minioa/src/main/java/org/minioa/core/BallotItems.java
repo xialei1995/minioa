@@ -6,10 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.validator.Length;

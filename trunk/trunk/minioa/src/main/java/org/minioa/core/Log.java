@@ -176,7 +176,7 @@ public class Log {
 
 			String sql = getSession().getNamedQuery("core.log.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.ID_ desc limit :limit offset :offset";
+			String other = " order by ta.ID_ desc";
 
 			if (!key.equals(""))
 				where += " and ta.tag like :key";
@@ -184,9 +184,9 @@ public class Log {
 				where += " and ta.CID_ = :cId";
 
 			Query query = getSession().createSQLQuery(sql + where + other);
-			query.setParameter("limit", mySession.getPageSize());
-			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
-
+			query.setMaxResults(mySession.getPageSize());
+			query.setFirstResult((Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
+			
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
 			if (!getMySession().getHasOp().get("101002"))

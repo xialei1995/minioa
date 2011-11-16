@@ -136,14 +136,13 @@ public class Basicdata {
 
 			String sql = getSession().getNamedQuery("core.basicdata.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.name, ta.sequence, ta.value, ta.value2 limit :limit offset :offset";
+			String other = " order by ta.name, ta.sequence, ta.value, ta.value2";
 
 			if (!key.equals(""))
 				where += " and ta.name like :key";
 			Query query = getSession().createSQLQuery(sql + where + other);
-			query.setParameter("limit", mySession.getPageSize());
-			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
-
+			query.setMaxResults(mySession.getPageSize());
+			query.setFirstResult((Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
 

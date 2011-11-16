@@ -13,25 +13,25 @@
 		<property name="hibernate.connection.password">password</property>
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
-		<mapping resource="mysql/core_org.hbm.xml" />
-		<mapping resource="mysql/core_department.hbm.xml" />
-		<mapping resource="mysql/core_user.hbm.xml" />
-		<mapping resource="mysql/core_job.hbm.xml" />
-		<mapping resource="mysql/core_role.hbm.xml" />
-		<mapping resource="mysql/core_role_user_relation.hbm.xml" />
-		<mapping resource="mysql/core_op.hbm.xml" />
-		<mapping resource="mysql/core_op_role_relation.hbm.xml" />
-		<mapping resource="mysql/core_topmenu.hbm.xml" />
-		<mapping resource="mysql/core_topmenu_role_relation.hbm.xml" />
-		<mapping resource="mysql/core_leftmenu.hbm.xml" />
-		<mapping resource="mysql/core_leftmenu_role_relation.hbm.xml" />
-		<mapping resource="mysql/core_pinyin.hbm.xml" />
-		<mapping resource="mysql/core_basicdata.hbm.xml" />
-		<mapping resource="mysql/core_news.hbm.xml" />
-		<mapping resource="mysql/core_news_attachment.hbm.xml" />
-		<mapping resource="mysql/core_search.hbm.xml" />
-		<mapping resource="mysql/core_ballot.hbm.xml" />
-		<mapping resource="mysql/core_ballot_items.hbm.xml" />
-		<mapping resource="mysql/core_log.hbm.xml" />
+		<mapping resource="org/minioa/core/org.hbm.xml" />
+		<mapping resource="org/minioa/core/department.hbm.xml" />
+		<mapping resource="org/minioa/core/user.hbm.xml" />
+		<mapping resource="org/minioa/core/job.hbm.xml" />
+		<mapping resource="org/minioa/core/role.hbm.xml" />
+		<mapping resource="org/minioa/core/role_user_relation.hbm.xml" />
+		<mapping resource="org/minioa/core/op.hbm.xml" />
+		<mapping resource="org/minioa/core/op_role_relation.hbm.xml" />
+		<mapping resource="org/minioa/core/topmenu.hbm.xml" />
+		<mapping resource="org/minioa/core/topmenu_role_relation.hbm.xml" />
+		<mapping resource="org/minioa/core/leftmenu.hbm.xml" />
+		<mapping resource="org/minioa/core/leftmenu_role_relation.hbm.xml" />
+		<mapping resource="org/minioa/core/pinyin.hbm.xml" />
+		<mapping resource="org/minioa/core/basicdata.hbm.xml" />
+		<mapping resource="org/minioa/core/news.hbm.xml" />
+		<mapping resource="org/minioa/core/news_attachment.hbm.xml" />
+		<mapping resource="org/minioa/core/search.hbm.xml" />
+		<mapping resource="org/minioa/core/ballot.hbm.xml" />
+		<mapping resource="org/minioa/core/ballot_items.hbm.xml" />
+		<mapping resource="org/minioa/core/log.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
