@@ -164,7 +164,7 @@
 										<f:param name="id" value="#{param['id']}" />
 										<f:param name="status" value="1" />
 									</a4j:commandLink>
-									<a4j:commandLink action="#{News.approve}" rendered="#{param['id'] gt 0 and MySession.tempStr['News.status']=='1'}" eRender="msg">
+									<a4j:commandLink action="#{News.approve}" rendered="#{param['id'] gt 0 and MySession.tempStr['News.status']=='1'}" reRender="msg">
 										<h:outputText class="btn" value="#{Lang.prop[MySession.l]['cancelapprove']}" />
 										<f:param name="redirect" value="true" />
 										<f:param name="reload" value="false" />

@@ -10,7 +10,6 @@ import javax.faces.model.SelectItem;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jboss.seam.ui.HibernateEntityLoader;
-import org.jivesoftware.util.Blowfish;
 
 public class MySession {
 
@@ -412,7 +411,7 @@ public class MySession {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
-				if("".equals(url))
+				if ("".equals(url))
 					url = "#";
 				hasChildren = hasChild(id, "topmenu");
 				if (i == 0) {
@@ -465,7 +464,7 @@ public class MySession {
 					url = String.valueOf(obj[2]);
 				if (obj[3] != null)
 					target = String.valueOf(obj[3]);
-				if("".equals(url))
+				if ("".equals(url))
 					url = "#";
 				hasChildren = hasChild(id, "leftmenu");
 				if (!hasChildren) {

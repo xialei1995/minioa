@@ -127,6 +127,11 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>BallotDao</managed-bean-name>
+		<managed-bean-class>org.minioa.core.BallotDao</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>BallotItems</managed-bean-name>
 		<managed-bean-class>org.minioa.core.BallotItems</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>

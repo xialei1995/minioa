@@ -172,14 +172,14 @@ public class News {
 
 			String sql = getSession().getNamedQuery("core.news.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.ID_ desc limit :limit offset :offset";
+			String other = " order by ta.ID_ desc";
 
 			if (!key.equals(""))
 				where += " and match(ta.keywords) against(:key in boolean mode)";
 			Query query = getSession().createSQLQuery(sql + where + other);
-			query.setParameter("limit", mySession.getPageSize());
-			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
-
+			query.setMaxResults(mySession.getPageSize());
+			query.setFirstResult((Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
+			
 			if (!key.equals(""))
 				query.setParameter("key", key);
 
@@ -450,6 +450,7 @@ public class News {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private String preView;
 
 	public String getPreView() {

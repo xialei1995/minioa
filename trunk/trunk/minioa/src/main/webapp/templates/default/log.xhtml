@@ -95,8 +95,8 @@
 						<h:outputText value="#{Log.prop['cDate']}" class="datetimeBlue" />
 						<h:outputText value="摘要:" />
 						<h:outputText value="#{Log.prop['summary']}" />
-						<h:outputText value="明细:" />
-						<h:outputText value="#{Log.prop['details']}" />
+						<h:outputText value="明细:" rendered="#{MySession.hasOp['101002']==true}" />
+						<h:outputText value="#{Log.prop['details']}" rendered="#{MySession.hasOp['101002']==true}" />
 					</h:panelGrid>
 				</a4j:outputPanel>
 			</rich:tab>

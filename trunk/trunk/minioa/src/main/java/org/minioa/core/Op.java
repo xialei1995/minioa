@@ -137,14 +137,14 @@ public class Op {
 
 			String sql = getSession().getNamedQuery("core.op.records").getQueryString();
 			String where = " where 1=1";
-			String other = " order by ta.opName desc limit :limit offset :offset";
+			String other = " order by ta.opName desc";
 
 			if (!key.equals(""))
 				where += " and ta.opName like :key";
 			Query query = getSession().createSQLQuery(sql + where + other);
-			query.setParameter("limit", mySession.getPageSize());
-			query.setParameter("offset", (Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
-
+			query.setMaxResults(mySession.getPageSize());
+			query.setFirstResult((Integer.valueOf(mySession.getScrollerPage()) - 1) * mySession.getPageSize());
+			
 			if (!key.equals(""))
 				query.setParameter("key", "%" + key + "%");
 
